@@ -34,7 +34,7 @@ DENOISE = {
 # toe: shadow/midtone gamma (<1 opens); con: S-curve contrast; vib: vibrance; bp: black point
 LOOK = {
     # golden shoreline: hazy orange sky -> cleaner neutral night, keep the gold lights
-    "IMG_5945": dict(ev=1.20, wb=(0.93, 1.0, 1.12), toe=1.00, con=1.06, vib=0.22, bp=0.045),
+    "IMG_5945": dict(ev=1.20, wb=(0.93, 1.0, 1.12), toe=1.00, con=1.06, vib=0.22, bp=0.045, grad=0.38),
     # overpass + headlights: mixed sodium/LED, tame the glare, open the ceiling a touch
     "IMG_5936": dict(ev=0.90, wb=(0.95, 1.0, 1.06), toe=1.03, con=1.05, vib=0.15, bp=0.035),
     # corniche walkway from above: bright, warm path; hold highlights, keep people natural
@@ -173,10 +173,19 @@ def finish(d):
     return np.clip(d, 0, 1)
 
 
+GRAD_Y = None
+
+
 def grade(lin, clip):
+    global GRAD_Y
     p = LOOK[clip]
     d = tone(lin, p)
     d = look(d, p)
+    if p.get("grad"):
+        # soft graduated ND on the sky (screen-fixed, like a filter on the lens)
+        if GRAD_Y is None:
+            GRAD_Y = _smooth(0.0, 0.48, np.linspace(0, 1, H, dtype=np.float32))[:, None, None]
+        d = d * (1 - p["grad"] * (1 - GRAD_Y))
     d = halation(d)
     d = detail(d)
     return d
