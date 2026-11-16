@@ -19,34 +19,30 @@ import cv2
 W, H = 1080, 1920
 
 # hqdn3d: luma_spatial:chroma_spatial:luma_tmp:chroma_tmp
-DENOISE = {
-    "IMG_5945": "3:4:7:9",
-    "IMG_5936": "3:4:6:8",
-    "IMG_5941": "2.5:4:5:8",   # people walking: lighter temporal to avoid trails
-    "IMG_5944": "3:5:7:10",
-    "IMG_5949": "4:5:8:10",
-    "IMG_5937": "2.5:4:5:8",
-    "IMG_5935": "4:5:8:10",
-    "IMG_5932": "3:4:6:8",
+DENOISE = {  # spatial pre-filter only; temporal denoising is motion-compensated (mcdenoise.py)
+    "IMG_5945": "1.2:2.5:0:0", "IMG_5936": "1.0:2.5:0:0", "IMG_5941": "0.8:2:0:0", "IMG_5944": "1.5:3:0:0",
+    "IMG_5949": "1.5:3:0:0", "IMG_5937": "0.8:2:0:0", "IMG_5935": "1.5:3:0:0", "IMG_5932": "1:2:0:0",
 }
 
 # per-clip correction. ev: exposure in stops; wb: linear RGB gains;
 # toe: shadow/midtone gamma (<1 opens); con: S-curve contrast; vib: vibrance; bp: black point
 LOOK = {
     # golden shoreline: hazy orange sky -> cleaner neutral night, keep the gold lights
-    "IMG_5945": dict(ev=1.20, wb=(0.93, 1.0, 1.12), toe=1.00, con=1.06, vib=0.22, bp=0.045, grad=0.38),
+    "IMG_5945": dict(ev=1.56, wb=(0.93, 1.0, 1.12), toe=1.095, con=1.06, vib=0.22, bp=0.0, grad=0.38),
     # overpass + headlights: mixed sodium/LED, tame the glare, open the ceiling a touch
-    "IMG_5936": dict(ev=0.90, wb=(0.95, 1.0, 1.06), toe=1.03, con=1.05, vib=0.15, bp=0.035),
+    "IMG_5936": dict(ev=1.21, wb=(0.95, 1.0, 1.06), toe=1.098, con=1.05, vib=0.15, bp=0.0),
     # corniche walkway from above: bright, warm path; hold highlights, keep people natural
-    "IMG_5941": dict(ev=0.80, wb=(0.96, 1.0, 1.03), toe=1.03, con=1.05, vib=0.16, bp=0.035),
+    "IMG_5941": dict(ev=1.09, wb=(0.96, 1.0, 1.03), toe=1.098, con=1.05, vib=0.16, bp=0.0),
     # pink light on the water: open the dark river, keep the magenta pure
-    "IMG_5944": dict(ev=1.85, wb=(0.98, 1.0, 1.03), toe=0.95, con=1.07, vib=0.20, bp=0.04),
+    "IMG_5944": dict(ev=1.71, wb=(0.98, 1.0, 1.03), toe=1.098, con=1.07, vib=0.20, bp=0.0),
     # POV across the river: the darkest shot — lift more, deep blue-black water
-    "IMG_5949": dict(ev=1.80, wb=(0.96, 1.0, 1.05), toe=0.92, con=1.07, vib=0.22, bp=0.045),
+    "IMG_5949": dict(ev=2.08, wb=(0.96, 1.0, 1.05), toe=1.098, con=1.07, vib=0.22, bp=0.0),
     # lit corniche: very bright paving, warm cast -> neutralise slightly, recover highlights
-    "IMG_5937": dict(ev=0.55, wb=(0.93, 1.0, 1.08), toe=1.04, con=1.05, vib=0.14, bp=0.035),
+    "IMG_5937": dict(ev=0.31, wb=(0.93, 1.0, 1.08), toe=0.927, con=1.05, vib=0.14, bp=0.0),
+    # skyline with the pink reflection (replaces IMG_5949: far more real detail, same mood)
+    "IMG_5942": dict(ev=1.80, wb=(0.96, 1.0, 1.05), toe=1.060, con=1.06, vib=0.20, bp=0.0),
     # distant towers: dark, fine city lights — lift and add sparkle
-    "IMG_5935": dict(ev=1.75, wb=(0.96, 1.0, 1.05), toe=0.94, con=1.07, vib=0.22, bp=0.045),
+    "IMG_5935": dict(ev=1.83, wb=(0.96, 1.0, 1.05), toe=1.083, con=1.07, vib=0.22, bp=0.0),
 }
 
 SHADOW_TINT = np.array([-0.010, -0.002, 0.012], np.float32)   # clean blue-black
@@ -121,7 +117,8 @@ def look(d, p):
     # clean the veiling flare a hair, then a black- and white-preserving S-curve
     d = np.clip(d, 0, 1.05)
     amt = (p["con"] - 1.0) * 4.0
-    d = d + amt * d * (1 - np.clip(d, 0, 1)) * (d - 0.32)
+    # pivot low: mid/high tones gain contrast, the shadow end is left open
+    d = d + amt * d * (1 - np.clip(d, 0, 1)) * (d - 0.14) * np.clip(d / 0.14, 0, 1)
     d = np.clip(d, 0, 1.05)
     # vibrance: boost low-chroma colours more than already-saturated ones
     l = luma(d)[..., None]
@@ -136,18 +133,20 @@ def look(d, p):
     return d
 
 
-def detail(d, clarity=0.24, sharp=0.42):
-    """luma-only clarity + sharpening (YCbCr-style separation, no colour halos)"""
+def detail(d, clarity=0.12, sharp=0.38):
+    """edge-aware definition on luma only: sharpening is applied where there is a real
+    edge (gradient well above the noise floor), never on flat sky/water noise"""
     l = luma(d)
-    # clarity: large radius local contrast, masked to midtones
-    big = cv2.GaussianBlur(l, (0, 0), 22)
-    mask = np.clip(1 - np.abs(l - 0.4) * 2.0, 0, 1) * np.clip(l * 8, 0, 1)
-    dl = (l - big) * clarity * mask
-    # fine sharpening with a threshold so flat noise isn't amplified
-    fine = cv2.GaussianBlur(l, (0, 0), 1.0)
+    big = cv2.GaussianBlur(l, (0, 0), 24)
+    mask_mid = np.clip(1 - np.abs(l - 0.42) * 2.2, 0, 1) * np.clip(l * 6, 0, 1)
+    dl = (l - big) * clarity * mask_mid
+    fine = cv2.GaussianBlur(l, (0, 0), 0.9)
     hf = l - fine
-    hf = np.sign(hf) * np.maximum(np.abs(hf) - 0.006, 0)
-    dl += hf * sharp
+    gx = cv2.Sobel(fine, cv2.CV_32F, 1, 0, ksize=3)
+    gy = cv2.Sobel(fine, cv2.CV_32F, 0, 1, ksize=3)
+    g = cv2.GaussianBlur(np.sqrt(gx * gx + gy * gy), (0, 0), 1.0)
+    edge = np.clip((g - 0.035) / 0.08, 0, 1)
+    dl += hf * sharp * edge
     return d + dl[..., None]
 
 

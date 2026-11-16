@@ -21,6 +21,7 @@ from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import grade as G
+import mcdenoise as MC
 import typo as T
 
 W, H, FPS = 1080, 1920, 30
@@ -40,7 +41,7 @@ SHOTS = [
     dict(c="IMG_5936", src=0.15, t0=2.00,  t1=4.65,  sp=1.00, z=(1.045, 1.010), f=(560, 980)),   # headlights pass — بعد رحيل العمر
     dict(c="IMG_5941", src=0.00, t0=4.35,  t1=7.42,  sp=0.88, z=(1.000, 1.045), f=(760, 640)),   # people on the curving path — تطارد
     dict(c="IMG_5944", src=1.30, t0=7.10,  t1=9.60,  sp=1.00, z=(1.040, 1.005), f=(700, 1000)),  # pink light on water — خيط دخان
-    dict(c="IMG_5949", src=0.00, t0=9.05,  t1=13.20, sp=1.00, z=(1.040, 1.090), f=(640, 1180)),  # looking across the river — فحبيبة قلبك
+    dict(c="IMG_5942", src=0.00, t0=9.05,  t1=13.20, sp=0.90, z=(1.000, 1.050), f=(820, 760)),   # towers & pink light across the river — فحبيبة قلبك
     dict(c="IMG_5937", src=5.40, t0=13.02, t1=14.66, sp=1.00, z=(1.020, 1.050), f=(560, 900)),   # the corniche — أرض
     dict(c="IMG_5945", src=2.78, t0=14.45, t1=16.08, sp=0.87, z=(1.060, 1.090), f=(420, 1000)),  # the opening shore returns — أو وطن
     dict(c="IMG_5935", src=0.40, t0=15.88, t1=DUR,   sp=1.00, z=(1.000, 1.060), f=(620, 900)),   # distant shore, fade — أو عنوان
@@ -50,7 +51,12 @@ FADE_OUT = (18.55, 20.15)
 PREROLL = 8  # frames decoded before the in-point so the temporal denoiser is settled
 
 
+DN_R = 2  # temporal radius of the motion-compensated denoiser (5-frame window)
+
+
 class Reader:
+    """decodes a shot as scene-linear frames and returns them motion-compensated denoised"""
+
     def __init__(self, s, start_frame=0):
         n = int(math.ceil((s["t1"] - s["t0"]) * FPS)) + 2 - start_frame
         pre = PREROLL / FPS * s["sp"]
@@ -63,17 +69,34 @@ class Reader:
                "-vf", G.decode_filter(s["c"], s["sp"], FPS), "-r", str(FPS),
                "-frames:v", str(n + self.skip), "-f", "rawvideo", "-"]
         self.p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-        self.base = start_frame
-        self.last = None
-        self.idx = start_frame - 1 - self.skip
+        self.raw = {}           # decoded frames by shot-frame index (window cache)
+        self.next = start_frame - self.skip
+        self.out = {}
+        self.dn = MC.MCDenoiser(DN_R)
+        self.eof = False
+
+    def _decode_until(self, k):
+        while self.next <= k and not self.eof:
+            buf = self.p.stdout.read(W * H * 12)
+            if len(buf) < W * H * 12:
+                self.eof = True
+                break
+            self.raw[self.next] = G.planar_to_rgb(buf)
+            self.next += 1
 
     def frame(self, k):
-        while self.idx < k:
-            buf = self.p.stdout.read(W * H * 12)
-            if len(buf) == W * H * 12:
-                self.last = G.planar_to_rgb(buf)
-            self.idx += 1
-        return self.last
+        if k in self.out:
+            return self.out[k]
+        self._decode_until(k + DN_R)
+        last = max(i for i in self.raw if i <= k) if any(i <= k for i in self.raw) else min(self.raw)
+        kk = min(k, last)
+        win = [self.raw.get(i) for i in range(kk - DN_R, kk + DN_R + 1)]
+        lin, _ = self.dn.denoise(win, DN_R)
+        lin = MC.chroma_clean(lin)
+        for i in [i for i in self.raw if i < kk - DN_R]:
+            del self.raw[i]
+        self.out = {k: lin}
+        return lin
 
     def close(self):
         if self.p:
@@ -123,8 +146,8 @@ STANZAS = [
     T.Reveal([T.Line([disp("خيط", 50, T.CHAMPAGNE), disp("دخان", 64, T.CHAMPAGNE)], 540, 1462)],
              ins=[7.40, 7.82], outs=[8.45, 8.72], out_dur=1.05, style="smoke"),
     # «فحبيبة قلبك / ليس لها» — over the dark water of the river view
-    T.Reveal([T.Line([disp("فحبيبة"), disp("قلبك")], 620, 1408),
-              T.Line([light("ليس"), light("لها")], 620, 1468)],
+    T.Reveal([T.Line([disp("فحبيبة"), disp("قلبك")], 470, 1408),
+              T.Line([light("ليس"), light("لها")], 470, 1468)],
              ins=[9.62, 10.55, 11.70, 12.12], outs=12.70, out_dur=0.45),
     # «أرض أو وطن أو عنوان» — one composed line in the night sky; the nouns in Nastaliq,
     # the small «أو» in the light voice, «عنوان» in champagne. They leave one by one.
@@ -191,7 +214,7 @@ enc = subprocess.Popen([
     "-i", args.audio,
     "-map", "0:v", "-map", "1:a",
     "-vf", "scale=out_color_matrix=bt709:out_range=tv,format=yuv420p",
-    "-c:v", "libx264", "-preset", "slow", "-crf", "16", "-maxrate", "18M", "-bufsize", "36M",
+    "-c:v", "libx264", "-preset", "slow", "-crf", "13", "-maxrate", "25M", "-bufsize", "50M", "-x264-params", "aq-mode=3:aq-strength=0.8:deblock=-1,-1",
     "-profile:v", "high", "-level", "4.2", "-tune", "film",
     "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-color_range", "tv",
     "-c:a", "aac", "-b:a", "256k", "-ar", "48000",
