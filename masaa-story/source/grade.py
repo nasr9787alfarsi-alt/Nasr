@@ -188,3 +188,40 @@ def grade(lin, clip):
     d = halation(d)
     d = detail(d)
     return d
+
+
+# ----------------------------------------------------------------------------------------
+# NATURAL mode (final): preserve the camera's own rendering, only lighten and polish.
+# Per-channel HLG response (exactly how the camera encoded each colour), a per-clip
+# exposure lift toward the bright look of the clips on the phone, a soft highlight
+# shoulder so nothing clips, and a tiny white-balance trim where a clip is clearly off.
+# No colour grading, vibrance, split tone, halation, vignette or graduated filters.
+NATURAL = {
+    #           ev    shadow-gamma  wb (r, g, b)
+    "IMG_5945": (1.43, 0.95, (0.98, 1.0, 1.04)),   # slight orange haze trimmed
+    "IMG_5936": (1.00, 0.95, (1.0, 1.0, 1.0)),
+    "IMG_5941": (1.02, 0.95, (1.0, 1.0, 1.0)),
+    "IMG_5944": (1.78, 0.92, (1.0, 1.0, 1.0)),
+    "IMG_5942": (1.61, 0.92, (1.0, 1.0, 1.0)),
+    "IMG_5937": (0.90, 0.95, (0.99, 1.0, 1.02)),
+    "IMG_5935": (1.52, 0.92, (1.0, 1.0, 1.0)),
+}
+
+
+def natural(lin, clip):
+    ev, gam, wb = NATURAL[clip]
+    x = np.maximum(lin, 0) * np.array(wb, np.float32) * (2.0 ** ev)
+    E = np.power(x * 0.203, 1 / 1.2)            # per channel, like the camera's own encoding
+    d = _hlg(E) / 0.75
+    d = np.power(np.clip(d, 0, None), gam)
+    k0, k1 = 0.80, 1.40                          # soft shoulder: highlights roll off, never clip
+    t = np.clip((d - k0) / (k1 - k0), 0, 1)
+    d = np.where(d > k0, k0 + (1 - k0) * (1 - (1 - t) ** 2), d)
+    d = np.clip(d, 0, 1)
+    # very light, edge-only definition (no clarity / local contrast)
+    return detail(d, clarity=0.0, sharp=0.22)
+
+
+def finish_natural(d):
+    d = d + _rng.uniform(-0.5, 0.5, (H, W, 1)).astype(np.float32) / 255.0   # dither only
+    return np.clip(d, 0, 1)

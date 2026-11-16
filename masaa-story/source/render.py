@@ -162,7 +162,7 @@ STANZAS = [
 def shot_image(i, t, readers):
     s = SHOTS[i]
     lin = readers[i].frame(int(round((t - s["t0"]) * FPS)))
-    return G.grade(push(lin, s, t), s["c"])
+    return G.natural(push(lin, s, t), s["c"])
 
 
 def render_frame(t, readers):
@@ -188,7 +188,7 @@ def render_frame(t, readers):
     if not args.notext:
         for st in STANZAS:
             st.draw(out, t)
-    return G.finish(out)
+    return G.finish_natural(out)
 
 
 def to8(x):
