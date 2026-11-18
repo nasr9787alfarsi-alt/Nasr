@@ -93,3 +93,33 @@ zooms.
 
 The scripts expect the source clips in `src/vid/` and the song in `audio/song.wav`, under the
 working directory.
+
+## iPhone / WhatsApp / Instagram export
+
+The delivery files are encoded from the untouched ProRes master, with no change to the edit, grade or mix:
+
+```
+ffmpeg -i master_sdr.mov -map 0:v:0 -map 0:a:0 \
+  -vf scale=out_range=tv:out_color_matrix=bt709,format=yuv420p,setsar=1 \
+  -c:v libx264 -preset slow -profile:v high -level:v 4.1 -g 60 -keyint_min 30 -sc_threshold 0 -bf 2 -refs 3 \
+  -color_range tv -colorspace bt709 -color_trc bt709 -color_primaries bt709 -r 30 \
+  -crf 17 -maxrate 14M -bufsize 28M \
+  -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart -tag:v avc1 \
+  Alexandria_Film_iPhone_H264_1080p.mp4
+```
+
+| File | Encode | Size |
+|---|---|---|
+| `Alexandria_Film_iPhone_H264_1080p.mp4` | the command above | 199 MB |
+| `Alexandria_Film_Share_H264_1080p.mp4` | `-crf 20 -maxrate 6M -bufsize 12M`, AAC 160k | 92 MB |
+
+Compared with the master, the iPhone file scores SSIM 0.988 / PSNR 44.6 dB and the share file
+SSIM 0.979 / PSNR 41.3 dB.
+
+**Checking playback:**
+
+- `tools/playtest.js` plays a file at 1× in Chromium over HTTP and checks:
+  - that it reaches `ended`
+  - decoded and dropped frames
+  - that the whole AAC track decodes
+- `tools/rvfc.js` reads the decoded frames during playback, to confirm a real picture throughout.
