@@ -16,7 +16,7 @@ cut to *Ala Bali* by Aida El Ayoubi.
 | `Alexandria_Film_H264.mp4` | Maximum compatibility (WhatsApp, Instagram, Windows) |
 | `Alexandria_Film_HDR_HLG.mp4` | The original iPhone HDR look, for HDR screens |
 
-All three are 1080×1920, 30 fps, 2:34. The masters are cut from 10-bit ProRes 422 HQ
+All three are 1080×1920, 30 fps, 2:02. The masters are cut from 10-bit ProRes 422 HQ
 intermediates.
 
 **Why vertical and not 4K 16:9:** every source clip is vertical 1080p. A 16:9 frame would mean
@@ -24,37 +24,51 @@ either cropping each shot to about a third of its frame and upscaling it about 3
 pillarboxing on a blurred background. Both throw away the image quality the brief puts first,
 so the film keeps the native frame with no upscaling.
 
+## Selection: quality over quantity
+
+37 of the 75 clips are used. An earlier 2:34 cut used 51 clips and was tightened after the
+brief asked for quality over quantity. The film drops:
+
+- near-duplicates, such as a second and third high bay view and a second turquoise-bay angle
+- dark or blurred shots: the dark station tunnel, the harbour at night as it blurs, and a
+  half-lit monument
+- filler streets, such as a plain wall, the back of a head and a station exterior
+- car-window shots dominated by billboard ads
+- museum padding
+
 ## Music edit
 
 - Tempo is 117.5 BPM (one beat is 0.511 s).
-- The section that starts at 106.0 s returns exactly 312 beats later, at 264.7 s.
-- The song is spliced on matching beats, 116.17 s → 274.83 s, with a 30 ms equal-power
-  crossfade. The splice measures 0.99 on beat-synchronous chroma + MFCC similarity.
-- The result keeps the free intro, the band drop, the first two sections, the peak and the
-  original outro, at 2:33.
-- The splice sits inside a single held night shot, so no picture cut points at it.
+- The chorus at 49.0 s returns exactly 376 beats later, at 240.3 s.
+- The song is spliced on a bar line inside that repetition, 65.27 s → 256.53 s, with a 30 ms
+  equal-power crossfade. Similarity stays between 0.984 and 0.988 across ±8 beats, so this is a
+  true repeat.
+- The result keeps the free intro, the band drop, the first chorus, the section hit, the peak
+  and the original outro: 2:00 of music, with the picture fading out as the last note decays.
+- The splice sits inside a single held shot (the red-carpet staircase).
+- The ~3 dB dip at the splice is in the song itself: it is a phrase ending, and it is identical
+  at both points.
 - The mix is normalised to −14 LUFS integrated and −1 dBTP.
 - Natural sound from the clips is high-passed at 180 Hz to remove wind and kept low under the
   music: the platform, the approaching and passing train, and the sea under the end card.
 
-## Structure
+## Structure (2:02)
 
 | Film time | Music | Picture |
 |---|---|---|
 | 0:00–0:13 | free intro | Dawn platform → the traveller watching the train → headlight approaching |
 | 0:13 | band drop | Train blasts past |
-| 0:13–0:49 | verse | Window views and fields → arriving at the station → square, taxis |
-| 0:49 | section hit | Sea reveal from above, with the **ALEXANDRIA** title |
-| 0:57–1:13 | rhythm | Streets cut on the beat |
-| 1:13–1:42 | accent at 1:12.9 | Royal Jewelry Museum, longer elegant shots |
-| 1:42–1:45 | quiet break | Glowing doorway dissolves into the harbour lights at night |
-| 1:45–2:00 | section hit | Night downtown |
-| 2:00–2:17 | build → peak | Next morning: Corniche drive → Stanley Bridge → turquoise bay |
-| 2:17–2:34 | outro | Bay → golden-hour locomotive → the sea, "until we meet again" |
+| 0:13–0:49 | verse | Window views → train pulls in → square, taxis, alley |
+| 0:49 | chorus hit | Sea reveal with the **ALEXANDRIA** title |
+| 0:53–1:13 | chorus | Streets → palaces → Royal Jewelry Museum, ending on a glowing doorway in the musical breath |
+| 1:13 | section hit | Night downtown |
+| 1:25 | accent | Hard cut to the next morning's sea → Stanley Bridge |
+| 1:33–1:45 | peak | Bridge towers, Corniche traffic, the bay from above |
+| 1:45–2:02 | outro | Turquoise bay → golden-hour locomotive → the sea, "until we meet again" |
 
-Hard cuts land on beats, and all 44 were verified frame-exact by scene detection. There are 6
-dissolves in all, used only in calm passages: two in the intro, plus museum → night,
-night → morning, and two in the outro. The film has no speed ramps and no artificial zooms.
+Hard cuts land on beats, and all 32 were verified frame-exact by scene detection. The film has
+4 dissolves, two in the intro and two in the outro. It has no speed ramps and no artificial
+zooms.
 
 ## Image
 

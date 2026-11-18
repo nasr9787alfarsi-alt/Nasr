@@ -1,7 +1,7 @@
 import json, subprocess, sys, os
 S=sys.argv[1]; MODE=sys.argv[2]
 shots=json.load(open(f'{S}/shots_{MODE}/shots.json'))
-END=154.0; NF=round(END*30)
+END=122.0; NF=round(END*30)
 inputs=[]; fc=[]
 for s in shots: inputs+=['-i',s['file']]
 # chain: hard cuts via concat, dissolves via xfade
@@ -26,8 +26,8 @@ flush()
 print('timeline frames',acc_frames,'expected',round(shots[-1]['t1']*30)+shots[-1].get('hout_f',0))
 last=acc
 # titles
-T0=round(shots[15]['t0']*30)-114   # ends 2 frames before the cut to 6102
-E0=round(146.6*30)
+I3=[s['clip'] for s in shots].index('6103'); T0=round(shots[I3+1]['t0']*30)-114   # title ends 2 frames before the cut
+E0=round((shots[-1]['t0']+1.4)*30)
 ti=len(shots); inputs+=['-framerate','30','-i',f'{S}/ttl/{MODE}_title/%04d.png','-framerate','30','-i',f'{S}/ttl/{MODE}_end/%04d.png','-i',f'{S}/audio/mix_final.wav']
 fc.append(f'[{ti}:v]format=yuva444p10le,setpts=PTS+{T0}/30/TB[t1];[{ti+1}:v]format=yuva444p10le,setpts=PTS+{E0}/30/TB[t2]')
 fc.append(f'{last}tpad=stop_mode=add:stop_duration={END:.2f}:color=black,trim=end_frame={NF},format=yuv444p10le[base]')
