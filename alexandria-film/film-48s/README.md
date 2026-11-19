@@ -45,3 +45,14 @@ Use the full film's `tools/`, but replace `edl.py` with the version here. Put `b
 2. `shots.py sdr`
 3. `audio45.py`
 4. `assemble45.py <dir>`
+
+## Title, version 2 (`tools/titles48b.py`)
+
+- **Wordmark.** "Alexandria" in Cormorant Garamond Light Italic at 124 px. It fades in and rises
+  8 px.
+- **Small line underneath.** Inter Light at 21 px with wide letter-spacing, appearing 0.45 s
+  after the wordmark:
+  - "THE MEDITERRANEAN EXPERIENCE" on the Stanley Bridge shot
+  - "EGYPT · NOVEMBER 2026" on the final sea shot, placed over the deeper water
+- **Rendering.** Run `titles48b.py <dir>` instead of `titles45.py`. The edit, music and grade are
+  unchanged.
