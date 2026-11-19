@@ -56,3 +56,14 @@ Use the full film's `tools/`, but replace `edl.py` with the version here. Put `b
   - "EGYPT · NOVEMBER 2026" on the final sea shot, placed over the deeper water
 - **Rendering.** Run `titles48b.py <dir>` instead of `titles45.py`. The edit, music and grade are
   unchanged.
+
+## Title, version 3: signature (`tools/titles48c.py`, `tools/assemble48c.py`)
+
+- **Wordmark.** "Alexandria" in Pinyon Script at 118 px. It was chosen over Great Vibes and
+  Cormorant Italic in a side-by-side test. It appears on the Stanley Bridge opening and on the final
+  sea shot.
+- **Bottom line.** "THE MEDITERRANEAN EXPERIENCE" in Inter Light at 21 px, with wide letter-spacing.
+  It stays at the bottom of the frame for the whole film, fading in over the first second and out
+  with the picture.
+- **Font file.** Pinyon Script comes from the `@fontsource/pinyon-script` npm package. Put it in
+  `fonts_extra/`.
