@@ -1,6 +1,6 @@
 # Cairo Street Experience: Instagram Reel
 
-**Deliverable:** `Cairo_Reel.mp4`: 1080×1920 (9:16), 30 fps, H.264 High, 23.0 s, AAC 320 kbps, −14 LUFS / −1 dBTP.
+**Deliverable:** `Cairo_Reel.mp4`: MP4 (mp42), H.264 High@4.0 yuv420p, 1080×1920, 30 fps CFR, ~10 Mbps, AAC-LC 256 kbps 48 kHz stereo, fast start, 23.0 s, −14 LUFS / −1 dBTP.
 
 ## Opening: recreation of the "IMPORTANT" reference
 | Reference (IMPORTANT) | This reel | Music anchor |
