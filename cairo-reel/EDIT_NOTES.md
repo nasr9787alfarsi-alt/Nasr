@@ -1,6 +1,6 @@
 # CAIRO CLOCKWORK: Instagram Reel (v2, complete re-edit)
 
-**Deliverable:** `Cairo_Clockwork.mp4`: MP4 (mp42), H.264 High@4.0, yuv420p, 1080×1920, 30 fps CFR, ~10 Mbps, AAC-LC 256 kbps 48 kHz, fast start, 46.4 s, −14 LUFS / −1 dBTP. Loops seamlessly.
+**Deliverable:** `Cairo_Clockwork_iPhone.mp4`: MP4 (mp42/isom), H.264 High@4.0 (avc1.640028), yuv420p, 1080×1920, 30 fps CFR, AAC-LC stereo 48 kHz (mp4a.40.2), fast start (ftyp→moov→mdat), 0.5 s A/V interleave, 46.4 s, −14 LUFS / −1 dBTP. Loops seamlessly.
 
 ## Concept
 Cairo as a living mechanism. The mechanical sounds (from the BOOM *Mechanicals* teaser in the Sound Effects folder) are the film's spine. They only appear where **time itself is manipulated**: when the machine starts (opening), when the clock skips (midpoint) and when it winds down (ending). Everywhere else the city speaks with its own recorded sound.
