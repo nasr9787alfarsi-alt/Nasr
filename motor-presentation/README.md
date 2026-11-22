@@ -1,18 +1,20 @@
 # Inside the Motor: Induction vs. Synchronous
 
-A 34-slide technical briefing built on the official PDO corporate PowerPoint template. It explains induction and synchronous motors to people without an electrical background, using native PowerPoint 3D models, magnetic-field animations, real industrial photos and timed speaker notes on every slide.
+A 34-slide technical briefing built on the official PDO corporate PowerPoint template. It explains induction and synchronous motors to people without an electrical background, using high-quality 3D renders with PowerPoint Morph transitions, magnetic-field animations, real industrial photos and timed speaker notes on every slide.
 
 **Presentation time: 13 min 41 s, including all video playback** (see [Timing](#timing)).
 
-**The Construction section uses no video.** Every motor part on those slides is a genuine PowerPoint 3D model (.glb). PowerPoint's own Morph transition moves them between slides the way the camera moves in the reference video. Each motor starts with an exploded overview with numbered parts, then gives **each component its own slide**: the part enlarged on its own, with the same number, its name, a one-line explanation and a "where it sits" mini-map.
+**The Construction section uses no video.** Every motor part is a separate high-quality 3D render, placed by a single-camera layout. PowerPoint's own Morph transition moves the parts between slides the way the camera moves in the reference video. Each motor starts with an exploded overview with numbered parts, then gives **each component its own slide**: the part enlarged on its own, with the same number, its name, a one-line explanation and a "where it sits" mini-map.
+
+> **Compatibility fix (iPhone).** An earlier build embedded each part as a hand-authored PowerPoint 3D-model object (`am3d:model3d`, .glb). PowerPoint for iPhone could not open that file. The corrected deck uses standard picture objects in the same positions, with the same Morph moves. It contains only markup that PowerPoint writes itself, and its package metadata has been cleaned (see the verification report below). The 3D-model build is kept, clearly labelled, as `EXPERIMENTAL_3D_models_untested.pptx`.
 
 ## What's in this folder
 
 | File | What it is |
 |---|---|
-| `Inside_the_Motor_Induction_vs_Synchronous.pptx` | **The presentation (55 MB).** Editable PowerPoint on the PDO master template. The Construction section is built from genuine 3D models with Morph transitions. The three working-principle animations (slides 26–28) are embedded videos, unchanged from before. Every slide has timed speaker notes. |
-| `Inside_the_Motor_BACKUP_image_version.pptx` | **Backup copy (50 MB).** The same deck, but each 3D model is replaced by a high-quality picture of the same view, at the same position, with the same Morph transitions. Use it if the 3D models misbehave on the presenting computer. |
-| `models3d/` | The 25 motor parts as .glb 3D models (glTF 2.0, validated with the Khronos glTF validator), plus the layout data. |
+| `Inside_the_Motor_Induction_vs_Synchronous.pptx` | **The presentation (50 MB). Use this one.** Editable PowerPoint on the PDO master template, for desktop PowerPoint and PowerPoint for iPhone and iPad. Construction parts are high-quality 3D renders moved by Morph. The three working-principle animations (slides 26–28) are embedded H.264 videos. Every slide has timed speaker notes. |
+| `EXPERIMENTAL_3D_models_untested.pptx` | The same deck with each Construction part as a hand-authored PowerPoint 3D model. It is **not** for presenting: PowerPoint for iPhone could not open it, and it has never been opened in desktop PowerPoint. Kept only for experiments. |
+| `models3d/` | The 25 motor parts as .glb 3D models, used only by the experimental deck (glTF 2.0, validated with the Khronos glTF validator), plus the layout data. |
 | `video/induction_motor_exploded.mp4` | Not used in the deck. 49 s 3D tour of a squirrel-cage induction motor: it opens up, labels and explains 12 components one by one, then reassembles. 1600×900. |
 | `video/synchronous_motor_exploded.mp4` | Not used in the deck. The same 49 s tour for a large salient-pole synchronous motor with DC excitation. 1600×900. |
 | `video/anim_rmf.mp4` | 30 s: how three-phase currents create a rotating magnetic field. 1920×1080. |
@@ -54,17 +56,16 @@ A 34-slide technical briefing built on the official PDO corporate PowerPoint tem
 - **Narration runs over the videos.** The three working-principle videos (30 s, 51 s and 49 s) each fit inside their slide's time.
 - **There is spare time.** The total leaves 1 min 19 s before the 15-minute limit.
 
-### Construction section design: 3D models and Morph
+### Construction section design: Morph camera moves
 
 The camera technique follows the reference video. One continuous model is never cut; the view moves smoothly from the whole motor to each part.
 
-- **One camera for every slide.** Each Construction slide is a view of the same virtual camera on the exploded motor. Every part is a separate 3D model with the same name on every slide (`!!induction_frame`, `!!sync_rotorAsm` and so on), so Morph moves each part exactly as a camera move would.
-  - **Overview to a part:** the selected part grows to the centre while the others fly out past the slide edges, as if the camera pushes in past them.
-  - **Part to part:** the scene pans. The old part leaves and the next one arrives from its true direction relative to it, with a gentle turntable swing (±9°).
+- **One camera for every slide.** Each Construction slide is a view of the same virtual camera on the exploded motor. Every part is a separate transparent render with the same name on every slide (`!!induction_frame`, `!!sync_rotorAsm` and so on), so Morph moves each part exactly as a camera move would.
+  - **Overview to a part:** the selected part grows to the centre while the others fly out past the slide edges.
+  - **Part to part:** the scene pans. The old part leaves, and the next arrives from its true direction relative to it, turning gently (±9°).
   - **Moving parts:** on the frame slide the end shields glide onto the frame, and on the cooling slide the shaft fan moves under the cooler.
 - **Revealed after each move.** A leader line wipes in from the part to its number, then the name and explanation fade in. The ring on the "where it sits" mini-map moves to the new part.
-- **Real 3D you can turn.** In PowerPoint, select any part and drag its rotation handle to turn it, for example during Q&A.
-- **Version support.** 3D models and Morph need PowerPoint 2019, 2021 or Microsoft 365 (Windows or Mac). Older versions show each part's fallback picture instead, still correctly placed.
+- **Version support.** Morph plays in PowerPoint 2019, 2021, Microsoft 365, PowerPoint for Mac, PowerPoint for iPhone and iPad, and PowerPoint for the web. Older versions show a fade instead.
 - **Parts removed to show others are labelled.** Where steel is removed to reveal a part (the cage, field coils and damper bars), the slide says so.
 
 ## Presenting
@@ -75,28 +76,32 @@ The camera technique follows the reference video. One continuous model is never 
 
 ## Verification report
 
-### Checks completed
+### iPhone "couldn't open" and read-only: what happened and what was fixed
+
+| Finding | Detail | Fix |
+|---|---|---|
+| **Hand-authored 3D-model objects (most likely cause)** | The previous build contained 193 PowerPoint 3D-model placements (`am3d:model3d`) and 25 .glb models. This was the only markup in that file that PowerPoint had never written itself. Its camera, viewport and light values were inferred from the schema, because no PowerPoint-written sample was reachable from this environment. PowerPoint apps that support 3D models read this markup instead of the fallback picture. Desktop can sometimes repair a file, but the mobile apps refuse to open it. | Each part is now a standard picture of the same render, in the same position and with the same name, so the Morph moves are unchanged. The corrected file contains no `am3d` markup. |
+| Stale document properties | `docProps/app.xml` still described the original 24-slide template: 0 notes, 0 media clips and an outdated slide-title list. | Regenerated from the real content: 34 slides, 34 notes pages, 0 hidden slides, 3 media clips. |
+| SharePoint library binding from the PDO intranet template | The template carried a SharePoint document-library content type, document-management properties and form templates (`customXml/*`, the `ContentTypeId` custom property). Office treats such files as belonging to a server library, which can make them open read-only outside that library. | Removed (10 parts). The design, theme, layouts and branding are untouched. |
+| Read-only on iPhone | PowerPoint for iPhone opens files received from another app (Mail, Messages, Files preview, a chat app) read-only, as a protected copy. It also falls back to read-only when it cannot fully load a file. | The file is no longer write-protected in any way: there is no modify password, "Final" status or library binding. To edit on the iPhone, tap **Edit** or **Save a Copy** (or Duplicate). That saves your own editable copy. |
+
+### Checks completed on the corrected file
 
 | Check | Result |
 |---|---|
-| Package validation against the PDO template, both decks | Passed |
-| 3D model markup | All 193 3D-model placements match Microsoft's `am3d` schema, taken from the Open XML SDK: element order, required elements and integer attributes. Each uses the 3D-model relationship type, sits in an `mc:Choice Requires="am3d"` with a picture fallback, and every .glb part is registered as `model/gltf-binary`. |
-| 3D model files | All 25 .glb files pass the Khronos glTF validator with 0 errors and 0 warnings. The largest has 85,000 triangles. |
-| No video in the Construction section | Slides 3–24 contain no video. The only videos in the deck are the three working-principle animations (slides 26–28), embedded, H.264 High, full decode with no errors. |
-| Morph | 17 Morph transitions (component slides), each with a fade fallback. Every part keeps one name across its motor's slides. |
-| Morph motion | The moves were simulated (interpolated positions and sizes) for overview → part, part → part and the long bearing → frame move. Parts fly out or in along their real directions, and parts that pass the camera stay modestly sized. |
-| Rendering | Both decks were rendered in LibreOffice and all 34 slides inspected. LibreOffice draws the 3D deck through its fallback pictures, which match the backup deck exactly. |
+| Real PowerPoint package, not a renamed file | Zip header and MIME detection give "Microsoft PowerPoint 2007+". `[Content_Types].xml` is the first entry. |
+| Zip integrity | The test passed, with no duplicate entries and every part deflated. |
+| XML | All parts parse. Every relationship target exists. Every part has a content type. No overrides point at missing parts. |
+| Schema validation against the PDO template | Passed |
+| Slide structure | Child elements are in schema order on all 34 slides. Shape IDs are unique on every slide. |
+| Element inventory | Pictures, shapes, text, one table, Morph (17 slides, each with a fade fallback), fades, entrance animations (19 slides) and 3 embedded videos (slides 26–28). There are no 3D-model objects, OLE, ActiveX or ink. |
+| Independent reader | Reopened with python-pptx: all 34 slides load. |
+| LibreOffice | The deck opens and renders all 34 pages, and saves back to .pptx successfully. All slides were inspected. |
 | Timing | 13:41 scripted, including video playback. |
 
 ### Not tested in Microsoft PowerPoint
 
-There is no PowerPoint in this build environment, so these could not be tested:
-
-- **How PowerPoint draws the 3D models.** This includes their exact on-slide size inside each frame, which uses PowerPoint's own camera and viewport and isn't documented in the sources available here. It also includes PowerPoint's 3D lighting and materials, which are simpler than the pictures and have no cast shadows.
-- **Morph on the 3D models:** smooth movement and the ±9° turn. If PowerPoint's rotation direction is opposite to my assumption, the parts swing the other way, which is harmless.
-- **Slide-show playback** of the three working-principle videos, the fades and the looping GIF.
-
-**Recommendation:** open the main deck in PowerPoint and click through slides 5–23 in Slide Show. If the 3D parts look the wrong size, misplaced or badly lit, present `Inside_the_Motor_BACKUP_image_version.pptx` instead. It has the same layout, numbering, Morph moves and notes, built from pictures.
+There is no PowerPoint, desktop or iPhone, in this build environment, so these could not be tested: opening the file in PowerPoint itself, Morph playback, and video playback. Please open the corrected file once on the iPhone and once on the presenting PC, and click through slides 5–23 and 26–28 in Slide Show.
 
 ## Technical notes
 
@@ -135,7 +140,8 @@ The tools are Node with Playwright and headless Chromium, ffmpeg, and Python 3 w
 | `glb.js` | Exports each part as a .glb 3D model, re-centred and pre-rotated to the overview view. Run `node glb.js induction ../deliver2/native`. |
 | `native_layout.py` | The single-camera layout engine: places every part on every Construction slide. Running it writes the render job list. |
 | `partimg.js` | Renders each part's picture through the same camera as its 3D model. |
-| `components_section.py` | Builds the Construction slides as 3D models (`NATIVE_MODE=3d`, default) or pictures (`NATIVE_MODE=img`), with Morph and the reveal animations. |
+| `components_section.py` | Builds the Construction slides as pictures (`NATIVE_MODE=img`, used for the presentation) or experimental 3D models (`NATIVE_MODE=3d`), with Morph and the reveal animations. |
+| `fix_package.py` | Final package clean-up: regenerates the document properties and removes the inherited SharePoint library binding. Run `python3 fix_package.py built.pptx final.pptx`. |
 | `film.js` | Renders the overview still and label positions used for the "where it sits" mini-map. |
 | `finalize.sh` | Extracts the posters, then builds and validates the deck |
 | `verify.py` | Checks embedding and decodes every video |
