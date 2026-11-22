@@ -50,7 +50,7 @@ const TOURS = {
 window.DIRECTOR = { TOURS };
 DIRECTOR.make = function(kind){
   const D = TOURS[kind]; const M = S.model;
-  const tIntro=2.5, tExp=4.2, tOver=3.2, tStep=2.7, nS=D.steps.length, tOut=3.0;
+  const tIntro=2.5, tExp=4.2, tOver=3.6, tStep=3.0, nS=D.steps.length, tOut=3.0;
   const t0Steps = tIntro+tExp+tOver, tEndSteps = t0Steps + nS*tStep, dur = tEndSteps + tOut;
   const allKeys = M.order;
   function alphaMap(step){

@@ -93,12 +93,12 @@
     const abs = dir && dir[2]==='abs'; const lx = abs ? dx : x + dx, ly = abs ? dy : y + dy;
     const L = S.light; el('circle', { cx: x, cy: y, r: 5.5, fill: L ? '#00B477' : '#38b6ff', stroke: L ? '#ffffff' : '#0b1626', 'stroke-width': 2 }, g);
     el('polyline', { points: `${x},${y} ${lx},${abs ? (ly + (y > ly ? 21 : -21)) : ly}`, stroke: L ? '#00B477' : '#9fd8ff', 'stroke-width': L ? 1.6 : 2, fill: 'none' }, g);
-    const t = el('text', { x: 0, y: 0, 'font-family': 'Inter', 'font-weight': L ? 500 : 600, 'font-size': L ? 23 : 25, fill: L ? '#2f3a40' : '#ffffff' }, g); t.textContent = text;
-    const w = t.getComputedTextLength() + 62; const bx = abs ? lx - w / 2 : (dx < 0 ? lx - w : (dx > 0 ? lx : lx - w / 2)); const by = ly - 22;
-    const rect = el('rect', { x: bx, y: by, width: w, height: 42, rx: 21, fill: S.light ? 'rgba(255,255,255,0.94)' : 'rgba(9,20,36,0.86)', stroke: S.light ? 'rgba(0,180,119,0.55)' : 'rgba(56,182,255,0.75)', 'stroke-width': 1.2, filter: S.light ? 'url(#sh)' : '' }, g);
+    const t = el('text', { x: 0, y: 0, 'font-family': 'Inter', 'font-weight': L ? 500 : 600, 'font-size': L ? 27 : 25, fill: L ? '#2f3a40' : '#ffffff' }, g); t.textContent = text;
+    const w = t.getComputedTextLength() + 66; const bx = abs ? lx - w / 2 : (dx < 0 ? lx - w : (dx > 0 ? lx : lx - w / 2)); const by = ly - (S.light ? 24 : 22);
+    const rect = el('rect', { x: bx, y: by, width: w, height: 48, rx: 24, fill: S.light ? 'rgba(255,255,255,0.94)' : 'rgba(9,20,36,0.86)', stroke: S.light ? 'rgba(0,180,119,0.55)' : 'rgba(56,182,255,0.75)', 'stroke-width': 1.2, filter: S.light ? 'url(#sh)' : '' }, g);
     g.insertBefore(rect, t);
-    const c = el('circle', { cx: bx + 22, cy: ly, r: 14, fill: S.light ? '#00B477' : '#38b6ff' }, g); const n = el('text', { x: bx + 22, y: ly + 6.5, 'text-anchor': 'middle', 'font-family': 'Inter', 'font-weight': 700, 'font-size': 16, fill: S.light ? '#ffffff' : '#071220' }, g); n.textContent = num;
-    t.setAttribute('x', bx + 44); t.setAttribute('y', ly + 9);
+    const c = el('circle', { cx: bx + 24, cy: ly, r: 16, fill: S.light ? '#00B477' : '#38b6ff' }, g); const n = el('text', { x: bx + 24, y: ly + 7, 'text-anchor': 'middle', 'font-family': 'Inter', 'font-weight': 700, 'font-size': 18, fill: S.light ? '#ffffff' : '#071220' }, g); n.textContent = num;
+    t.setAttribute('x', bx + 48); t.setAttribute('y', ly + 9);
   };
   S.caption = function (num, total, title, desc, chip, alpha) {
     const c = S.cap; c.style.opacity = alpha;

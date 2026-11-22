@@ -101,7 +101,7 @@
   // flux lines inside the bore: stream function psi = (r/R)^p sin(p*phi - thE)
   function fluxLines(cx, cy, R, p, thE, amp, t, color) {
     if (amp <= 0.01) return;
-    const levels = [0.1, 0.32, 0.56, 0.8]; g.save(); g.lineWidth = 2.6; g.lineCap = 'round';
+    const levels = [0.2, 0.55, 0.85]; g.save(); g.lineWidth = 2.6; g.lineCap = 'round';
     for (const c0 of levels) for (const sg of [1, -1]) {
       const c = c0 * sg; let seg = [];
       const segs = [];
@@ -339,7 +339,7 @@
         const forceOn = idx >= 4 ? ease((t - T0 + steps[4].dur) / 1.2) : 0;
         const forceA = a => forceOn * barScale * Math.max(0, Math.cos(p * a - thE + lag) * Math.cos(p * a - thE)) * 1.2;
 
-        drawStator(cx, cy, Ro, Ri, 36, p, ia, { slotDepth: 74, slotW: 24, symA: 0.4 + 0.6 * supply });
+        drawStator(cx, cy, Ro, Ri, 36, p, ia, { slotDepth: 74, slotW: 24, symA: (0.4 + 0.6 * supply) * (1 - 0.82 * ease((t - steps[0].dur - 1.5) / 1.5)) });
         boreGlow(cx, cy, Ri, p, thE, fieldA, true);
         drawCageRotor(cx, cy, Rr, nBars, st.th, barI, forceA);
         fluxLines(cx, cy, Rr - 6, p, thE, fieldA * 0.85, t);
@@ -412,7 +412,7 @@
         const supply = ease(t / 1.5); const thM = ws * t, thE = p * thM;
         const ia = [0, 1, 2].map(k => supply * Math.cos(thE - k * 120 * D));
         const e = exc(t); const s = 1 - st.w / ws; const dE = wrap(thE - p * st.th);
-        drawStator(cx, cy, Ro, Ri, 36, p, ia, { slotDepth: 74, slotW: 24, symA: 0.4 + 0.6 * supply });
+        drawStator(cx, cy, Ro, Ri, 36, p, ia, { slotDepth: 74, slotW: 24, symA: (0.4 + 0.6 * supply) * (1 - 0.82 * ease((t - steps[0].dur - 1.5) / 1.5)) });
         boreGlow(cx, cy, Ri, p, thE, ease(t / 2), true);
         const dampOn = (t >= tB) ? clamp(Math.abs(s) / 0.15, 0, 1) : 0;
         const damperI = a => dampOn * Math.cos(p * a - thE);

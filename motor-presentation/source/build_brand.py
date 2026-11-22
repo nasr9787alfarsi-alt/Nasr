@@ -145,8 +145,8 @@ set_ph(s, 11, 'Technical Induction Session')
 set_ph(s, 12, 'Engineering Fundamentals')
 for i, (idx, y) in enumerate([(0, 1.85), (10, 2.75), (11, 3.85), (12, 4.22)]):
     p = ph(s, idx); p.left = Inches(2.85); p.top = Inches(y); p.width = Inches(5.0); p.height = Inches(0.9 if idx == 0 else (0.85 if idx == 10 else 0.4))
-pic(s, 'ind_cut_l', 7.0, 4.0, w=3.25)
-pic(s, 'syn_cut_l', 10.0, 3.05, h=4.2)
+pic(s, 'ind_cut_l', 6.75, 4.05, w=3.1)
+pic(s, 'syn_cut_l', 9.55, 3.15, h=4.0)
 notes(s, """Welcome. In the next fifteen minutes we are going to open up two of the most important machines in any industrial facility: the induction motor and the synchronous motor.
 
 From the outside they look similar – a steel body with a shaft. Inside, they work in two clearly different ways, and that difference decides where each one is used.
@@ -156,10 +156,10 @@ No electrical background is needed. We will take each motor apart, then switch i
 # 2 TWO MOTORS, ONE DIFFERENCE
 s = new('Title & Subtitle Only')
 title(s, 'Two motor families, one key difference', 'Together they drive most of the machines in an industrial plant')
-pic(s, 'ind_hero_l', 0.85, 1.55, w=3.75)
-pic(s, 'syn_hero_l', 8.95, 1.45, h=3.5)
-s.shapes.add_picture(IMG('speed_dials.gif'), Inches(4.17), Inches(1.95), Inches(5.0), Inches(5.0 * 540 / 1600))
-text(s, 4.17, 3.72, 5.0, 0.3, 'Blue-green hand: magnetic field · coloured hand: rotor (slip exaggerated)', size=10, color=GREY, align=PP_ALIGN.CENTER)
+pic(s, 'ind_hero_l', 0.6, 1.6, w=3.45)
+pic(s, 'syn_hero_l', 9.85, 1.5, h=3.3)
+s.shapes.add_picture(IMG('speed_dials.gif'), Inches(4.25), Inches(2.0), Inches(4.85), Inches(4.85 * 540 / 1600))
+text(s, 4.25, 3.7, 4.85, 0.3, 'Blue-green hand: magnetic field · coloured hand: rotor (slip exaggerated)', size=10, color=GREY, align=PP_ALIGN.CENTER)
 hline(s, 0.6, 5.15, 12.1)
 label(s, 0.6, 5.35, 5.6, 'Induction motor · the workhorse')
 text(s, 0.6, 5.68, 5.6, 1.0, [[('The rotor gets its motion through ', {}), ('electromagnetic induction', {'bold': True, 'color': DARK}), (' – it always turns slightly slower than the magnetic field.', {})]], size=15, line=1.1)
@@ -178,7 +178,7 @@ If you remember one thing today, remember this sentence.""")
 # 3 SECTION: CONSTRUCTION
 s = new('Section')
 set_ph(s, 0, 'Construction', size=34, bold=True)
-p = ph(s, 0); p.left = Inches(2.95); p.top = Inches(3.3); p.width = Inches(4.6); p.height = Inches(1.0); p.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT
+p = ph(s, 0); p.left = Inches(2.85); p.top = Inches(3.3); p.width = Inches(4.6); p.height = Inches(1.0); p.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT
 text(s, 2.95, 4.45, 4.4, 0.4, 'What is inside each motor', size=16, color=WHITE)
 label(s, 2.95, 2.95, 3, '01  ·  Section', color=WHITE)
 pic(s, 'ind_cut_l', 7.25, 2.25, w=5.6)
@@ -187,9 +187,9 @@ notes(s, "Let's start by looking inside. First the parts both motors share, then
 # 4 STATOR & ROTOR
 s = new('Title & Subtitle Only')
 title(s, 'Two main parts: stator and rotor', 'Every AC motor is built around a fixed outer part and a turning inner part')
-pic(s, 'ind_statorrotor_l', 1.0, 1.9, w=11.2)
-leader(s, 3.2, 2.95, 3.2, 1.65); label(s, 3.35, 1.53, 3, 'Rotor · turns', color=COPPER)
-leader(s, 9.75, 2.15, 9.75, 1.65); label(s, 9.9, 1.53, 3, 'Stator · fixed')
+pic(s, 'ind_statorrotor_l', 1.87, 1.85, w=9.6)
+leader(s, 3.75, 2.75, 3.75, 1.65); label(s, 3.9, 1.53, 3, 'Rotor · turns', color=COPPER)
+leader(s, 9.36, 2.07, 9.36, 1.65); label(s, 9.51, 1.53, 3, 'Stator · fixed')
 cols = [('Stator', 'The fixed outer part: a laminated steel core with copper windings, bolted inside the frame. It creates the magnetic field.', GREEN),
         ('Rotor', 'The turning inner part on the shaft. The magnetic field pushes it round and it drives the pump, fan or compressor.', COPPER),
         ('Air gap', 'The tiny clearance between them – often only 0.5–2 mm. The magnetic field crosses it without any contact.', TEAL)]
@@ -210,10 +210,10 @@ Here the induction motor has been taken apart: the rotor, pulled out on the left
 
 # 5 INDUCTION EXPLODED
 s = new('Title & Subtitle Only')
-title(s, 'Induction motor: taking it apart', 'Squirrel-cage, totally enclosed fan-cooled motor – 12 components in 45 seconds')
+title(s, 'Induction motor: taking it apart', 'Squirrel-cage, totally enclosed fan-cooled motor – 12 components in 50 seconds')
 video(s, 'induction_motor_exploded.mp4', IMG('poster_ind.png'), 1.2, 1.38, 10.93, 6.15 * 0.9)
 text(s, 1.2, 6.97, 10.9, 0.25, 'Click to play  ·  pause on any component to discuss it', size=10, color=GREY, align=PP_ALIGN.CENTER)
-notes(s, """[Click the video to play – 45 seconds. Pause on any part.]
+notes(s, """[Click the video to play – 50 seconds. Pause on any part.]
 
 A typical industrial induction motor – the kind on thousands of pumps and fans.
 
@@ -251,7 +251,7 @@ s = new('Title & Subtitle Only')
 title(s, 'Synchronous motor: taking it apart', 'Large salient-pole motor with DC excitation, slip rings and top-mounted cooler')
 video(s, 'synchronous_motor_exploded.mp4', IMG('poster_syn.png'), 1.2, 1.38, 10.93, 6.15 * 0.9)
 text(s, 1.2, 6.97, 10.9, 0.25, 'Click to play  ·  pause on any component to discuss it', size=10, color=GREY, align=PP_ALIGN.CENTER)
-notes(s, """[Click the video to play – 45 seconds.]
+notes(s, """[Click the video to play – 50 seconds.]
 
 A large industrial synchronous motor, the kind used on big compressors or mills.
 
@@ -289,7 +289,7 @@ Permanent-magnet synchronous motors use magnets instead and need no excitation �
 # 9 SECTION: WORKING PRINCIPLE
 s = new('Section')
 set_ph(s, 0, 'How they work', size=34, bold=True)
-p = ph(s, 0); p.left = Inches(2.95); p.top = Inches(3.3); p.width = Inches(4.6); p.height = Inches(1.0); p.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT
+p = ph(s, 0); p.left = Inches(2.85); p.top = Inches(3.3); p.width = Inches(4.6); p.height = Inches(1.0); p.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT
 text(s, 2.95, 4.45, 4.4, 0.4, 'Making the invisible visible', size=16, color=WHITE)
 label(s, 2.95, 2.95, 3, '02  ·  Section', color=WHITE)
 pic(s, 'syn_cut_l', 8.15, 1.9, h=5.0)
@@ -304,9 +304,9 @@ def side_video_slide(t, sub, vid, poster, side_title, side_items, note, foot=Non
     y = 1.9
     for h, d in side_items:
         hline(s, x, y, 2.85)
-        text(s, x, y + 0.12, 2.85, 0.6, h, size=22 if len(h) < 9 else 14, bold=True, color=DARK)
-        text(s, x, y + (0.62 if len(h) < 9 else 0.45), 2.85, 0.8, d, size=11.5, line=1.05)
-        y += 1.15 if len(h) < 9 else 1.05
+        text(s, x, y + 0.12, 2.85, 0.45, h, size=20, bold=True, color=DARK)
+        text(s, x, y + 0.58, 2.85, 0.7, d, size=11.5, line=1.05)
+        y += 1.3
     if foot: text(s, 0.6, 1.45 + vh + 0.12, vw, 0.3, foot, size=10, color=GREY)
     notes(s, note); return s
 
@@ -411,6 +411,38 @@ Synchronous motors appear where drives are very large and speed must be constant
 
 A special case: the synchronous condenser – a synchronous machine spinning with no mechanical load, over-excited purely to supply reactive power and support grid voltage. Utilities use them, for example this one in Melbourne, and they are returning to stabilise grids with high shares of wind and solar.""")
 
+# 14b FUNDAMENTAL DIFFERENCE
+s = new('Title & Subtitle Only')
+title(s, 'The fundamental difference', 'Three things separate the two motors: rotor excitation, slip and operating speed')
+text(s, 3.55, 1.5, 4.3, 0.35, 'Induction motor', size=17, bold=True, color=GREEN)
+text(s, 8.45, 1.5, 4.3, 0.35, 'Synchronous motor', size=17, bold=True, color=TEAL)
+rowsF = [
+  ('Rotor excitation', 'Where does the rotor’s magnetism come from?',
+   ('ind_cage_l', 'None needed', 'Current is induced in the cage by the rotating field.'),
+   ('rot_salient_l', 'DC supply', 'A DC field winding (or permanent magnets) makes fixed N and S poles.')),
+  ('Slip', 'Does the rotor lag behind the field?', (None, '≈ 1–5 %', 'Must lag: without slip there is no induced current and no torque.'), (None, '0 %', 'Locked in step – no slip at all in steady operation.')),
+  ('Operating speed', '4-pole motor on a 50 Hz supply (field: 1500 rpm)', (None, '≈ 1470 rpm', 'Slightly below synchronous; drops a little as load increases.'), (None, '1500 rpm', 'Exactly synchronous, whatever the load – until it is overloaded.')),
+]
+for i, (h, q, a, b) in enumerate(rowsF):
+    y = 2.0 + i * 1.62
+    rect(s, 0.6, y, 12.1, 1.45, fill=LIGHT if i % 2 == 0 else WHITE, radius=0.05)
+    text(s, 0.85, y + 0.3, 2.5, 0.4, h, size=16, bold=True, color=DARK)
+    text(s, 0.85, y + 0.72, 2.45, 0.6, q, size=11, color=GREY, line=1.05)
+    for x, (img, big, d), c in ((3.55, a, GREEN), (8.45, b, TEAL)):
+        xx = x
+        if img:
+            pic(s, img, x, y + 0.2, h=1.05); xx = x + 1.05 * ASP[img] + 0.15
+        cw = (8.2 if x < 8 else 12.5) - xx
+        text(s, xx, y + 0.22, cw, 0.5, big, size=24 if not img else 18, bold=True, color=c)
+        text(s, xx, y + (0.78 if not img else 0.68), cw, 0.7, d, size=12, color=TXT, line=1.05)
+notes(s, """This is the heart of the comparison – three differences.
+
+Rotor excitation: the induction motor needs none – the rotating field induces the current in the cage. The synchronous motor needs a DC supply to its field winding (or permanent magnets) so that its rotor has fixed North and South poles.
+
+Slip: the induction rotor must lag behind the field, typically 1 to 5 percent – without that lag no current would be induced and there would be no torque. The synchronous rotor is locked in step: zero slip.
+
+Operating speed: take a 4-pole motor on 50 Hz; the field turns at 1500 rpm. The induction motor runs at about 1470 rpm and slows slightly with load. The synchronous motor runs at exactly 1500 rpm whatever the load – until it is overloaded and pulls out of step.""")
+
 # 15 COMPARISON TABLE
 s = new('Title & Subtitle Only')
 title(s, 'Induction vs. synchronous at a glance', 'Eleven questions, two answers')
@@ -443,17 +475,17 @@ Construction: simple versus more complex. Rotor: squirrel cage versus poles with
 # 16 WHAT TO REMEMBER
 s = new('Title & Subtitle Only')
 title(s, 'What should we remember?', 'Same rotating field – two different ways for the rotor to follow it')
-pic(s, 'ind_hero_l', 0.75, 1.6, w=3.3)
-pic(s, 'syn_hero_l', 7.05, 1.5, h=3.0)
-text(s, 4.2, 2.1, 2.5, 0.3, [[('Induction', {'caps': True, 'bold': True, 'color': GREEN, 'size': 11, 'spc': 160})]])
-text(s, 4.2, 2.45, 2.55, 1.6, 'Motion through electromagnetic induction', size=20, bold=True, color=DARK, line=1.0)
-text(s, 10.0, 2.1, 2.7, 0.3, [[('Synchronous', {'caps': True, 'bold': True, 'color': TEAL, 'size': 11, 'spc': 160})]])
-text(s, 10.0, 2.45, 2.75, 1.8, 'Motion through magnetic locking and synchronized rotation', size=20, bold=True, color=DARK, line=1.0)
-hline(s, 0.6, 4.95, 12.1)
+pic(s, 'ind_hero_l', 0.7, 1.65, w=3.6)
+pic(s, 'syn_hero_l', 7.05, 1.55, h=3.55)
+text(s, 4.45, 2.4, 2.5, 0.3, [[('Induction', {'caps': True, 'bold': True, 'color': GREEN, 'size': 11, 'spc': 160})]])
+text(s, 4.45, 2.75, 2.4, 1.6, 'Motion through electromagnetic induction', size=20, bold=True, color=DARK, line=1.0)
+text(s, 10.3, 2.4, 2.5, 0.3, [[('Synchronous', {'caps': True, 'bold': True, 'color': TEAL, 'size': 11, 'spc': 160})]])
+text(s, 10.3, 2.75, 2.45, 1.8, 'Motion through magnetic locking and synchronized rotation', size=20, bold=True, color=DARK, line=1.0)
+hline(s, 0.6, 5.5, 12.1)
 take = [('1', 'Both stators create a magnetic field rotating at synchronous speed.'), ('2', 'The rotor is the difference: induced currents (slip) or its own DC magnet (no slip).'), ('3', 'Choose induction by default; synchronous when size, exact speed or power factor justify it.')]
 for i, (n, t) in enumerate(take):
-    x = 0.6 + i * 4.1; num(s, n, x, 5.25, 0.38)
-    text(s, x + 0.55, 5.22, 3.4, 1.1, t, size=13.5, color=DARK, line=1.08)
+    x = 0.6 + i * 4.1; num(s, n, x, 5.8, 0.38)
+    text(s, x + 0.55, 5.77, 3.4, 1.1, t, size=13.5, color=DARK, line=1.08)
 notes(s, """To wrap up:
 
 Both motors start from the same idea – a stator that creates a magnetic field rotating at synchronous speed.
@@ -481,3 +513,73 @@ For Q&A, open viewer/motor_explorer_offline.html to rotate and take apart either
 
 for s in prs.slides: transition(s)
 prs.save(OUT); print('saved', OUT, len(prs.slides._sldIdLst))
+
+# ---------------- timed speaker script (overrides notes; target ≈ 13 min) ----------------
+NOTES = {
+1: ("0:30", """Good morning. In the next fifteen minutes we will open up the two most important motors in industry – the induction motor and the synchronous motor.
+From outside they look similar. Inside, they work differently – and that difference decides where each one is used. No electrical background is needed."""),
+2: ("0:55", """Electric motors use about 45 percent of the world's electricity, and two families do most of that work.
+The induction motor is the workhorse: simple, rugged and affordable. Its rotor is pushed round by induction and always turns slightly slower than the magnetic field.
+The synchronous motor is the specialist. Its rotor is a magnet of its own and turns exactly in step with the field.
+Look at the dials: on the left the rotor hand keeps falling behind; on the right both hands move together. Remember this picture – everything else explains it."""),
+3: ("0:10", """First: what is inside?"""),
+4: ("0:45", """Every AC motor has two main parts.
+The stator is the fixed outer part – a stack of thin steel sheets with copper windings. It creates the magnetic field and never moves.
+The rotor is the turning part on the shaft; it drives the pump or compressor.
+Between them is the air gap, often only one or two millimetres. The field crosses it without any contact."""),
+5: ("1:00", """[Click to play – 49 s. Speak over the video.]
+A typical industrial induction motor. Watch it open in sequence: the frame lifts off, the rotor slides out of the stator, and the end shields, bearings and fan move away along the shaft line.
+Now each part: the stator with its laminated core and three-phase copper windings; the rotor with its core, aluminium bars and end rings – the squirrel cage; the air gap; the shaft; the bearings; the frame with cooling fins; and the shaft-mounted fan. Then it closes up again."""),
+6: ("0:40", """The heart of the induction motor is this squirrel-cage rotor, shown with its steel core made transparent.
+Metal bars run along the rotor and rings at each end join them, forming a closed cage. Nothing is connected to it – no wires, no brushes. The current is induced by the stator's field. That is why it is so simple and reliable."""),
+7: ("1:00", """[Click to play – 49 s. Speak over the video.]
+Now a large synchronous motor, the kind used on big compressors and mills.
+The stator is built just like the induction motor's. The rotor is different: projecting poles, each wound with a copper field coil. With DC current every pole becomes a fixed North or South electromagnet. Damper bars in the pole faces help it start.
+The DC comes from an exciter cubicle, through slip rings and carbon brushes. Then shaft, sleeve bearings, frame and the cooling system on top."""),
+8: ("0:55", """Two points about the synchronous rotor.
+Its shape: salient poles that stick out like spokes suit lower speeds and large machines; a smooth cylindrical rotor suits high speeds.
+Its DC supply: either through slip rings and brushes – simple but brushes need inspection – or brushless, with a small exciter and rotating diodes on the shaft, so nothing slides.
+Permanent-magnet motors use magnets instead and need no excitation."""),
+9: ("0:10", """Now we switch them on and make the invisible magnetic forces visible."""),
+10: ("0:40", """[Click to play – 30 s.]
+Both motors use the same trick. One coil with AC makes a field that only pulses. Add two more coils, 120 degrees apart, fed a third of a cycle later – and the three pulsing fields add up to one field that rotates.
+Its speed is the synchronous speed: 1500 rpm for a 4-pole motor on 50 Hz."""),
+11: ("1:00", """[Click to play – 51 s. Speak over the video.]
+The rotating field sweeps across the rotor bars. A moving magnetic field crossing a conductor induces a voltage, and because the cage is closed, current flows.
+That current turns the rotor into a magnet, and the stator's poles drag it along – that is torque. The rotor speeds up and chases the field.
+But it never catches it: if it did, nothing would cross the bars, the current and the torque would disappear. So it always runs a little slower – that gap is slip, typically 1 to 5 percent."""),
+12: ("1:00", """[Click to play – 49 s. Speak over the video.]
+Same rotating field. But a standing rotor with DC poles cannot follow it: it is pulled forward, then backward, and only shakes.
+So it starts with its damper bars, like an induction motor, up to almost full speed. Then the DC is switched on, the rotor poles lock onto the opposite stator poles and are pulled into step.
+Now it turns at exactly synchronous speed. Under load the poles trail by a small angle – but the speed does not change."""),
+13: ("0:55", """Neither motor is better – each fits different jobs.
+The induction motor is simple, low-maintenance and cheaper; its limits are a lagging power factor, slightly load-dependent speed, and the need for a drive to vary speed.
+The synchronous motor gives exact speed, high efficiency at large sizes and can correct the plant's power factor; but it is more complex, costs more and needs excitation and a starting method.
+Power factor in one line: the foam on a beer – needed to magnetise motors but doing no work. A synchronous motor can supply that foam."""),
+14: ("0:50", """Induction motors are the default: pumps, fans, compressors, conveyors, HVAC – simple, rugged and available everywhere.
+Synchronous motors are chosen for very large, constant-speed drives: grinding mills, cement plants, steel mills and big compressors, where efficiency and power-factor correction pay back the extra cost.
+A special case: the synchronous condenser – it spins with no load at all, purely to support the grid voltage."""),
+15: ("0:55", """This is the heart of the comparison.
+Excitation: the induction rotor needs none – its current is induced. The synchronous rotor needs DC, or magnets, to be a magnet.
+Slip: the induction rotor must lag, about 1 to 5 percent, or there would be no torque. The synchronous rotor has zero slip.
+Speed: with a 4-pole motor on 50 Hz, about 1470 rpm versus exactly 1500 rpm."""),
+16: ("0:25", """Everything side by side. I won't read every row – the key lines are rotor excitation, starting, speed and slip, which we have just seen. This slide is your one-page reference."""),
+17: ("0:35", """To remember: both stators create the same rotating field.
+The induction motor follows it through electromagnetic induction – always slightly slower.
+The synchronous motor follows it through magnetic locking – exactly in step.
+Understanding that difference is the first step toward understanding industrial motor applications."""),
+18: ("0:05", """Thank you – I am happy to take questions.
+
+Backup answers:
+• Can an induction motor reach synchronous speed? Not as a motor – above it, it becomes a generator.
+• Why not use synchronous motors everywhere? Cost and complexity; for small and medium drives induction wins.
+• What if a synchronous motor is overloaded? It pulls out of step and protection trips it.
+• Q&A model: viewer/motor_explorer_offline.html."""),
+}
+elapsed = 0
+for i, s in enumerate(prs.slides, 1):
+    cue, body = NOTES[i]
+    m, sec = cue.split(':'); elapsed += int(m) * 60 + int(sec)
+    s.notes_slide.notes_text_frame.text = f"[Time: {cue}  ·  running total {elapsed // 60}:{elapsed % 60:02d}]\n\n" + body
+print('scripted total', elapsed // 60, 'min', elapsed % 60, 's')
+prs.save(OUT)
