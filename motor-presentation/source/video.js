@@ -4,10 +4,10 @@ const { chromium } = require('playwright'); const { spawn } = require('child_pro
   const [kind, out, fpsA, t0A, t1A, everyA] = process.argv.slice(2); const fps=+(fpsA||25);
   const W=1920,H=1080;
   const b = await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});
-  const p = await b.newPage({viewport:{width:W,height:H}});
+  const DPR = +(process.env.DPR||1); const p = await b.newPage({viewport:{width:W,height:H}, deviceScaleFactor: DPR});
   p.on('pageerror', e=>console.log('PAGEERR', e.message));
-  await p.goto('file://'+__dirname+'/stage.html');
-  await p.evaluate(k=>{ STAGE.init({model:k}); window.__D = DIRECTOR.make(k); }, kind);
+  await p.goto('file://'+__dirname+'/stage.html'); if (process.env.NO_BUMP) await p.evaluate(()=>{window.NO_BUMP=true;});
+  await p.evaluate(k=>{ STAGE.init({model:k, light:true, pr: window.devicePixelRatio}); window.__D = DIRECTOR.make(k); }, kind);
   const dur = await p.evaluate(()=>__D.duration);
   const t0=+(t0A||0), t1=t1A?+t1A:dur; const every = +(everyA||0);
   console.log(kind,'duration',dur.toFixed(2));

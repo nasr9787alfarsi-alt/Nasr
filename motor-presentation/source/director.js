@@ -9,7 +9,7 @@ const TOURS = {
   title:'INDUCTION MOTOR', sub:'SQUIRREL-CAGE · TOTALLY ENCLOSED, FAN COOLED',
   camA:{pos:V(-2.9,1.3,3.4),tgt:V(0,-0.02,0)}, camA2:{pos:V(-2.2,1.5,3.9),tgt:V(0,0,0)},
   camE:{pos:V(-1.9,2.5,7.3),tgt:V(-0.2,0.25,0)},
-  rotor:['rotorCore','rotorBars','endRings','shaft'],
+  rotor:['rotorCore','rotorBars','endRings','shaft'], axis:[-2.5,2.25],
   tags:[['frame',11,[1420,110,'abs']],['statorCore',2,[1130,880,'abs']],['statorWinding',3,[740,330,'abs']],['rotorCore',5,[560,450,'abs']],['rotorBars',6,[540,850,'abs']],['endRings',7,[830,800,'abs']],['shaft',9,[330,520,'abs']],['bearingNDE',10,[1360,830,'abs']],['endShieldNDE',11,[1340,300,'abs']],['fan',12,[1660,400,'abs']]],
   steps:[
    {keys:['statorCore','statorWinding'], n:1, t:'Stator', d:'The stationary outer part. It never moves: a steel core with copper windings, fixed inside the frame.', chip:'STATIONARY', cam:{pos:V(-1.2,1.6,4.6),tgt:V(0.1,0.0,0)}},
@@ -29,7 +29,7 @@ const TOURS = {
   title:'SYNCHRONOUS MOTOR', sub:'SALIENT-POLE ROTOR · SLIP RINGS & BRUSHES',
   camA:{pos:V(-3.5,1.7,4.1),tgt:V(0,0.12,0)}, camA2:{pos:V(-2.8,1.9,4.6),tgt:V(0.1,0.1,0)},
   camE:{pos:V(-1.9,3.3,9.8),tgt:V(-0.1,0.85,0)},
-  rotor:['rotorPoles','fieldWinding','damper','shaft','shaftFan'],
+  rotor:['rotorPoles','fieldWinding','damper','shaft','shaftFan'], axis:[-2.95,2.5],
   tags:[['cooling',12,[1075,60,'abs']],['frame',11,[690,265,'abs']],['statorCore',2,[640,455,'abs']],['statorWinding',3,[1060,950,'abs']],['rotorPoles',5,[450,548,'abs']],['damper',6,[520,960,'abs']],['shaft',9,[300,835,'abs']],['sliprings',8,[1700,800,'abs']],['exciter',7,[1690,440,'abs']],['bearingNDE',10,[1440,880,'abs']]],
   steps:[
    {keys:['statorCore','statorWinding'], n:1, t:'Stator', d:'The stationary outer part – built just like an induction-motor stator: laminated core + three-phase winding.', chip:'STATIONARY', cam:{pos:V(-1.1,1.9,5.6),tgt:V(0.1,0.05,0)}},
@@ -50,7 +50,7 @@ const TOURS = {
 window.DIRECTOR = { TOURS };
 DIRECTOR.make = function(kind){
   const D = TOURS[kind]; const M = S.model;
-  const tIntro=3.0, tExp=4.5, tOver=3.4, tStep=3.1, nS=D.steps.length, tOut=3.2;
+  const tIntro=2.5, tExp=4.2, tOver=3.2, tStep=2.7, nS=D.steps.length, tOut=3.0;
   const t0Steps = tIntro+tExp+tOver, tEndSteps = t0Steps + nS*tStep, dur = tEndSteps + tOut;
   const allKeys = M.order;
   function alphaMap(step){
@@ -99,11 +99,12 @@ DIRECTOR.make = function(kind){
     S.spin(spinAngle);
     allKeys.forEach(k=>{ const p=M.parts[k]; const a = alphas? alphas[k] : (p.hiddenUntilFocus?0:1); p.group.visible = a>0.01;
       const g = glowKeys.includes(k)? glow : 0; S.setPartAlpha(p, a, g);
-      if(amber && glowKeys.includes(k)) p.materials().forEach(m=>{ if(m.emissive) m.emissive.setRGB(0.5*g,0.22*g,0.02*g); });
+      if(amber && glowKeys.includes(k)) p.materials().forEach(m=>{ if(m.emissive) m.emissive.setRGB((S.light?0.18:0.5)*g,(S.light?0.08:0.22)*g,0.01*g); });
     });
     if(M.parts.airGap){ M.parts.airGap.materials().forEach(m=>{ m.opacity = 0.85*(alphas?alphas.airGap:0); }); }
     S.setPhaseColors(M.parts.statorWinding, phaseK);
     S.setCamera(cam.pos, cam.tgt); S.camera.updateMatrixWorld();
+    if(t>=tIntro && t<t0Steps) S.axisLine(D.axis[0], D.axis[1], 0.55*Math.min(1,e*1.5)*(t<tIntro+tExp+tOver-0.4?1:Math.max(0,(t0Steps-t)/0.4)));
     tagQ.forEach(a=>S.tag(...a));
     S.render();
   }};

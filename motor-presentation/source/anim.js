@@ -2,9 +2,9 @@
 (function () {
   const TAU = Math.PI * 2, D = Math.PI / 180;
   const C = {
-    bg0: '#16314f', bg1: '#050b14', steel: '#5d6873', steelHi: '#8a96a3', steelLo: '#2f3943',
-    copper: '#c46a38', white: '#ffffff', text: '#c9d6e3', muted: '#6f8aa6', accent: '#38b6ff',
-    N: '#ff4f4f', S: '#2f8bff', A: '#ff7a59', B: '#ffd166', Cc: '#5ee0c8', amber: '#ffb347', green: '#3ddc97'
+    bg0: '#ffffff', bg1: '#e6ecef', steel: '#5d6873', steelHi: '#8a96a3', steelLo: '#2f3943', head: '#1f2a30',
+    copper: '#c46a38', white: '#ffffff', text: '#4a565d', muted: '#87949b', accent: '#00B477', teal: '#089AA2',
+    N: '#e5484d', S: '#2f7fe0', A: '#e4572e', B: '#d99a00', Cc: '#12a3b4', amber: '#e8891c', green: '#00B477'
   };
   const PH = [C.A, C.B, C.Cc];
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
@@ -17,15 +17,15 @@
   }
   function bg() {
     const gr = g.createRadialGradient(W * 0.5, H * 0.42, 50, W * 0.5, H * 0.45, W * 0.75);
-    gr.addColorStop(0, C.bg0); gr.addColorStop(0.45, '#0b1a2c'); gr.addColorStop(1, C.bg1);
+    gr.addColorStop(0, C.bg0); gr.addColorStop(0.55, '#f3f6f7'); gr.addColorStop(1, C.bg1);
     g.fillStyle = gr; g.fillRect(0, 0, W, H);
-    g.strokeStyle = 'rgba(56,182,255,0.05)'; g.lineWidth = 1;
+    g.strokeStyle = 'rgba(60,90,100,0.045)'; g.lineWidth = 1;
     for (let x = 0; x < W; x += 48) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
     for (let y = 0; y < H; y += 48) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
   }
   const P = (cx, cy, r, a) => [cx + r * Math.cos(a), cy - r * Math.sin(a)];
   function txt(s, x, y, size, color, weight, align, alpha) {
-    g.save(); g.globalAlpha = alpha === undefined ? 1 : alpha; g.fillStyle = color || C.white; g.font = `${weight || 500} ${size}px Inter`; g.textAlign = align || 'left'; g.textBaseline = 'alphabetic'; g.fillText(s, x, y); g.restore();
+    g.save(); g.globalAlpha = alpha === undefined ? 1 : alpha; g.fillStyle = color || C.head; g.font = `${weight || 500} ${size}px Inter`; g.textAlign = align || 'left'; g.textBaseline = 'alphabetic'; g.fillText(s, x, y); g.restore();
   }
   function wrapText(s, x, y, maxW, size, lh, color, weight, alpha) {
     g.save(); g.font = `${weight || 400} ${size}px Inter`; const words = s.split(' '); let line = '', yy = y;
@@ -34,7 +34,7 @@
     if (line) g.fillText(line, x, yy); g.restore(); return yy;
   }
   function rrect(x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
-  function panel(x, y, w, h, alpha) { g.save(); g.globalAlpha = alpha === undefined ? 1 : alpha; rrect(x, y, w, h, 18); g.fillStyle = 'rgba(8,18,32,0.78)'; g.fill(); g.strokeStyle = 'rgba(56,182,255,0.35)'; g.lineWidth = 1.5; g.stroke(); g.restore(); }
+  function panel(x, y, w, h, alpha) { g.save(); g.globalAlpha = alpha === undefined ? 1 : alpha; g.shadowColor = 'rgba(28,43,51,0.12)'; g.shadowBlur = 24; g.shadowOffsetY = 6; rrect(x, y, w, h, 16); g.fillStyle = 'rgba(255,255,255,0.95)'; g.fill(); g.shadowColor = 'transparent'; g.strokeStyle = 'rgba(0,180,119,0.28)'; g.lineWidth = 1.5; g.stroke(); g.restore(); }
   function arrow(x1, y1, x2, y2, color, w, head, alpha) {
     const a = Math.atan2(y2 - y1, x2 - x1), L = Math.hypot(x2 - x1, y2 - y1); if (L < 1) return; head = Math.min(head || 16, L * 0.6);
     g.save(); g.globalAlpha = alpha === undefined ? 1 : alpha; g.strokeStyle = color; g.fillStyle = color; g.lineWidth = w || 4; g.lineCap = 'round';
@@ -43,13 +43,13 @@
   }
   function curSym(x, y, r, i, color, alpha) { // ⊙ (i>0, toward viewer) / ⊗ (i<0)
     const m = Math.abs(i); if (m < 0.04) return; g.save(); g.globalAlpha = (alpha === undefined ? 1 : alpha) * clamp(0.25 + m, 0, 1);
-    g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = 'rgba(5,11,20,0.85)'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = color; g.stroke();
+    g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = '#ffffff'; g.fill(); g.lineWidth = 2.5; g.strokeStyle = color; g.stroke();
     g.fillStyle = color; g.strokeStyle = color;
     if (i > 0) { g.beginPath(); g.arc(x, y, r * 0.3, 0, TAU); g.fill(); }
     else { const k = r * 0.5; g.lineWidth = 3; g.beginPath(); g.moveTo(x - k, y - k); g.lineTo(x + k, y + k); g.moveTo(x + k, y - k); g.lineTo(x - k, y + k); g.stroke(); }
     g.restore();
   }
-  function glowCircle(x, y, r, color, a) { g.save(); const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, color); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.globalAlpha = a; g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill(); g.restore(); }
+  function glowCircle(x, y, r, color, a) { g.save(); const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, color); gr.addColorStop(1, color.replace(/[\d.]+\)$/, '0)')); g.globalAlpha = a; g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill(); g.restore(); }
 
   // ----------------- stator cross-section -----------------
   // belts: phase k positive side centred at electrical angle thk+90°, negative at thk-90°, thk = k*120°
@@ -65,17 +65,17 @@
     opt = opt || {};
     // yoke
     g.save();
-    const gr = g.createRadialGradient(cx, cy, Ri, cx, cy, Ro); gr.addColorStop(0, '#6b7782'); gr.addColorStop(0.5, '#56616c'); gr.addColorStop(1, '#3a444e');
+    const gr = g.createRadialGradient(cx, cy, Ri, cx, cy, Ro); gr.addColorStop(0, '#b4bcc3'); gr.addColorStop(0.5, '#a1aab2'); gr.addColorStop(1, '#8a949d');
     g.beginPath(); g.arc(cx, cy, Ro, 0, TAU); g.arc(cx, cy, Ri, 0, TAU, true); g.fillStyle = gr; g.fill('evenodd');
     // lamination hint rings
-    g.strokeStyle = 'rgba(255,255,255,0.05)'; g.lineWidth = 1; for (let r = Ri + 120; r < Ro; r += 9) { g.beginPath(); g.arc(cx, cy, r, 0, TAU); g.stroke(); }
-    g.strokeStyle = 'rgba(160,190,220,0.6)'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, Ro, 0, TAU); g.stroke();
+    g.strokeStyle = 'rgba(255,255,255,0.18)'; g.lineWidth = 1; for (let r = Ri + 120; r < Ro; r += 9) { g.beginPath(); g.arc(cx, cy, r, 0, TAU); g.stroke(); }
+    g.strokeStyle = 'rgba(70,85,95,0.55)'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, Ro, 0, TAU); g.stroke();
     // slots
     const sd = opt.slotDepth || 70, sw = opt.slotW || 26;
     for (let k = 0; k < nSlots; k++) {
       const a = (k + 0.5) / nSlots * TAU; const [k3, cur] = slotCurrent(wrap(p * a), ia);
       g.save(); g.translate(...P(cx, cy, Ri + sd / 2 + 4, a)); g.rotate(-a);
-      rrect(-sd / 2, -sw / 2, sd, sw, 5); g.fillStyle = '#0b141e'; g.fill();
+      rrect(-sd / 2, -sw / 2, sd, sw, 5); g.fillStyle = '#3a454c'; g.fill();
       rrect(-sd / 2 + 6, -sw / 2 + 3, sd - 12, sw - 6, 4); g.fillStyle = opt.copperA ? `rgba(196,106,56,${opt.copperA})` : '#8a4a28'; g.fill();
       g.restore();
       if (!opt.noSym) { const [x, y] = P(cx, cy, Ri + sd / 2 + 4, a); curSym(x, y, Math.min(13, sw * 0.5), cur, PH[k3], opt.symA); }
@@ -114,8 +114,8 @@
         // orient from N (Br<0) to S (Br>0)
         const brStart = Math.cos(p * s[0][0] - thE); const pts = brStart < 0 ? s : s.slice().reverse();
         g.beginPath(); pts.forEach(([phi, r], i) => { const [x, y] = P(cx, cy, r, phi); i ? g.lineTo(x, y) : g.moveTo(x, y); });
-        g.globalAlpha = amp * 0.55; g.strokeStyle = color || 'rgba(140,210,255,1)'; g.setLineDash([]); g.stroke();
-        g.globalAlpha = amp * 0.95; g.strokeStyle = '#d9f1ff'; g.setLineDash([10, 26]); g.lineDashOffset = -t * 60; g.stroke();
+        g.globalAlpha = amp * 0.75; g.strokeStyle = color || '#067f86'; g.setLineDash([]); g.stroke();
+        g.globalAlpha = amp * 0.95; g.strokeStyle = '#ffffff'; g.setLineDash([10, 26]); g.lineDashOffset = -t * 60; g.stroke();
       }
     }
     g.setLineDash([]); g.restore();
@@ -123,15 +123,15 @@
   // squirrel cage rotor (cross-section)
   function drawCageRotor(cx, cy, R, nBars, th, barI, forceA, mark) {
     g.save();
-    const gr = g.createRadialGradient(cx - R * 0.3, cy - R * 0.3, 10, cx, cy, R); gr.addColorStop(0, '#7d8994'); gr.addColorStop(1, '#46515b');
-    g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.fillStyle = gr; g.fill(); g.strokeStyle = 'rgba(190,210,230,0.7)'; g.lineWidth = 2; g.stroke();
+    const gr = g.createRadialGradient(cx - R * 0.3, cy - R * 0.3, 10, cx, cy, R); gr.addColorStop(0, '#c3cad0'); gr.addColorStop(1, '#8d979f');
+    g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.fillStyle = gr; g.fill(); g.strokeStyle = 'rgba(70,85,95,0.6)'; g.lineWidth = 2; g.stroke();
     // shaft
-    g.beginPath(); g.arc(cx, cy, R * 0.26, 0, TAU); g.fillStyle = '#c3c9d0'; g.fill(); g.strokeStyle = '#2b333b'; g.lineWidth = 3; g.stroke();
+    g.beginPath(); g.arc(cx, cy, R * 0.26, 0, TAU); g.fillStyle = '#e6eaed'; g.fill(); g.strokeStyle = '#2b333b'; g.lineWidth = 3; g.stroke();
     // reference mark (key) so rotation is visible
-    if (mark !== false) { g.save(); g.translate(cx, cy); g.rotate(-th); g.fillStyle = '#ffffff'; g.fillRect(R * 0.05, -6, R * 0.21, 12); g.fillStyle = C.amber; g.beginPath(); g.arc(R * 0.62, 0, 9, 0, TAU); g.fill(); g.restore(); }
+    if (mark !== false) { g.save(); g.translate(cx, cy); g.rotate(-th); g.fillStyle = '#3f4a50'; g.fillRect(R * 0.05, -6, R * 0.21, 12); g.fillStyle = C.amber; g.beginPath(); g.arc(R * 0.62, 0, 9, 0, TAU); g.fill(); g.restore(); }
     for (let k = 0; k < nBars; k++) {
       const a = th + k / nBars * TAU; const [x, y] = P(cx, cy, R - 24, a); const i = barI ? barI(a) : 0;
-      g.beginPath(); g.arc(x, y, 15, 0, TAU); g.fillStyle = '#c9ced4'; g.fill(); g.strokeStyle = '#2b333b'; g.lineWidth = 2; g.stroke();
+      g.beginPath(); g.arc(x, y, 15, 0, TAU); g.fillStyle = '#e9ecef'; g.fill(); g.strokeStyle = '#2b333b'; g.lineWidth = 2; g.stroke();
       if (Math.abs(i) > 0.04) { glowCircle(x, y, 34, i > 0 ? 'rgba(255,170,80,0.9)' : 'rgba(255,170,80,0.9)', Math.min(0.8, Math.abs(i) * 0.8)); curSym(x, y, 12, i, C.amber); }
       if (forceA && Math.abs(i) > 0.06) { // tangential force (CCW)
         const f = forceA(a); if (f > 0.03) { const tx = -Math.sin(a), ty = -Math.cos(a); const L = 18 + 55 * f; const [x0, y0] = P(cx, cy, R + 2, a); arrow(x0, y0, x0 + tx * L, y0 + ty * L, C.green, 4, 13); }
@@ -147,13 +147,13 @@
       g.save(); g.translate(cx, cy); g.rotate(-a);
       // pole body
       const bodyW = 96, r0 = 70, r1 = R - 52;
-      g.fillStyle = '#6c7884'; g.fillRect(r0, -bodyW / 2, r1 - r0, bodyW);
+      g.fillStyle = '#9aa4ad'; g.fillRect(r0, -bodyW / 2, r1 - r0, bodyW);
       // field coils (copper) on both sides
       g.fillStyle = '#b8642f'; g.fillRect(r0 + 10, -bodyW / 2 - 30, r1 - r0 - 18, 28); g.fillRect(r0 + 10, bodyW / 2 + 2, r1 - r0 - 18, 28);
       g.strokeStyle = 'rgba(0,0,0,0.35)'; g.lineWidth = 1; for (let i = 1; i < 6; i++) { const x = r0 + 10 + i * (r1 - r0 - 18) / 6; g.beginPath(); g.moveTo(x, -bodyW / 2 - 30); g.lineTo(x, -bodyW / 2 - 2); g.moveTo(x, bodyW / 2 + 2); g.lineTo(x, bodyW / 2 + 30); g.stroke(); }
       // pole shoe
       const half = 34 * D; g.beginPath(); g.arc(0, 0, R, -half, half); g.arc(0, 0, r1 - 2, half * 0.8, -half * 0.8, true); g.closePath();
-      const gr = g.createLinearGradient(r1, 0, R, 0); gr.addColorStop(0, '#5f6b77'); gr.addColorStop(1, '#8996a3'); g.fillStyle = gr; g.fill(); g.strokeStyle = 'rgba(190,210,230,0.7)'; g.lineWidth = 2; g.stroke();
+      const gr = g.createLinearGradient(r1, 0, R, 0); gr.addColorStop(0, '#9aa4ad'); gr.addColorStop(1, '#c3cad0'); g.fillStyle = gr; g.fill(); g.strokeStyle = 'rgba(70,85,95,0.6)'; g.lineWidth = 2; g.stroke();
       g.restore();
       // coil current symbols (DC): one side out, other side in; N poles vs S poles reversed
       if (exc > 0.02) {
@@ -175,19 +175,19 @@
       }
     }
     // hub + shaft + mark
-    g.beginPath(); g.arc(cx, cy, 78, 0, TAU); g.fillStyle = '#56616c'; g.fill();
-    g.beginPath(); g.arc(cx, cy, 46, 0, TAU); g.fillStyle = '#c3c9d0'; g.fill(); g.strokeStyle = '#2b333b'; g.lineWidth = 3; g.stroke();
-    g.save(); g.translate(cx, cy); g.rotate(-th - Math.PI / 4); g.fillStyle = '#fff'; g.fillRect(4, -5, 38, 10); g.restore();
+    g.beginPath(); g.arc(cx, cy, 78, 0, TAU); g.fillStyle = '#88929b'; g.fill();
+    g.beginPath(); g.arc(cx, cy, 46, 0, TAU); g.fillStyle = '#e6eaed'; g.fill(); g.strokeStyle = '#2b333b'; g.lineWidth = 3; g.stroke();
+    g.save(); g.translate(cx, cy); g.rotate(-th - Math.PI / 4); g.fillStyle = '#3f4a50'; g.fillRect(4, -5, 38, 10); g.restore();
     g.restore();
   }
 
   // ----------------- gauges / plots -----------------
   function dial(x, y, r, ang, label, color, value, sub) {
     g.save();
-    g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = 'rgba(8,18,32,0.9)'; g.fill(); g.strokeStyle = 'rgba(56,182,255,0.35)'; g.lineWidth = 2; g.stroke();
-    for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; const [x1, y1] = P(x, y, r - 6, a), [x2, y2] = P(x, y, r - (i % 6 === 0 ? 20 : 12), a); g.strokeStyle = 'rgba(160,190,220,0.5)'; g.lineWidth = i % 6 === 0 ? 3 : 1.5; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); }
+    g.shadowColor = 'rgba(28,43,51,0.14)'; g.shadowBlur = 20; g.shadowOffsetY = 5; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = '#ffffff'; g.fill(); g.shadowColor = 'transparent'; g.strokeStyle = 'rgba(0,180,119,0.35)'; g.lineWidth = 2; g.stroke();
+    for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; const [x1, y1] = P(x, y, r - 6, a), [x2, y2] = P(x, y, r - (i % 6 === 0 ? 20 : 12), a); g.strokeStyle = 'rgba(80,95,105,0.5)'; g.lineWidth = i % 6 === 0 ? 3 : 1.5; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); }
     const [nx, ny] = P(x, y, r - 26, ang); g.strokeStyle = color; g.lineWidth = 7; g.lineCap = 'round'; g.beginPath(); g.moveTo(x, y); g.lineTo(nx, ny); g.stroke();
-    g.beginPath(); g.arc(nx, ny, 9, 0, TAU); g.fillStyle = color; g.fill(); g.beginPath(); g.arc(x, y, 9, 0, TAU); g.fillStyle = '#d8e3ee'; g.fill();
+    g.beginPath(); g.arc(nx, ny, 9, 0, TAU); g.fillStyle = color; g.fill(); g.beginPath(); g.arc(x, y, 9, 0, TAU); g.fillStyle = '#3f4a50'; g.fill();
     g.restore();
     txt(label, x, y + r + 40, 22, C.text, 600, 'center');
     if (value) txt(value, x, y + r + 74, 30, color, 800, 'center');
@@ -197,7 +197,7 @@
     panel(x, y, w, h);
     if (title) txt(title, x + 22, y + 34, 18, C.muted, 700);
     const x0 = x + 22, x1 = x + w - 22, ym = y + h / 2 + 12, A = h / 2 - 38;
-    g.strokeStyle = 'rgba(160,190,220,0.25)'; g.lineWidth = 1; g.beginPath(); g.moveTo(x0, ym); g.lineTo(x1, ym); g.stroke();
+    g.strokeStyle = 'rgba(80,95,105,0.25)'; g.lineWidth = 1; g.beginPath(); g.moveTo(x0, ym); g.lineTo(x1, ym); g.stroke();
     const span = 2 * TAU; const cur = (thE % span + span) % span;
     for (let k = 0; k < 3; k++) {
       g.save(); g.globalAlpha = alphaK ? alphaK[k] : 1; g.strokeStyle = PH[k]; g.lineWidth = 3.5; g.beginPath();
@@ -205,7 +205,7 @@
       g.stroke();
       const v = Math.cos(cur - k * 120 * D); const px = x0 + (x1 - x0) * cur / span; g.beginPath(); g.arc(px, ym - v * A, 7, 0, TAU); g.fillStyle = PH[k]; g.fill(); g.restore();
     }
-    const px = x0 + (x1 - x0) * cur / span; g.strokeStyle = 'rgba(255,255,255,0.6)'; g.lineWidth = 2; g.beginPath(); g.moveTo(px, y + 46); g.lineTo(px, y + h - 12); g.stroke();
+    const px = x0 + (x1 - x0) * cur / span; g.strokeStyle = 'rgba(30,42,48,0.45)'; g.lineWidth = 2; g.beginPath(); g.moveTo(px, y + 46); g.lineTo(px, y + h - 12); g.stroke();
     ['L1', 'L2', 'L3'].forEach((l, k) => txt(l, x + w - 150 + k * 46, y + 34, 18, PH[k], 800, 'left', alphaK ? Math.max(0.3, alphaK[k]) : 1));
   }
   function stepPanel(x, y, w, steps, idx, u, title) {
@@ -213,10 +213,10 @@
     txt(title, x, y, 20, C.accent, 800);
     const st = steps[idx]; const a = ease(u / 0.5);
     txt(`STEP ${idx + 1} / ${steps.length}`, x, y + 56, 20, C.muted, 700, 'left', a);
-    let yy = wrapText(st.t, x, y + 112, w, 44, 52, '#fff', 800, a);
+    let yy = wrapText(st.t, x, y + 112, w, 44, 52, C.head, 700, a);
     wrapText(st.d, x, yy + 54, w, 27, 38, C.text, 400, a);
     // progress pips
-    for (let i = 0; i < steps.length; i++) { g.beginPath(); g.arc(x + 9 + i * 30, y + 26 + 0, 0, 0, 0); g.fillStyle = i <= idx ? C.accent : 'rgba(111,138,166,0.4)'; rrect(x + i * 34, y + 18, 26, 6, 3); g.fill(); }
+    for (let i = 0; i < steps.length; i++) { g.beginPath(); g.arc(x + 9 + i * 30, y + 26 + 0, 0, 0, 0); g.fillStyle = i <= idx ? C.accent : 'rgba(120,135,145,0.3)'; rrect(x + i * 34, y + 18, 26, 6, 3); g.fill(); }
   }
   function legend(x, y, items) {
     let xx = x;
@@ -246,15 +246,15 @@
         const on = [1, idx >= 1 ? ease((t - steps[0].dur) / 1.2) : 0, idx >= 1 ? ease((t - steps[0].dur - 0.6) / 1.2) : 0];
         const ia = [0, 1, 2].map(k => on[k] * Math.cos(thE - k * 120 * D));
         // stator ring
-        const gr = g.createRadialGradient(cx, cy, Ri, cx, cy, Ro); gr.addColorStop(0, '#6b7782'); gr.addColorStop(1, '#3a444e');
+        const gr = g.createRadialGradient(cx, cy, Ri, cx, cy, Ro); gr.addColorStop(0, '#b4bcc3'); gr.addColorStop(1, '#8a949d');
         g.beginPath(); g.arc(cx, cy, Ro, 0, TAU); g.arc(cx, cy, Ri, 0, TAU, true); g.fillStyle = gr; g.fill('evenodd');
-        g.strokeStyle = 'rgba(160,190,220,0.6)'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, Ro, 0, TAU); g.stroke();
+        g.strokeStyle = 'rgba(70,85,95,0.55)'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, Ro, 0, TAU); g.stroke();
         // coils: phase k axis at k*120°, coil sides at axis±90°
         for (let k = 0; k < 3; k++) {
           const ax = k * 120 * D; const alpha = 0.25 + 0.75 * on[k];
           for (const sg of [1, -1]) {
             const a = ax + sg * 90 * D; const [x, y] = P(cx, cy, Ri + 40, a);
-            g.save(); g.globalAlpha = alpha; g.translate(x, y); g.rotate(-a); rrect(-34, -26, 68, 52, 10); g.fillStyle = '#0b141e'; g.fill(); rrect(-28, -20, 56, 40, 8); g.fillStyle = PH[k]; g.globalAlpha = alpha * 0.35; g.fill(); g.restore();
+            g.save(); g.globalAlpha = alpha; g.translate(x, y); g.rotate(-a); rrect(-34, -26, 68, 52, 10); g.fillStyle = '#3a454c'; g.fill(); rrect(-28, -20, 56, 40, 8); g.fillStyle = PH[k]; g.globalAlpha = alpha * 0.35; g.fill(); g.restore();
             curSym(x, y, 17, sg * ia[k], PH[k], 0.3 + 0.7 * on[k]);
             const [lx, ly] = P(cx, cy, Ro + 34, a); txt(`L${k + 1}${sg > 0 ? '' : '′'}`, lx, ly + 8, 22, PH[k], 800, 'center', alpha);
           }
@@ -265,9 +265,9 @@
         const showRes = idx >= 2 ? ease((t - steps[0].dur - steps[1].dur) / 1.0) : 0;
         if (showRes > 0) {
           // trace circle
-          g.save(); g.globalAlpha = 0.35 * showRes; g.setLineDash([8, 10]); g.strokeStyle = '#fff'; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, sc * 1.5, 0, TAU); g.stroke(); g.restore();
-          arrow(cx, cy, cx + sc * bx, cy - sc * by, '#ffffff', 11, 30, showRes * (idx >= 3 ? 1 - 0.6 * ease(u / 1.0) : 1));
-          const [lx, ly] = [cx + sc * bx * 1.18, cy - sc * by * 1.18]; txt('Resultant field', lx, ly, 20, '#fff', 700, 'center', showRes * 0.9);
+          g.save(); g.globalAlpha = 0.35 * showRes; g.setLineDash([8, 10]); g.strokeStyle = C.head; g.lineWidth = 2; g.beginPath(); g.arc(cx, cy, sc * 1.5, 0, TAU); g.stroke(); g.restore();
+          arrow(cx, cy, cx + sc * bx, cy - sc * by, C.head, 11, 30, showRes * (idx >= 3 ? 1 - 0.6 * ease(u / 1.0) : 1));
+          const [lx, ly] = [cx + sc * bx * 1.18, cy - sc * by * 1.18]; txt('Resultant field', lx, ly, 20, C.head, 700, 'center', showRes * 0.9);
         }
         // compass magnet following the field in step 4
         if (idx >= 3) {
@@ -281,7 +281,7 @@
         // right panel
         stepPanel(1150, 120, 680, steps, idx, u, 'THE ROTATING MAGNETIC FIELD');
         waves(1150, 600, 680, 250, thE, on, 'THREE-PHASE CURRENTS');
-        legend(1150, 935, [{ sym: 1, color: '#d8e3ee', label: 'current toward you' }, { sym: -1, color: '#d8e3ee', label: 'current away from you' }]);
+        legend(1150, 935, [{ sym: 1, color: '#4a565d', label: 'current toward you' }, { sym: -1, color: '#4a565d', label: 'current away from you' }]);
         txt('The field turns at SYNCHRONOUS SPEED:', 1150, 985, 20, C.muted, 700); txt('50 Hz supply → 3000 rpm (2 poles) · 1500 rpm (4 poles)', 1150, 1015, 20, C.muted, 500);
       }
     };
@@ -349,7 +349,7 @@
           const aS = (thE + k * Math.PI) / p; const isRotorN = k % 2 === 0; // rotor N trails stator S
           const a = aS - (Math.PI / 2 + lag) / p; const [x, y] = P(cx, cy, Rr - 80, a);
           glowCircle(x, y, 70, isRotorN ? 'rgba(255,79,79,0.9)' : 'rgba(47,139,255,0.9)', 0.35 * rp);
-          g.save(); g.globalAlpha = rp; g.beginPath(); g.arc(x, y, 17, 0, TAU); g.strokeStyle = isRotorN ? C.N : C.S; g.lineWidth = 3; g.fillStyle = 'rgba(5,11,20,0.8)'; g.fill(); g.stroke(); g.fillStyle = isRotorN ? '#ff9a9a' : '#9cc8ff'; g.font = '800 19px Inter'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(isRotorN ? 'n' : 's', x, y + 1); g.restore();
+          g.save(); g.globalAlpha = rp; g.beginPath(); g.arc(x, y, 17, 0, TAU); g.strokeStyle = isRotorN ? C.N : C.S; g.lineWidth = 3; g.fillStyle = '#ffffff'; g.fill(); g.stroke(); g.fillStyle = isRotorN ? C.N : C.S; g.font = '800 19px Inter'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(isRotorN ? 'n' : 's', x, y + 1); g.restore();
         }
         // field direction arrow around stator
         if (fieldA > 0.05) { g.save(); g.globalAlpha = fieldA * 0.8; g.strokeStyle = C.accent; g.lineWidth = 4; const a0 = 25 * D; g.beginPath(); g.arc(cx, cy, Ro + 30, -(a0 + 0.9), -a0, false); g.stroke(); const [hx, hy] = P(cx, cy, Ro + 30, a0 + 0.9); const tx = -Math.sin(a0 + 0.9), ty = -Math.cos(a0 + 0.9); arrow(hx - tx * 2, hy - ty * 2, hx + tx * 16, hy + ty * 16, C.accent, 4, 18); g.restore(); txt('field rotation', ...P(cx, cy, Ro + 64, a0 + 0.45), 18, C.accent, 700, 'center', fieldA); }
@@ -362,7 +362,7 @@
         dial(1590, dy, 105, st.th, 'Rotor', C.amber, `${pct} %`, idx >= 6 ? `slip ≈ ${Math.max(0, 100 - pct)} %` : 'of field speed');
         if (idx >= 6) txt('Slip exaggerated for visibility – real motors: about 1–5 %', 1150, 1035, 19, C.muted, 500);
         legend(60, 1040, [{ color: C.N, label: 'N pole' }, { color: C.S, label: 'S pole' }, { sym: 1, color: C.amber, label: 'induced current toward you' }, { sym: -1, color: C.amber, label: 'away' }, { color: C.green, label: 'force on bar' }]);
-        if (idx === 7 && t > T7 + 1.2 && t < T7 + 5.2) { panel(330, 70, 560, 70, 0.95); txt('Imagine: rotor at field speed → current = 0', 610, 115, 24, '#fff', 700, 'center'); }
+        if (idx === 7 && t > T7 + 1.2 && t < T7 + 5.2) { panel(330, 70, 560, 70, 0.95); txt('Imagine: rotor at field speed → current = 0', 610, 115, 24, C.head, 700, 'center'); }
       }
     };
   }
@@ -430,7 +430,7 @@
           for (let k = 0; k < 2; k++) {
             const aS = (thE + k * TAU) / p; const aN = st.th + k * Math.PI;
             const [x1, y1] = P(cx, cy, Ri + 10, aS), [x2, y2] = P(cx, cy, Rr - 30, aN);
-            g.save(); g.globalAlpha = 0.85 * a; g.strokeStyle = '#ffffff'; g.lineWidth = 3; g.setLineDash([6, 8]); g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.restore();
+            g.save(); g.globalAlpha = 0.85 * a; g.strokeStyle = C.head; g.lineWidth = 3; g.setLineDash([6, 8]); g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.restore();
           }
           if (idx >= 6) { // load angle arc on k=0
             const aS = thE / p, aN = st.th; const al = ease((t - tF) / 1.5);
@@ -444,7 +444,7 @@
         const locked = t > tE - 1 && Math.abs(s) < 0.004;
         dial(1590, dy, 105, st.th, 'Rotor', locked ? C.green : C.amber, `${clamp(pct, 0, 100)} %`, locked ? 'LOCKED · slip = 0' : (idx >= 2 ? `slip ≈ ${Math.max(0, 100 - pct)} %` : 'of field speed'));
         // excitation indicator
-        panel(1150, 945, 330, 60); g.beginPath(); g.arc(1180, 975, 11, 0, TAU); g.fillStyle = e > 0.5 ? C.amber : '#33414f'; g.fill(); txt(`DC excitation: ${e > 0.5 ? 'ON' : 'OFF'}`, 1202, 983, 22, e > 0.5 ? C.amber : C.muted, 700);
+        panel(1150, 945, 330, 60); g.beginPath(); g.arc(1180, 975, 11, 0, TAU); g.fillStyle = e > 0.5 ? C.amber : '#c5ced3'; g.fill(); txt(`DC excitation: ${e > 0.5 ? 'ON' : 'OFF'}`, 1202, 983, 22, e > 0.5 ? C.amber : C.muted, 700);
         if (idx >= 2 && idx <= 4) txt('Slip exaggerated for visibility', 1510, 983, 19, C.muted, 500);
         legend(60, 1040, [{ color: C.N, label: 'N pole' }, { color: C.S, label: 'S pole' }, { sym: 1, color: C.amber, label: 'DC field current' }, { color: '#d0874f', label: 'damper bar' }]);
       }
@@ -458,17 +458,17 @@
     const dur = 20; const wF = TAU * 0.25, wI = TAU * 0.2; // 5 vs 4 turns in 20 s => seamless loop
     return {
       duration: dur, frame(t) {
-        g.clearRect(0, 0, W, H); if (!opts.transparent) { g.fillStyle = '#0b1a2c'; g.fillRect(0, 0, W, H); }
+        g.clearRect(0, 0, W, H); if (!opts.transparent) { g.fillStyle = '#ffffff'; g.fillRect(0, 0, W, H); }
         const cols = [[W * 0.25, 'INDUCTION', wI, C.amber, 'rotor slightly slower'], [W * 0.75, 'SYNCHRONOUS', wF, C.green, 'rotor exactly in step']];
         cols.forEach(([x, name, wr, col, sub]) => {
           const y = H * 0.48, r = H * 0.3;
-          g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = 'rgba(8,18,32,0.95)'; g.fill(); g.strokeStyle = 'rgba(56,182,255,0.45)'; g.lineWidth = 3; g.stroke();
-          for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; const [x1, y1] = P(x, y, r - 6, a), [x2, y2] = P(x, y, r - (i % 6 === 0 ? 22 : 12), a); g.strokeStyle = 'rgba(160,190,220,0.5)'; g.lineWidth = i % 6 ? 1.5 : 3; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); }
+          g.beginPath(); g.arc(x, y, r, 0, TAU); g.fillStyle = '#f6f8f9'; g.fill(); g.strokeStyle = 'rgba(0,180,119,0.45)'; g.lineWidth = 3; g.stroke();
+          for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; const [x1, y1] = P(x, y, r - 6, a), [x2, y2] = P(x, y, r - (i % 6 === 0 ? 22 : 12), a); g.strokeStyle = 'rgba(80,95,105,0.5)'; g.lineWidth = i % 6 ? 1.5 : 3; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); }
           const af = wF * t, ar = wr * t;
           const [fx, fy] = P(x, y, r - 30, af); g.strokeStyle = C.accent; g.lineWidth = 9; g.lineCap = 'round'; g.beginPath(); g.moveTo(x, y); g.lineTo(fx, fy); g.stroke(); g.beginPath(); g.arc(fx, fy, 11, 0, TAU); g.fillStyle = C.accent; g.fill();
           const [rx, ry] = P(x, y, r - 62, ar); g.strokeStyle = col; g.lineWidth = 9; g.beginPath(); g.moveTo(x, y); g.lineTo(rx, ry); g.stroke(); g.beginPath(); g.arc(rx, ry, 11, 0, TAU); g.fillStyle = col; g.fill();
-          g.beginPath(); g.arc(x, y, 10, 0, TAU); g.fillStyle = '#d8e3ee'; g.fill();
-          txt(name, x, H * 0.08 + 10, H * 0.06, '#fff', 800, 'center');
+          g.beginPath(); g.arc(x, y, 10, 0, TAU); g.fillStyle = '#3f4a50'; g.fill();
+          txt(name, x, H * 0.08 + 10, H * 0.06, C.head, 700, 'center');
           txt(sub, x, H * 0.93, H * 0.045, col, 700, 'center');
         });
         // legend centre

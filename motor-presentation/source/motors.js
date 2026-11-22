@@ -8,13 +8,22 @@
   // ---------- materials ----------
   function std(o) { const m = new T.MeshStandardMaterial(Object.assign({ side: T.DoubleSide }, o)); return m; }
   function phys(o) { if (window.NO_PHYS) { delete o.clearcoat; delete o.clearcoatRoughness; return std(o); } const m = new T.MeshPhysicalMaterial(Object.assign({ side: T.DoubleSide }, o)); return m; }
+  let _noise = null;
+  function castNoise() { // fine cast-iron / paint orange-peel texture
+    if (_noise) return _noise; const c = document.createElement('canvas'); c.width = c.height = 512; const g = c.getContext('2d');
+    const id = g.createImageData(512, 512); let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < id.data.length; i += 4) { const v = 118 + rnd() * 30; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; }
+    g.putImageData(id, 0, 0); g.globalAlpha = 0.5; g.filter = 'blur(1.2px)'; g.drawImage(c, 0, 0);
+    const t = new T.CanvasTexture(c); t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(6, 6); _noise = t; return t;
+  }
+  const paintM = (color, cc) => { const m = phys({ color, metalness: 0.25, roughness: 0.48, clearcoat: cc, clearcoatRoughness: 0.45 }); if (!window.NO_BUMP) { m.bumpMap = castNoise(); m.bumpScale = 0.0018; m.roughnessMap = castNoise(); } return m; };
   const MAT = {
-    paintBlue: () => phys({ color: 0x1d3a5a, metalness: 0.3, roughness: 0.4, clearcoat: 0.5, clearcoatRoughness: 0.35 }),
-    paintGraphite: () => phys({ color: 0x3a4149, metalness: 0.3, roughness: 0.42, clearcoat: 0.45, clearcoatRoughness: 0.4 }),
-    paintLight: () => phys({ color: 0x6c757e, metalness: 0.3, roughness: 0.45, clearcoat: 0.3, clearcoatRoughness: 0.4 }),
+    paintBlue: () => paintM(0x2b4a66, 0.35),
+    paintGraphite: () => paintM(0x59626a, 0.3),
+    paintLight: () => paintM(0x3f474e, 0.25),
     steel: () => std({ color: 0xc3c9d0, metalness: 1.0, roughness: 0.28 }),
     darkSteel: () => std({ color: 0x6b7178, metalness: 0.9, roughness: 0.42 }),
-    lamination: () => std({ color: 0x7d838b, metalness: 0.92, roughness: 0.36 }),
+    lamination: () => std({ color: 0x8a9098, metalness: 0.92, roughness: 0.34 }),
     copper: () => phys({ color: 0xc46a38, metalness: 1.0, roughness: 0.3, clearcoat: 0.6, clearcoatRoughness: 0.2 }),
     copperDark: () => phys({ color: 0x9a4a25, metalness: 1.0, roughness: 0.34, clearcoat: 0.7, clearcoatRoughness: 0.2 }),
     aluminium: () => std({ color: 0xd6dadf, metalness: 1.0, roughness: 0.34 }),
@@ -168,6 +177,15 @@
     part.add(mesh(tubeRing(rIn + ringT, rOut - ringT, x + w / 2 - 0.003, x + w / 2 - 0.001), MAT.polymer()));
   }
 
+  function sleeveBearing(part, x, rIn, rOut, w) { // split babbitt-lined sleeve bearing shells
+    const babbitt = std({ color: 0xd9dde0, metalness: 1, roughness: 0.22 }), steelM = MAT.steel();
+    for (const half of [0, 1]) {
+      const g = new T.CylinderGeometry(rOut, rOut, w, 48, 1, true, half * Math.PI + 0.03, Math.PI - 0.06); g.rotateZ(Math.PI / 2); g.translate(x, 0, 0);
+      const gi = new T.CylinderGeometry(rIn, rIn, w, 48, 1, true, half * Math.PI + 0.03, Math.PI - 0.06); gi.rotateZ(Math.PI / 2); gi.translate(x, 0, 0);
+      part.add(mesh(g, steelM)); part.add(mesh(gi, babbitt));
+    }
+    part.add(mesh(merge([tubeRing(rIn, rOut + 0.012, x - w / 2 - 0.01, x - w / 2, 48), tubeRing(rIn, rOut + 0.012, x + w / 2, x + w / 2 + 0.01, 48)]), steelM));
+  }
   function shaft(part, profile, keyX0, keyX1, keyR) {
     part.add(mesh(lathe(profile, 64), MAT.steel()));
     if (keyX0 !== undefined) part.add(mesh(boxAt(keyX1 - keyX0, 0.012, keyR * 0.55, (keyX0 + keyX1) / 2, keyR - 0.004, 0), MAT.darkSteel()));
@@ -202,35 +220,44 @@
     // spigot flanges
     P.frame.add(mesh(lathe([[0.425, -0.43], [0.452, -0.43], [0.452, -0.40], [0.425, -0.40]], 128), paint));
     P.frame.add(mesh(lathe([[0.425, 0.40], [0.452, 0.40], [0.452, 0.43], [0.425, 0.43]], 128), paint));
-    const fins = []; const nF = 36;
+    const fins = []; const nF = 44;
     for (let i = 0; i < nF; i++) {
-      const a = i / nF * Math.PI * 2; const ad = ((a / D) + 360) % 360;
-      if (ad > 330 || ad < 30) continue; // under the terminal box
-      if (ad > 160 && ad < 200) continue; // between the feet
-      const h = 0.065; const g = new T.BoxGeometry(0.80, h, 0.011); g.translate(0, 0.43 + h / 2 - 0.005, 0); g.rotateX(-a); fins.push(g);
+      const a = (i + 0.5) / nF * Math.PI * 2; const ad = ((a / D) + 360) % 360;
+      if (ad > 332 || ad < 28) continue; // under the terminal box
+      if (ad > 150 && ad < 210) continue; // between the feet
+      const side = Math.abs(Math.sin(a)); const h = 0.045 + 0.03 * side;
+      const g = new T.BoxGeometry(0.80, h, 0.013, 1, 1, 1);
+      const pos = g.attributes.position; for (let j = 0; j < pos.count; j++) { if (pos.getY(j) > 0) { pos.setZ(j, pos.getZ(j) * 0.45); pos.setX(j, pos.getX(j) * 0.985); } }
+      g.computeVertexNormals(); g.translate(0, 0.43 + h / 2 - 0.006, 0); g.rotateX(-a); fins.push(g);
     }
     P.frame.add(mesh(merge(fins), paint));
     // feet
     const feet = [];
-    for (const x of [-0.30, 0.30]) for (const z of [-1, 1]) {
-      feet.push(boxAt(0.20, 0.20, 0.13, x, -0.46, z * 0.30));
-      feet.push(boxAt(0.24, 0.035, 0.22, x, -0.545, z * 0.33));
+    for (const zs of [-1, 1]) {
+      // cast foot web: profile in (z,y), extruded along x
+      const sh = new T.Shape(); const pts = [[0.20, -0.375], [0.30, -0.30], [0.37, -0.25], [0.40, -0.33], [0.43, -0.47], [0.475, -0.525], [0.475, -0.565], [0.24, -0.565], [0.24, -0.5]];
+      pts.forEach((q, i) => { const zz = q[0] * zs; i ? sh.lineTo(zz, q[1]) : sh.moveTo(zz, q[1]); });
+      for (const x of [-0.30, 0.30]) {
+        const g = new T.ExtrudeGeometry(sh, { depth: 0.2, bevelEnabled: true, bevelSize: 0.008, bevelThickness: 0.008, bevelSegments: 2, curveSegments: 4 });
+        g.rotateY(-Math.PI / 2); g.scale(1, 1, -1); g.translate(x + 0.1, 0, 0); feet.push(g);
+      }
     }
-    feet.push(boxAt(0.70, 0.08, 0.40, 0, -0.39, 0));
+    feet.push(boxAt(0.62, 0.06, 0.26, 0, -0.40, 0));
     P.frame.add(mesh(merge(feet), paint));
-    const footBolts = []; for (const x of [-0.36, -0.24, 0.24, 0.36]) for (const z of [-0.40, 0.40]) footBolts.push(cylY(0.016, 0.03, x, -0.515, z, 6));
+    const footBolts = []; for (const x of [-0.36, -0.24, 0.24, 0.36]) for (const z of [-0.43, 0.43]) { footBolts.push(cylY(0.017, 0.025, x, -0.517, z, 6)); footBolts.push(cylY(0.026, 0.006, x, -0.527, z, 16)); }
     // terminal box
-    const tb = []; tb.push(boxAt(0.30, 0.10, 0.30, 0, 0.47, 0)); tb.push(boxAt(0.32, 0.03, 0.32, 0, 0.535, 0));
-    P.frame.add(mesh(merge(tb), paint));
+    const tbg = new T.ExtrudeGeometry(roundedRectShape(0.29, 0.29, 0.03, 0, 0), { depth: 0.11, bevelEnabled: true, bevelSize: 0.006, bevelThickness: 0.006, bevelSegments: 2 });
+    tbg.rotateX(-Math.PI / 2); tbg.translate(0, 0.43, 0);
+    P.frame.add(mesh(merge([tbg, boxAt(0.22, 0.03, 0.22, 0, 0.43, 0)]), paint));
     const tbl = new T.Mesh(new T.ExtrudeGeometry(roundedRectShape(0.30, 0.30, 0.025, 0, 0), { depth: 0.03, bevelEnabled: true, bevelSize: 0.008, bevelThickness: 0.008, bevelSegments: 2 }), paint);
     tbl.geometry.rotateX(-Math.PI / 2); tbl.position.y = 0.55; tbl.castShadow = tbl.receiveShadow = true; P.frame.add(tbl);
     const lidBolts = []; for (const sx of [-1, 1]) for (const sz of [-1, 1]) lidBolts.push(cylY(0.012, 0.016, sx * 0.125, 0.595, sz * 0.125, 12));
     P.frame.add(mesh(merge(lidBolts.concat(footBolts)), MAT.steel()));
-    P.frame.add(mesh(cylZ(0.035, 0.05, 0, 0.47, 0.175, 24), MAT.polymer()));
-    P.frame.add(mesh(cylZ(0.026, 0.03, 0, 0.47, 0.21, 6), MAT.brass()));
+    P.frame.add(mesh(merge([cylZ(0.03, 0.04, -0.06, 0.49, 0.165, 24), cylZ(0.03, 0.04, 0.06, 0.49, 0.165, 24)]), MAT.polymer()));
+    P.frame.add(mesh(merge([cylZ(0.024, 0.025, -0.06, 0.49, 0.19, 6), cylZ(0.024, 0.025, 0.06, 0.49, 0.19, 6)]), MAT.darkSteel()));
     // lifting eye
-    const eye = new T.TorusGeometry(0.04, 0.012, 10, 28); eye.translate(0.24, 0.52, 0);
-    P.frame.add(mesh(merge([eye, cylY(0.02, 0.05, 0.24, 0.46, 0, 12)]), MAT.darkSteel()));
+    const eyes = []; for (const ex of [-0.3, 0.3]) { const e = new T.TorusGeometry(0.038, 0.011, 10, 28); e.translate(ex, 0.5, 0); eyes.push(e, cylY(0.018, 0.05, ex, 0.445, 0, 12)); }
+    P.frame.add(mesh(merge(eyes), MAT.darkSteel()));
     // nameplate
     const np = new T.Mesh(new T.PlaneGeometry(0.24, 0.14), std({ map: nameplateTex(['3~ INDUCTION MOTOR', '400 V Δ   50 Hz   IP55', '45 kW   1475 min⁻¹', 'cos φ 0.86   IE3']), metalness: 0.5, roughness: 0.45 }));
     np.position.set(0.05, -0.06, 0.437 + 0.001); P.frame.add(np);
@@ -277,6 +304,14 @@
       const prof = [[0.10, 0.462], [0.10, 0.522], [0.135, 0.532], [0.22, 0.518], [0.36, 0.488], [0.425, 0.462], [0.452, 0.455], [0.452, 0.43], [0.402, 0.43], [0.402, 0.442], [0.36, 0.462], [0.22, 0.494], [0.135, 0.505], [0.115, 0.49], [0.10, 0.462]].map(p => [p[0], s * p[1]]);
       part.add(mesh(lathe(prof, 128), pm));
       part.add(mesh(lathe([[0.125, s * 0.531], [0.16, s * 0.531], [0.165, s * 0.545], [0.135, s * 0.548], [0.125, s * 0.531]], 64), pm));
+      const ribs = []; const outer = [[0.15, 0.53], [0.22, 0.518], [0.36, 0.488], [0.41, 0.468]];
+      for (let k = 0; k < 8; k++) {
+        const sh = new T.Shape(); outer.forEach((q, i) => i ? sh.lineTo(q[0], q[1] + 0.018) : sh.moveTo(q[0], q[1] + 0.018)); for (let i = outer.length - 1; i >= 0; i--) sh.lineTo(outer[i][0], outer[i][1] - 0.01);
+        const g = new T.ExtrudeGeometry(sh, { depth: 0.014, bevelEnabled: false }); g.translate(0, 0, -0.007);
+        const pos = g.attributes.position; for (let j = 0; j < pos.count; j++) { const r = pos.getX(j), ax = pos.getY(j); pos.setXYZ(j, s * ax, r, pos.getZ(j)); }
+        g.computeVertexNormals(); g.rotateX(k / 8 * Math.PI * 2 + 0.39); ribs.push(g);
+      }
+      part.add(mesh(merge(ribs), pm));
       const bolts = []; for (let k = 0; k < 4; k++) { const p = polar(0.145, k / 4 * Math.PI * 2 + 0.78); bolts.push(cylX(0.009, 0.014, s * 0.55, p.y, -p.x, 6)); }
       for (let k = 0; k < 8; k++) { const p = polar(0.44, k / 8 * Math.PI * 2 + 0.39); bolts.push(cylX(0.014, 0.02, s * 0.462, p.y, -p.x, 6)); }
       if (s < 0) bolts.push(cylX(0.008, 0.03, s * 0.53, 0.115, 0, 6));
@@ -374,8 +409,8 @@
     P.shaft = new Part('shaft', 'Shaft', 'Forged steel shaft that carries the rotor and transmits torque to the load.', { offset: V(-1.55, 0, 0), anchor: V(-0.95, 0.05, 0), delay: 0.45 });
     P.sliprings = new Part('sliprings', 'Slip Rings & Brushes', 'Rotating bronze rings with stationary carbon brushes: the sliding contact that feeds DC into the spinning rotor.', { offset: V(1.25, 0, 0), anchor: V(0.98, 0.16, 0), delay: 0.75 });
     P.exciter = new Part('exciter', 'DC Excitation System', 'Exciter cubicle: converts AC to controlled DC for the field winding. Adjusting it controls the power factor.', { offset: V(1.25, 0, 0), anchor: V(1.55, 0.36, -1.0), delay: 0.75 });
-    P.bearingDE = new Part('bearingDE', 'Bearings', 'Support the heavy rotor and keep it centred in the stator bore.', { offset: V(-2.05, 0, 0), anchor: V(-0.6, 0.12, 0), delay: 0.6 });
-    P.bearingNDE = new Part('bearingNDE', 'Bearings', '', { offset: V(0.6, 0, 0), anchor: V(0.6, 0.12, 0), delay: 0.6 });
+    P.bearingDE = new Part('bearingDE', 'Bearings', 'Oil-lubricated sleeve bearings support the heavy rotor and keep it centred in the stator bore.', { offset: V(-2.05, 0, 0), anchor: V(-0.68, 0.1, 0), delay: 0.6 });
+    P.bearingNDE = new Part('bearingNDE', 'Bearings', '', { offset: V(0.6, 0, 0), anchor: V(0.68, 0.1, 0), delay: 0.6 });
     P.endShieldDE = new Part('endShieldDE', 'End Shield (DE)', 'Bearing housings closing each end of the frame.', { offset: V(-2.4, 0, 0), anchor: V(-0.6, 0.4, 0), delay: 0.65 });
     P.endShieldNDE = new Part('endShieldNDE', 'End Shield (NDE)', '', { offset: V(0.85, 0, 0), anchor: V(0.6, 0.4, 0), delay: 0.65 });
 
@@ -387,6 +422,8 @@
     // side skins
     fr.push(boxAt(1.06, 1.10, 0.02, 0, 0.04, 0.60)); fr.push(boxAt(1.06, 1.10, 0.02, 0, 0.04, -0.60));
     fr.push(boxAt(1.06, 0.02, 1.0, 0, 0.60, 0));
+    for (const x of [-0.53, 0.53]) for (const z of [-0.6, 0.6]) fr.push(cylY(0.03, 1.12, x, 0.03, z, 16));
+    for (const y of [-0.28, 0.3]) { fr.push(boxAt(1.06, 0.035, 0.04, 0, y, 0.62)); fr.push(boxAt(1.06, 0.035, 0.04, 0, y, -0.62)); }
     // stiffener ribs
     for (const x of [-0.25, 0.0, 0.25]) { fr.push(boxAt(0.025, 0.9, 0.05, x, 0.0, 0.62)); fr.push(boxAt(0.025, 0.9, 0.05, x, 0.0, -0.62)); }
     // base feet
@@ -455,13 +492,16 @@
     }
     P.exciter.add(mesh(merge(cab), MAT.cable()));
     // ---- bearings & end shields ----
-    bearing(P.bearingDE, -0.6, 0.07, 0.14, 0.07);
-    bearing(P.bearingNDE, 0.6, 0.07, 0.14, 0.07);
+    sleeveBearing(P.bearingDE, -0.682, 0.0625, 0.085, 0.095);
+    sleeveBearing(P.bearingNDE, 0.615, 0.0625, 0.085, 0.095);
     for (const s of [-1, 1]) {
       const part = s < 0 ? P.endShieldDE : P.endShieldNDE; const pm = MAT.paintGraphite();
       const prof = [[0.14, 0.565], [0.14, 0.64], [0.19, 0.655], [0.32, 0.64], [0.50, 0.62], [0.55, 0.61], [0.55, 0.56], [0.53, 0.56], [0.50, 0.585], [0.32, 0.605], [0.19, 0.62], [0.16, 0.6], [0.14, 0.565]].map(p => [p[0], s * p[1]]);
       part.add(mesh(lathe(prof, 128), pm));
-      part.add(mesh(lathe([[0.17, s * 0.652], [0.22, s * 0.652], [0.225, s * 0.672], [0.18, s * 0.675], [0.17, s * 0.652]], 64), pm));
+      const bx0 = s < 0 ? 0.625 : 0.56, bx1 = s < 0 ? 0.74 : 0.675;
+      part.add(mesh(lathe([[0.095, s * bx0], [0.2, s * bx0], [0.215, s * (bx0 + 0.02)], [0.215, s * (bx1 - 0.02)], [0.2, s * bx1], [0.095, s * bx1], [0.095, s * bx0]], 64), pm));
+      part.add(mesh(cylZ(0.028, 0.03, s * (bx0 + bx1) / 2, -0.08, 0.215, 24), std({ color: 0xb8e2ff, metalness: 0.1, roughness: 0.05, transparent: true, opacity: 0.6 })));
+      part.add(mesh(merge([cylY(0.018, 0.06, s * (bx0 + bx1) / 2, 0.24, 0, 12), boxAt(0.04, 0.012, 0.44, s * (bx0 + bx1) / 2, 0, 0)]), MAT.darkSteel()));
       const bolts = []; for (let k = 0; k < 12; k++) { const p = polar(0.535, k / 12 * Math.PI * 2 + 0.26); bolts.push(cylX(0.016, 0.025, s * 0.62, p.y, -p.x, 6)); }
       part.add(mesh(merge(bolts), MAT.steel()));
     }

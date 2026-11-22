@@ -10,33 +10,34 @@
   S.init = function (opts) {
     const W = opts.w || 1920, H = opts.h || 1080; S.W = W; S.H = H; S.opts = opts;
     const root = document.getElementById('root'); root.style.width = W + 'px'; root.style.height = H + 'px';
+    S.light = !!opts.light; if (S.light) { root.classList.add('light'); document.body.classList.add('light'); }
     if (opts.transparent) { root.style.background = 'transparent'; document.body.style.background = 'transparent'; document.documentElement.style.background = 'transparent'; opts.grid = false; }
     const r = new T.WebGLRenderer({ antialias: opts.aa !== false, alpha: true, preserveDrawingBuffer: true });
-    r.setPixelRatio(opts.pr || 1); r.setSize(W, H); r.outputEncoding = T.sRGBEncoding; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = opts.exposure || 1.05;
-    r.shadowMap.enabled = true; r.shadowMap.type = T.PCFSoftShadowMap; r.localClippingEnabled = true; r.physicallyCorrectLights = true;
+    r.setPixelRatio(opts.pr || 1); r.setSize(W, H); r.outputEncoding = T.sRGBEncoding; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = opts.exposure || (opts.light ? 0.95 : 1.05);
+    r.shadowMap.enabled = true; r.shadowMap.type = (opts.light && !opts.pcf) ? T.VSMShadowMap : T.PCFSoftShadowMap; r.localClippingEnabled = true; r.physicallyCorrectLights = true;
     root.appendChild(r.domElement); S.renderer = r;
     const scene = new T.Scene(); S.scene = scene;
     const pm = new T.PMREMGenerator(r); scene.environment = pm.fromScene(new T.RoomEnvironment(), 0.04).texture;
     const cam = new T.PerspectiveCamera(opts.fov || 26, W / H, 0.05, 100); S.camera = cam;
     // key light with shadows
-    const key = new T.DirectionalLight(0xfff4e6, 2.6); key.position.set(-3, 6, 4); key.castShadow = true;
-    key.shadow.mapSize.set(opts.shadow || 2048, opts.shadow || 2048); const sc = key.shadow.camera; sc.left = -4; sc.right = 4; sc.top = 4; sc.bottom = -4; sc.near = 0.5; sc.far = 20; key.shadow.bias = -0.0004; key.shadow.normalBias = 0.01; key.shadow.radius = 4;
+    const key = new T.DirectionalLight(0xfff4e6, opts.light ? 3.0 : 2.6); key.position.set(-3, 6, 4); key.castShadow = true;
+    key.shadow.mapSize.set(opts.shadow || 2048, opts.shadow || 2048); const sc = key.shadow.camera; sc.left = -4; sc.right = 4; sc.top = 4; sc.bottom = -4; sc.near = 0.5; sc.far = 20; key.shadow.bias = opts.light ? -0.0006 : -0.0004; key.shadow.normalBias = 0.01; key.shadow.radius = opts.light ? 9 : 4; if (opts.light) key.shadow.blurSamples = 16;
     scene.add(key); S.key = key;
-    const rim = new T.DirectionalLight(0x5fb4ff, 1.6); rim.position.set(4, 2.5, -5); scene.add(rim);
-    const fill = new T.HemisphereLight(0xbcd6ff, 0x0a0f18, 0.35); scene.add(fill);
+    const rim = new T.DirectionalLight(opts.light ? 0xdfefff : 0x5fb4ff, opts.light ? 1.1 : 1.6); rim.position.set(4, 2.5, -5); scene.add(rim);
+    const fill = opts.light ? new T.HemisphereLight(0xffffff, 0x8d969e, 0.7) : new T.HemisphereLight(0xbcd6ff, 0x0a0f18, 0.35); scene.add(fill);
     // floor shadow catcher + faint grid
     const floorY = opts.floorY !== undefined ? opts.floorY : -0.565;
-    const fl = new T.Mesh(new T.PlaneGeometry(40, 40), new T.ShadowMaterial({ opacity: 0.55 })); fl.rotation.x = -Math.PI / 2; fl.position.y = floorY; fl.receiveShadow = true; scene.add(fl); S.floor = fl;
+    const fl = new T.Mesh(new T.PlaneGeometry(40, 40), new T.ShadowMaterial({ opacity: opts.light ? 0.3 : 0.55 })); fl.rotation.x = -Math.PI / 2; fl.position.y = floorY; fl.receiveShadow = true; scene.add(fl); S.floor = fl;
     if (opts.grid !== false) {
-      const grid = new T.GridHelper(24, 96, 0x2b6ca3, 0x16324d); grid.position.y = floorY + 0.001;
-      grid.material.transparent = true; grid.material.opacity = 0.35; grid.material.depthWrite = false; scene.add(grid); S.grid = grid;
+      const grid = opts.light ? new T.GridHelper(24, 96, 0xb9c4cc, 0xd6dde2) : new T.GridHelper(24, 96, 0x2b6ca3, 0x16324d); grid.position.y = floorY + 0.001;
+      grid.material.transparent = true; grid.material.opacity = opts.light ? 0.55 : 0.35; grid.material.depthWrite = false; scene.add(grid); S.grid = grid;
     }
     // model
     S.model = null;
     if (opts.model === 'induction') S.model = MOTORS.buildInduction();
     if (opts.model === 'sync') S.model = MOTORS.buildSynchronous();
     if (S.model) scene.add(S.model.group);
-    const envI = opts.env || 0.5;
+    const envI = opts.env || (opts.light ? 0.42 : 0.5);
     scene.traverse(o => { if (o.material && o.material.isMeshStandardMaterial) { o.material.envMapIntensity = o.material.metalness > 0.8 ? envI * 1.6 : envI; } });
     if (opts.model === 'cyl') { S.obj = MOTORS.buildCylindricalRotor(); scene.add(S.obj); }
     if (opts.model === 'salient') { S.obj = MOTORS.buildSalientRotor(false); scene.add(S.obj); }
@@ -54,7 +55,7 @@
       const base = m.userData.baseOpacity ?? 1;
       if (a >= 0.999 && !m.userData.baseTransparent) { m.transparent = false; m.opacity = base; m.depthWrite = true; }
       else { m.transparent = true; m.opacity = base * a; m.depthWrite = a > 0.6; }
-      if (m.emissive) { const g = glow || 0; m.emissive.setRGB(0.02 * g, 0.12 * g, 0.24 * g); }
+      if (m.emissive) { const g = glow || 0; if (S.light) m.emissive.setRGB(0.0, 0.035 * g, 0.022 * g); else m.emissive.setRGB(0.02 * g, 0.12 * g, 0.24 * g); }
       m.needsUpdate = true;
     });
     p.group.traverse(o => { if (o.isMesh) o.castShadow = a > 0.6; });
@@ -84,18 +85,19 @@
   // ---------- overlay drawing ----------
   const NS = 'http://www.w3.org/2000/svg';
   function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const a in attrs) e.setAttribute(a, attrs[a]); (parent || S.svg).appendChild(e); return e; }
-  S.clearOverlay = function () { while (S.svg.firstChild) S.svg.removeChild(S.svg.firstChild); S.cap.style.opacity = 0; };
+  S.clearOverlay = function () { while (S.svg.firstChild) S.svg.removeChild(S.svg.firstChild); S.cap.style.opacity = 0;
+    S.svg.innerHTML = '<defs><filter id="sh" x="-20%" y="-40%" width="140%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#1c2b33" flood-opacity="0.18"/></filter></defs>'; };
   S.tag = function (k, num, text, alpha, dir) {
     const [x, y] = S.project(S.anchorWorld(k)); const [dx, dy] = dir || [0, -90];
     const g = el('g', { opacity: alpha });
     const abs = dir && dir[2]==='abs'; const lx = abs ? dx : x + dx, ly = abs ? dy : y + dy;
-    el('circle', { cx: x, cy: y, r: 6, fill: '#38b6ff', stroke: '#0b1626', 'stroke-width': 2 }, g);
-    el('polyline', { points: `${x},${y} ${lx},${abs ? (ly + (y > ly ? 22 : -22)) : ly}`, stroke: '#9fd8ff', 'stroke-width': 2, fill: 'none' }, g);
-    const t = el('text', { x: 0, y: 0, 'font-family': 'Inter', 'font-weight': 600, 'font-size': 25, fill: '#ffffff' }, g); t.textContent = text;
+    const L = S.light; el('circle', { cx: x, cy: y, r: 5.5, fill: L ? '#00B477' : '#38b6ff', stroke: L ? '#ffffff' : '#0b1626', 'stroke-width': 2 }, g);
+    el('polyline', { points: `${x},${y} ${lx},${abs ? (ly + (y > ly ? 21 : -21)) : ly}`, stroke: L ? '#00B477' : '#9fd8ff', 'stroke-width': L ? 1.6 : 2, fill: 'none' }, g);
+    const t = el('text', { x: 0, y: 0, 'font-family': 'Inter', 'font-weight': L ? 500 : 600, 'font-size': L ? 23 : 25, fill: L ? '#2f3a40' : '#ffffff' }, g); t.textContent = text;
     const w = t.getComputedTextLength() + 62; const bx = abs ? lx - w / 2 : (dx < 0 ? lx - w : (dx > 0 ? lx : lx - w / 2)); const by = ly - 22;
-    const rect = el('rect', { x: bx, y: by, width: w, height: 44, rx: 8, fill: 'rgba(9,20,36,0.86)', stroke: 'rgba(56,182,255,0.75)', 'stroke-width': 1.5 }, g);
+    const rect = el('rect', { x: bx, y: by, width: w, height: 42, rx: 21, fill: S.light ? 'rgba(255,255,255,0.94)' : 'rgba(9,20,36,0.86)', stroke: S.light ? 'rgba(0,180,119,0.55)' : 'rgba(56,182,255,0.75)', 'stroke-width': 1.2, filter: S.light ? 'url(#sh)' : '' }, g);
     g.insertBefore(rect, t);
-    const c = el('circle', { cx: bx + 22, cy: ly, r: 14, fill: '#38b6ff' }, g); const n = el('text', { x: bx + 22, y: ly + 7, 'text-anchor': 'middle', 'font-family': 'Inter', 'font-weight': 700, 'font-size': 18, fill: '#071220' }, g); n.textContent = num;
+    const c = el('circle', { cx: bx + 22, cy: ly, r: 14, fill: S.light ? '#00B477' : '#38b6ff' }, g); const n = el('text', { x: bx + 22, y: ly + 6.5, 'text-anchor': 'middle', 'font-family': 'Inter', 'font-weight': 700, 'font-size': 16, fill: S.light ? '#ffffff' : '#071220' }, g); n.textContent = num;
     t.setAttribute('x', bx + 44); t.setAttribute('y', ly + 9);
   };
   S.caption = function (num, total, title, desc, chip, alpha) {
@@ -111,4 +113,9 @@
     const planes = on ? [new T.Plane(new T.Vector3(0,-1,0),0), new T.Plane(new T.Vector3(0,0,-1),0)] : [];
     keys.forEach(k=>{ const p=S.model.parts[k]; if(!p) return; p.materials().forEach(m=>{ m.clippingPlanes=planes; m.clipIntersection=true; m.clipShadows=true; m.needsUpdate=true; }); });
   };
+})();
+
+(function(){ const S=STAGE;
+  S.axisLine=function(x0,x1,alpha){ if(alpha<0.01) return; const a=S.project(new THREE.Vector3(x0,0,0)), b=S.project(new THREE.Vector3(x1,0,0));
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line'); Object.entries({x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:S.light?'#00B477':'#38b6ff','stroke-width':1.6,'stroke-dasharray':'14 8 3 8',opacity:alpha}).forEach(([k,v])=>l.setAttribute(k,v)); S.svg.appendChild(l); };
 })();
