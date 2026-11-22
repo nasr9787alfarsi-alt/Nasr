@@ -466,19 +466,39 @@
     const srm = MAT.bronze();
     P.sliprings.add(mesh(tubeRing(0.056, 0.075, 0.86, 1.04, 48), MAT.insulation()));
     for (const x of [0.90, 0.99]) P.sliprings.add(mesh(lathe([[0.075, x - 0.028], [0.098, x - 0.028], [0.1, x - 0.025], [0.1, x + 0.025], [0.098, x + 0.028], [0.075, x + 0.028]], 64), srm));
-    const bg = []; const brushes = [];
-    for (const x of [0.90, 0.99]) for (const ang of [-38, 38]) {
-      const a = ang * D; const p = polar(0.125, a);
-      const b = new T.BoxGeometry(0.03, 0.05, 0.025); b.translate(0, 0.125, 0); b.rotateX(-a); b.translate(x, 0, 0); brushes.push(b);
-      const h = new T.BoxGeometry(0.045, 0.045, 0.04); h.translate(0, 0.17, 0); h.rotateX(-a); h.translate(x, 0, 0); bg.push(h);
+    // insulating barriers between and beside the rings
+    for (const x of [0.857, 0.945, 1.033]) P.sliprings.add(mesh(lathe([[0.075, x - 0.006], [0.108, x - 0.006], [0.108, x + 0.006], [0.075, x + 0.006]], 64), MAT.insulation()));
+    // brush gear: box-type holders on an insulated rocker ring, carbon brushes pressed on by springs, copper pigtails
+    const bg = [], brushes = [], cu = [], ins = [];
+    const radial = (geo, a, x) => { geo.rotateX(-a); geo.translate(x, 0, 0); return geo; };
+    for (const x of [0.90, 0.99]) {
+      // rocker arc (in the YZ plane, centred on top, ±75°)
+      const arc = new T.TorusGeometry(0.218, 0.011, 10, 64, 150 * D); arc.rotateZ(15 * D); arc.rotateY(Math.PI / 2); arc.translate(x, 0, 0); bg.push(arc);
+      for (const ang of [-35, 35]) {
+        const a = ang * D;
+        const br = new T.BoxGeometry(0.022, 0.05, 0.03); br.translate(0, 0.125, 0); brushes.push(radial(br, a, x));            // carbon brush (r 0.100–0.150)
+        const hold = []; const wall = 0.004;                                                                                   // open-bottom holder box (r 0.118–0.166)
+        hold.push(boxAt(0.032, 0.048, wall, 0, 0.142, 0.017), boxAt(0.032, 0.048, wall, 0, 0.142, -0.017), boxAt(wall, 0.048, 0.038, 0.0145, 0.142, 0), boxAt(wall, 0.048, 0.038, -0.0145, 0.142, 0));
+        hold.forEach(g => bg.push(radial(g, a, x)));
+        bg.push(radial(cylY(0.006, 0.05, 0, 0.19, 0, 10), a, x));                                                              // clamp stud to the rocker
+        const spr = new T.TorusGeometry(0.014, 0.0025, 6, 20, Math.PI); spr.rotateY(Math.PI / 2); spr.translate(0, 0.152, 0); bg.push(radial(spr, a, x)); // spring finger
+        const pt = new T.CatmullRomCurve3([V(0.006, 0.151, 0.01), V(0.02, 0.17, 0.022), V(0.012, 0.2, 0.02), V(0, 0.212, 0.012)]);
+        cu.push(radial(new T.TubeGeometry(pt, 16, 0.0028, 6, false), a, x));                                                   // copper pigtail
+      }
+      bg.push(boxAt(0.028, 0.012, 0.05, x, 0.236, 0)); cu.push(boxAt(0.02, 0.016, 0.035, x, 0.248, 0));                     // terminal lug
     }
-    // brush holder bracket arc + support arm
-    for (const ang of [-38, 38]) { const a = ang * D; const g = new T.BoxGeometry(0.16, 0.025, 0.025); g.translate(0.945, 0.2, 0); g.rotateX(-a); bg.push(g); }
-    bg.push(boxAt(0.03, 0.05, 0.30, 0.945, 0.21, 0));
-    bg.push(boxAt(0.03, 0.42, 0.03, 0.945, -0.02, -0.17)); bg.push(boxAt(0.03, 0.42, 0.03, 0.945, -0.02, 0.17));
-    bg.push(boxAt(0.2, 0.03, 0.4, 0.945, -0.24, 0));
+    // pedestal: base plate, two posts with insulators, cross ties joining both rockers
+    for (const z of [-1, 1]) {
+      const yz = polar(0.218, 75 * D); const pz = z * Math.abs(yz.x || yz.y);
+      const py = 0.218 * Math.cos(75 * D), pz2 = z * 0.218 * Math.sin(75 * D);
+      bg.push(boxAt(0.12, 0.022, 0.022, 0.945, py, pz2));
+      bg.push(cylY(0.016, 0.2, 0.945, -0.15, pz2, 16)); ins.push(cylY(0.022, 0.09, 0.945, py - 0.06, pz2, 16));
+    }
+    bg.push(boxAt(0.2, 0.03, 0.52, 0.945, -0.255, 0));
     P.sliprings.add(mesh(merge(bg), MAT.darkSteel()));
     P.sliprings.add(mesh(merge(brushes), MAT.carbon()));
+    P.sliprings.add(mesh(merge(cu), MAT.copper()));
+    P.sliprings.add(mesh(merge(ins), MAT.insulation()));
     // ---- exciter cubicle + DC cables ----
     const ex = MAT.paintLight();
     P.exciter.add(mesh(merge([boxAt(0.36, 0.95, 0.30, 1.55, -0.145, -1.05), boxAt(0.38, 0.02, 0.32, 1.55, 0.34, -1.05)]), ex));
