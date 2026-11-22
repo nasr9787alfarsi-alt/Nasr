@@ -1,0 +1,281 @@
+{
+ "CFG": {
+  "induction": {
+   "objects": {
+    "frame": [
+     "frame"
+    ],
+    "statorAsm": [
+     "statorCore",
+     "statorWinding"
+    ],
+    "rotorAsm": [
+     "rotorCore",
+     "rotorBars",
+     "endRings",
+     "shaft"
+    ],
+    "cage": [
+     "rotorBars",
+     "endRings"
+    ],
+    "shaft": [
+     "shaft"
+    ],
+    "bearingDE": [
+     "bearingDE"
+    ],
+    "bearingNDE": [
+     "bearingNDE"
+    ],
+    "endShieldDE": [
+     "endShieldDE"
+    ],
+    "endShieldNDE": [
+     "endShieldNDE"
+    ],
+    "fan": [
+     "fan"
+    ],
+    "fanCover": [
+     "fanCover"
+    ]
+   },
+   "overview": [
+    "frame",
+    "statorAsm",
+    "rotorAsm",
+    "bearingDE",
+    "bearingNDE",
+    "endShieldDE",
+    "endShieldNDE",
+    "fan",
+    "fanCover"
+   ],
+   "components": [
+    {
+     "show": [
+      "statorAsm"
+     ],
+     "tag": "statorCore"
+    },
+    {
+     "show": [
+      "rotorAsm"
+     ],
+     "tag": "rotorCore"
+    },
+    {
+     "show": [
+      "cage"
+     ],
+     "replace": {
+      "rotorAsm": "cage"
+     },
+     "tag": "endRings"
+    },
+    {
+     "show": [
+      "shaft"
+     ],
+     "replace": {
+      "rotorAsm": "shaft"
+     },
+     "tag": "shaft"
+    },
+    {
+     "show": [
+      "bearingDE"
+     ],
+     "tag": "bearingDE"
+    },
+    {
+     "show": [
+      "frame",
+      "endShieldDE",
+      "endShieldNDE"
+     ],
+     "join": {
+      "endShieldDE": "frame",
+      "endShieldNDE": "frame"
+     },
+     "tag": "frame"
+    },
+    {
+     "show": [
+      "fan"
+     ],
+     "tag": "fan"
+    }
+   ]
+  },
+  "sync": {
+   "objects": {
+    "frame": [
+     "frame"
+    ],
+    "cooling": [
+     "cooling"
+    ],
+    "shaftFan": [
+     "shaftFan"
+    ],
+    "statorAsm": [
+     "statorCore",
+     "statorWinding"
+    ],
+    "rotorAsm": [
+     "rotorPoles",
+     "fieldWinding",
+     "damper",
+     "shaft"
+    ],
+    "fieldWinding": [
+     "fieldWinding"
+    ],
+    "damper": [
+     "damper"
+    ],
+    "shaft": [
+     "shaft"
+    ],
+    "sliprings": [
+     "sliprings"
+    ],
+    "exciter": [
+     "exciter"
+    ],
+    "bearingDE": [
+     "bearingDE"
+    ],
+    "bearingNDE": [
+     "bearingNDE"
+    ],
+    "endShieldDE": [
+     "endShieldDE"
+    ],
+    "endShieldNDE": [
+     "endShieldNDE"
+    ]
+   },
+   "overview": [
+    "cooling",
+    "frame",
+    "statorAsm",
+    "rotorAsm",
+    "shaftFan",
+    "sliprings",
+    "exciter",
+    "bearingDE",
+    "bearingNDE",
+    "endShieldDE",
+    "endShieldNDE"
+   ],
+   "components": [
+    {
+     "show": [
+      "statorAsm"
+     ],
+     "tag": "statorCore"
+    },
+    {
+     "show": [
+      "rotorAsm"
+     ],
+     "tag": "rotorPoles"
+    },
+    {
+     "show": [
+      "fieldWinding"
+     ],
+     "replace": {
+      "rotorAsm": "fieldWinding"
+     },
+     "tag": "fieldWinding"
+    },
+    {
+     "show": [
+      "damper"
+     ],
+     "replace": {
+      "rotorAsm": "damper"
+     },
+     "tag": "damper"
+    },
+    {
+     "show": [
+      "sliprings"
+     ],
+     "tag": "sliprings"
+    },
+    {
+     "show": [
+      "exciter"
+     ],
+     "tag": "exciter"
+    },
+    {
+     "show": [
+      "shaft"
+     ],
+     "replace": {
+      "rotorAsm": "shaft"
+     },
+     "tag": "shaft"
+    },
+    {
+     "show": [
+      "bearingDE"
+     ],
+     "tag": "bearingDE"
+    },
+    {
+     "show": [
+      "frame",
+      "endShieldDE",
+      "endShieldNDE"
+     ],
+     "join": {
+      "endShieldDE": "frame",
+      "endShieldNDE": "frame"
+     },
+     "tag": "frame"
+    },
+    {
+     "show": [
+      "cooling",
+      "shaftFan"
+     ],
+     "join": {
+      "cooling": "frame",
+      "shaftFan": "frame"
+     },
+     "tag": "cooling"
+    }
+   ]
+  }
+ },
+ "D0": [
+  -0.62,
+  0.42,
+  1
+ ],
+ "FOV_DEG": 15,
+ "basis": {
+  "x": [
+   0.8499026917123794,
+   0,
+   0.5269396688616752
+  ],
+  "y": [
+   0.17714812354325313,
+   0.9417967059649757,
+   -0.2857227799084728
+  ],
+  "z": [
+   -0.49627004437620087,
+   0.3361829332871038,
+   0.8004355554454853
+  ]
+ }
+}

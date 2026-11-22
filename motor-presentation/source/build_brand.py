@@ -210,8 +210,8 @@ Between them is the AIR GAP – often only half a millimetre to two millimetres.
 
 Here the induction motor has been taken apart: the rotor, pulled out on the left, normally sits inside the stator on the right.""")
 
-IND_OFFS = {}
-SYN_OFFS = {2: (-0.5, -0.45), 3: (-0.1, 0.62), 4: (0.4, -0.55), 5: (0.55, 0.05), 6: (0.05, -0.5)}
+IND_OFFS = {4: (0.0, 0.5)}
+SYN_OFFS = {3: (0.0, 0.55), 7: (0.0, 0.5)}
 # 5-22 COMPONENTS, ONE SLIDE EACH (overview + parts, induction then synchronous)
 exec(open(os.path.join(HERE, 'components_section.py'), encoding='utf-8').read())
 component_section('induction', 'Induction motor', IND_ITEMS, IND_OFFS, None, 'i')
@@ -468,42 +468,9 @@ Possible questions:
 
 For Q&A, open viewer/motor_explorer_offline.html to rotate and take apart either motor live.""")
 
-# BACKUP (hidden): the full exploded-view videos, for Q&A
-# 5 INDUCTION EXPLODED
-s = new('Title & Subtitle Only', key='b5')
-title(s, 'Induction motor: taking it apart', 'Squirrel-cage, totally enclosed fan-cooled motor – 12 components in 50 seconds')
-video(s, 'induction_motor_exploded.mp4', IMG('poster_ind.png'), 1.2, 1.38, 10.93, 6.15 * 0.9)
-text(s, 1.2, 6.97, 10.9, 0.25, 'Click to play  ·  pause on any component to discuss it', size=10, color=GREY, align=PP_ALIGN.CENTER)
-notes(s, """[Click the video to play – 50 seconds. Pause on any part.]
-
-A typical industrial induction motor – the kind on thousands of pumps and fans.
-
-The motor opens up in a logical sequence: the frame lifts off, the rotor slides out of the stator, and the end shields, bearings, fan and cover move away along the shaft line. Then each component is highlighted:
-1 Stator – the fixed outer part.  2 Stator core – thin insulated steel sheets that guide the magnetic field with low losses.  3 Stator windings – copper coils in three groups, one per phase (shown in three colours).
-4 Rotor – the turning part.  5 Rotor core – laminated steel on the shaft.  6 Rotor bars – aluminium bars cast into the rotor; nothing is wired to them.  7 End rings – short-circuit the bars, forming the "squirrel cage".
-8 Air gap – the small space the field must cross.  9 Shaft.  10 Bearings.  11 Frame and end shields – hold everything and shed heat through the fins.  12 Cooling fan and cover.
-
-Interactive model for Q&A: viewer/motor_explorer_offline.html (open in any browser).""")
-
-# 7 SYNCHRONOUS EXPLODED
-s = new('Title & Subtitle Only', key='b7')
-title(s, 'Synchronous motor: taking it apart', 'Large salient-pole motor with DC excitation, slip rings and top-mounted cooler')
-video(s, 'synchronous_motor_exploded.mp4', IMG('poster_syn.png'), 1.2, 1.38, 10.93, 6.15 * 0.9)
-text(s, 1.2, 6.97, 10.9, 0.25, 'Click to play  ·  pause on any component to discuss it', size=10, color=GREY, align=PP_ALIGN.CENTER)
-notes(s, """[Click the video to play – 50 seconds.]
-
-A large industrial synchronous motor, the kind used on big compressors or mills.
-
-1–3 The stator is built exactly like the induction-motor stator: laminated core and a three-phase winding that creates the rotating field.
-4–6 The rotor is different: salient (projecting) poles, each wound with a copper field coil. With DC current each pole becomes a fixed North or South electromagnet. Damper bars in the pole faces form a small cage used for starting.
-7 The DC excitation system – an exciter cubicle supplying controlled DC.  8 Slip rings and brushes – the sliding contact that carries DC into the spinning rotor.
-9–12 Shaft, oil-lubricated sleeve bearings, the welded frame, and the cooling system: a shaft fan pushes internal air through a top-mounted heat exchanger.""")
-
-for s in list(prs.slides)[-2:]: s._element.set('show', '0')
-
 MORPH_XML = ('<mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">'
   '<mc:Choice xmlns:p159="http://schemas.microsoft.com/office/powerpoint/2015/09/main" Requires="p159">'
-  '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" spd="slow" p14:dur="1000"><p159:morph option="byObject"/></p:transition>'
+  '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" spd="slow" p14:dur="1250"><p159:morph option="byObject"/></p:transition>'
   '</mc:Choice><mc:Fallback><p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:fade/></p:transition></mc:Fallback></mc:AlternateContent>')
 for s in prs.slides:
     if s.slide_id in MORPH:
@@ -524,8 +491,8 @@ Look at the dials: on the left the rotor hand keeps falling behind; on the right
 4: ("0:30", """Every AC motor has two main parts.
 The stator is the fixed outer part. It creates the magnetic field and never moves.
 The rotor is the turning part on the shaft. Between them is a tiny air gap, often only one or two millimetres – the field crosses it without any contact."""),
-"io": ("0:25", """Here is the induction motor taken apart. Seven main parts, numbered one to seven.
-We will look at each one on its own. Keep an eye on the number, and on the small map in the corner that shows where the part sits."""),
+"io": ("0:25", """Here is the induction motor taken apart into its seven main parts, numbered one to seven. Every part on this slide is a real 3D model.
+As we click through, we move in on each part in turn. Keep an eye on the number, and on the small map in the corner that shows where the part sits."""),
 "i1": ("0:15", """Number one, the stator. The fixed outer part: a stack of thin steel sheets with copper coils in the slots. Fed with three-phase power, these coils create the rotating magnetic field."""),
 "i2": ("0:15", """Number two, the rotor. The turning part, inside the stator. The magnetic field pushes it round, and it turns the shaft."""),
 "i3": ("0:20", """Number three is the heart of this motor: the rotor bars and end rings. Here we have removed the steel so you can see them.
@@ -534,7 +501,7 @@ Bars run along the rotor and a ring at each end joins them into a closed cage �
 "i5": ("0:12", """Number five, the bearings – one at each end. Steel balls roll between two rings, so the shaft turns smoothly with very little friction. They are the main wear part of the motor."""),
 "i6": ("0:12", """Number six, the frame or housing, with its end covers. It holds everything in line and protects it, and the fins carry the heat away."""),
 "i7": ("0:12", """And number seven, the cooling fan on the back of the shaft. It blows air along those fins. Seven parts – that is the whole induction motor."""),
-"so": ("0:25", """Now the large synchronous motor, with ten main parts. Several are the same as before; the new ones are in the rotor and in how it gets its DC supply."""),
+"so": ("0:25", """Now the large synchronous motor, taken apart into ten main parts. Several are the same as before; the new ones are in the rotor and in how it gets its DC supply."""),
 "s1": ("0:08", """Number one, the stator – built just like the induction motor's, and it makes the same rotating field."""),
 "s2": ("0:15", """Number two, the rotor – and this is where the motors differ. Its poles stick out like spokes. With DC current, each pole becomes a fixed North or South magnet."""),
 "s3": ("0:15", """Number three, the field winding: copper coils wound round each pole. The DC current flows through these coils and turns the poles into electromagnets."""),
