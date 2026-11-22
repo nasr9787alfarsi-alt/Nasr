@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#050a12;overflow:hidden}
+#root{position:relative;background:radial-gradient(ellipse 75% 70% at 50% 42%, #16314f 0%, #0b1a2c 45%, #050b14 100%);overflow:hidden;font-family:Inter,Arial}
+#root canvas{position:absolute;left:0;top:0}
+#ov{position:absolute;left:0;top:0;z-index:5}#cap,#hd{z-index:6}
+#cap{position:absolute;left:72px;bottom:64px;width:640px;padding:30px 36px;border-radius:18px;background:rgba(8,18,32,0.82);border:1.5px solid rgba(56,182,255,0.45);box-shadow:0 20px 60px rgba(0,0,0,.45);color:#fff;opacity:0}
+#cap .n{font-size:22px;font-weight:700;color:#38b6ff;letter-spacing:2px}#cap .n span{color:#6f8aa6;font-weight:500;margin-left:8px}
+#cap .t{font-size:46px;font-weight:700;margin:8px 0 10px;letter-spacing:-0.5px}
+#cap .d{font-size:26px;line-height:1.38;color:#c9d6e3}
+#cap .chip{display:inline-block;margin-top:16px;padding:7px 16px;border-radius:30px;font-size:19px;font-weight:700;letter-spacing:2px}
+#cap .chip.stationary{background:#1f3b57;color:#9fd8ff;border:1.5px solid #38b6ff}
+#cap .chip.rotating{background:#5a2d12;color:#ffc79e;border:1.5px solid #e07a3a}
+#hd{position:absolute;left:72px;top:56px;color:#fff;opacity:0}
+#hd .k{font-size:20px;letter-spacing:4px;color:#38b6ff;font-weight:700}
+#hd .h{font-size:40px;font-weight:700;margin-top:6px}
+</style></head><body><div id="root"><svg id="ov"></svg><div id="hd"></div><div id="cap"></div></div>
+<script src="three.min.js"></script><script src="BufferGeometryUtils.js"></script><script src="RoomEnvironment.js"></script>
+<script>window.NO_PHYS=location.hash.includes("nophys")</script><script src="motors.js"></script><script src="stage.js"></script><script src="director.js"></script></body></html>

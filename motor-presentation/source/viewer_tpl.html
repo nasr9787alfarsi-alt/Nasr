@@ -1,0 +1,64 @@
+<title>Motor Explorer 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: full-height workshop — 3D viewport left, component panel right; stacks on phones. Single deliberate dark "control room" look. */
+:root{
+  --bg:#07111d; --panel:#0c1a2b; --panel2:#11243a; --line:#21405f; --fg:#eef4fa; --dim:#9fb3c8; --accent:#38b6ff; --copper:#e0874f; --ok:#3ddc97;
+  --display:"Space Grotesk","Segoe UI",Arial,sans-serif; --body:Inter,"Segoe UI",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;margin:0;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:12px}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand small{font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:600;text-transform:uppercase}
+.brand h1{font-family:var(--display);font-size:22px;margin:0;font-weight:700;text-wrap:balance}
+.seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
+.seg button{font:600 13px var(--body);color:var(--dim);background:transparent;border:0;border-radius:7px;padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--panel2);color:var(--fg);box-shadow:inset 0 0 0 1px var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;padding-bottom:max(14px,env(safe-area-inset-bottom,0px))}
+#view{position:relative;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(ellipse 75% 70% at 50% 42%,#16314f 0%,#0b1a2c 45%,#050b14 100%)}
+#view canvas{display:block;width:100%;height:100%;touch-action:none}
+#tip{position:absolute;pointer-events:none;background:rgba(8,18,32,.9);border:1px solid var(--accent);color:var(--fg);font-size:12px;font-weight:600;padding:5px 9px;border-radius:6px;white-space:nowrap}
+.hint{position:absolute;left:12px;bottom:10px;font-size:12px;color:var(--dim);pointer-events:none}
+aside{min-height:0;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+#info-k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600}
+#info-t{font-family:var(--display);font-size:22px;margin:6px 0 6px;font-weight:700;text-wrap:balance}
+#info-d{margin:0;color:var(--dim);line-height:1.5;font-size:14px}
+.controls{display:grid;gap:10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--dim)}
+.row input[type=range]{flex:1;accent-color:var(--accent)}
+.row label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.row input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px}
+#reset{font:600 12px var(--body);background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+.list{flex:1;min-height:120px;overflow:auto;padding:6px}
+#parts{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+#parts button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:transparent;border:0;color:var(--fg);font:500 13.5px var(--body);padding:8px 10px;border-radius:8px;cursor:pointer}
+#parts button:hover{background:var(--panel2)}
+#parts button[aria-pressed="true"]{background:var(--panel2);box-shadow:inset 0 0 0 1px var(--accent)}
+#parts .n{font:600 11px var(--body);color:var(--accent);font-variant-numeric:tabular-nums;width:20px}
+#parts .t{flex:1;min-width:0}
+.chip{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:20px}
+.chip.stationary{color:#9fd8ff;border:1px solid var(--accent)}
+.chip.rotating{color:#ffc79e;border:1px solid var(--copper)}
+@media (max-width:820px){ main{grid-template-columns:1fr;grid-template-rows:56vh auto} .list{max-height:none} }
+</style>
+<header>
+  <div class="brand"><small>Inside the Motor</small><h1>Motor Explorer 3D</h1></div>
+  <div class="seg" role="group" aria-label="Motor type"><button type="button" data-k="induction" aria-pressed="true">Induction motor</button><button type="button" data-k="sync" aria-pressed="false">Synchronous motor</button></div>
+</header>
+<main>
+  <div id="view"><div id="tip" hidden></div><div class="hint">Drag to rotate · scroll or pinch to zoom · click a part</div></div>
+  <aside>
+    <div class="card" aria-live="polite"><div id="info-k"></div><div id="info-t"></div><p id="info-d"></p></div>
+    <div class="card controls">
+      <div class="row"><span>Assembled</span><input id="explode" type="range" min="0" max="100" value="0" aria-label="Explode the motor"><span>Exploded</span></div>
+      <div class="row"><label><input id="cut" type="checkbox"> Cut-away view</label><label><input id="spin" type="checkbox" checked> Spin rotor</label><button id="reset" type="button">Reset</button></div>
+    </div>
+    <div class="card list"><ul id="parts"></ul></div>
+  </aside>
+</main>
+__SCRIPTS__
