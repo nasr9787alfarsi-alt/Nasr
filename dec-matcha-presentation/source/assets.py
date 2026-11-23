@@ -9,12 +9,23 @@ os.makedirs(OUT, exist_ok=True)
 rng = np.random.default_rng(7)
 
 
+def feather(img, frac=0.1):
+    """fade alpha to zero toward the image borders so nothing is clipped by the frame"""
+    a = np.array(img, np.float32)
+    h, w = a.shape[:2]
+    fy = np.clip(np.minimum(np.arange(h), np.arange(h)[::-1]) / (h * frac), 0, 1)
+    fx = np.clip(np.minimum(np.arange(w), np.arange(w)[::-1]) / (w * frac), 0, 1)
+    m = np.outer(fy, fx)
+    a[..., 3] *= m * m * (3 - 2 * m)
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
+
+
 def save_rgba(arr, name):
     Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA").save(os.path.join(OUT, name), optimize=True)
 
 
 # ---------------------------------------------------------------- backgrounds (porcelain)
-def background(name, glows, W=1600, H=900, base=(246, 245, 240), vig=0.05, grain=1.3):
+def background(name, glows, W=1600, H=900, base=(250, 247, 240), vig=0.05, grain=1.3):
     y, x = np.mgrid[0:H, 0:W].astype(np.float32)
     nx, ny = x / W, y / H
     img = np.ones((H, W, 3), np.float32) * np.array(base, np.float32)
@@ -27,7 +38,7 @@ def background(name, glows, W=1600, H=900, base=(246, 245, 240), vig=0.05, grain
     Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(os.path.join(OUT, name), quality=90)
 
 
-LIFT, SAGE, CHAMP = (9, 10, 15), (-14, -6, -16), (-6, -10, -22)
+LIFT, SAGE, CHAMP = (5, 7, 12), (-14, -5, -18), (-5, -10, -24)
 bgs = {
     1: [(0.22, 0.45, 0.30, LIFT, 0.8), (0.25, 0.9, 0.25, SAGE, 0.5)],
     2: [(0.5, 0.5, 0.30, LIFT, 0.8), (0.1, 0.95, 0.3, SAGE, 0.5)],
@@ -108,7 +119,7 @@ def orb(N=1000):
     out[..., :3] = np.where(a[..., None] > 0, out[..., :3] / np.maximum(a, 1e-6)[..., None], 0)
     out[..., :3] *= np.where(alpha > 0, 1, 0)[..., None] + 0  # shadow colour is black
     out[..., 3] = a * 255
-    save_rgba(out, "orb.png")
+    feather(Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGBA"), 0.06).save(os.path.join(OUT, "orb.png"), optimize=True)
 
 
 orb()
@@ -235,3 +246,58 @@ def radar(N=1000, S=2):
 
 radar()
 print("assets written to", OUT)
+
+
+# ---------------------------------------------------------------- ripple rings (replaces radar): still tea surface
+def orbits(N=1600):
+    im = Image.new("RGBA", (N, N), (255, 255, 255, 0))
+    d = ImageDraw.Draw(im)
+    c = N / 2
+    d.ellipse([c - N * 0.48, c - N * 0.48, c + N * 0.48, c + N * 0.48], fill=(255, 255, 255, 150))
+    for f, w, a in [(0.17, 2, 70), (0.30, 3, 85), (0.42, 3, 100), (0.48, 4, 120)]:
+        rr = N * f
+        d.ellipse([c - rr, c - rr, c + rr, c + rr], outline=(31, 58, 43, a), width=w)
+    for k in range(0, 360, 6):                      # fine dotted ripple between rings
+        a = math.radians(k)
+        rr = N * 0.36
+        x, y = c + rr * math.cos(a), c + rr * math.sin(a)
+        d.ellipse([x - 3, y - 3, x + 3, y + 3], fill=(141, 166, 91, 110))
+    im.resize((800, 800), Image.LANCZOS).save(os.path.join(OUT, "radar.png"), optimize=True)
+
+
+orbits()
+
+
+# ---------------------------------------------------------------- matcha powder cloud (depth-of-field particles)
+def powder(W=1800, H=1100, n=9000):
+    out = Image.new("RGBA", (W, H), (150, 172, 98, 0))
+    tones = [(112, 140, 66), (141, 166, 91), (171, 190, 124), (126, 152, 80)]
+    # particles distributed along a gentle swirl arc
+    t = rng.beta(1.6, 1.6, n)
+    ang = math.pi * (0.95 + 0.85 * t)
+    rad = 0.36 + 0.10 * np.sin(3 * t) + rng.normal(0, 0.05, n) * (0.4 + t)
+    xs = W * (0.62 + rad * np.cos(ang) * 1.1)
+    ys = H * (0.72 + rad * np.sin(ang) * 1.25)
+    xs += rng.normal(0, 18, n) * (1 + 2 * t)
+    ys += rng.normal(0, 18, n) * (1 + 2 * t)
+    depth = rng.random(n)
+    for layer, (lo, hi, blur, amax) in enumerate([(0.0, 0.55, 0.6, 210), (0.55, 0.85, 2.2, 150), (0.85, 1.0, 6.0, 90)]):
+        lay = Image.new("RGBA", (W, H), (150, 172, 98, 0))
+        d = ImageDraw.Draw(lay)
+        sel = (depth >= lo) & (depth < hi)
+        for x, y, dp in zip(xs[sel], ys[sel], depth[sel]):
+            r = 0.8 + dp * 5.5 * rng.random()
+            col = tones[int(rng.integers(0, 4))]
+            d.ellipse([x - r, y - r, x + r, y + r], fill=col + (int(amax * rng.uniform(0.35, 1)),))
+        out = Image.alpha_composite(out, lay.filter(ImageFilter.GaussianBlur(blur)))
+    # soft haze following the density
+    haze = Image.new("L", (W, H), 0)
+    dh = ImageDraw.Draw(haze)
+    for x, y in zip(xs[::6], ys[::6]):
+        dh.ellipse([x - 26, y - 26, x + 26, y + 26], fill=10)
+    haze = haze.filter(ImageFilter.GaussianBlur(40))
+    hz = Image.new("RGBA", (W, H), (150, 172, 98, 0)); hz.putalpha(haze.point(lambda v: min(255, v * 2)))
+    feather(Image.alpha_composite(hz, out), 0.14).save(os.path.join(OUT, "powder.png"), optimize=True)
+
+
+powder()

@@ -123,29 +123,88 @@ def mix(total_sec, parts):
     return out
 
 
+# ------------------------------------------------------------------ organic palette (matcha ritual)
+def air(sec=1.5):
+    """soft breath of air — a camera drift, not a jet"""
+    t = t_axis(sec)
+    n = rng.normal(0, 1, len(t))
+    x = bandpass(n, 300, 2600) * np.exp(-((t / sec - 0.5) ** 2) / 0.06)
+    return fade(norm(x, 0.22), 0.05, 0.3)
+
+
+def bowl(sec=2.6, f0=233.0):
+    """warm ceramic tea-bowl resonance (inharmonic partials, slow decay)"""
+    t = t_axis(sec)
+    x = sum(np.sin(2 * np.pi * f0 * r * t + p) * a * np.exp(-t * d)
+            for r, a, d, p in [(1, 1, 1.4, 0), (2.71, .45, 2.2, .3), (5.18, .18, 3.5, .7), (8.4, .06, 5, 1.1)])
+    x *= np.clip(t / 0.012, 0, 1) * (1 + 0.05 * np.sin(2 * np.pi * 3.1 * t))
+    x += bandpass(rng.normal(0, 1, len(t)), 1500, 6000) * np.exp(-t * 40) * 0.15   # felt-mallet contact
+    return fade(norm(x, 0.42), 0.002, 0.4)
+
+
+def drop(sec=0.9):
+    """water droplet: fast upward chirp + small ripple tail"""
+    t = t_axis(sec)
+    f = 700 + 1100 * (1 - np.exp(-t * 90))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    x = np.sin(ph) * np.exp(-t * 28)
+    x += np.sin(2 * np.pi * 1650 * t) * np.exp(-t * 9) * 0.18 * np.clip((t - 0.03) / 0.02, 0, 1)
+    return fade(norm(x, 0.35), 0.001, 0.2)
+
+
+def knock(sec=0.25, f0=520):
+    """hollow bamboo knock"""
+    t = t_axis(sec)
+    x = np.sin(2 * np.pi * f0 * t) * np.exp(-t * 34) + np.sin(2 * np.pi * f0 * 2.4 * t) * np.exp(-t * 60) * 0.35
+    x += bandpass(rng.normal(0, 1, len(t)), 400, 2500) * np.exp(-t * 120) * 0.5
+    return x
+
+
+def tick(sec=0.04, amp=1.0, f0=1250):
+    """soft wooden tick"""
+    t = t_axis(sec)
+    x = np.sin(2 * np.pi * f0 * t) * np.exp(-t * 180) + bandpass(rng.normal(0, 1, len(t)), 900, 4000) * np.exp(-t * 400) * 0.4
+    return x * amp
+
+
+def tink(sec=1.1):
+    """small ceramic tink on arrival"""
+    t = t_axis(sec)
+    x = sum(np.sin(2 * np.pi * f * t) * a * np.exp(-t * d) for f, a, d in [(1760, 1, 5), (2370, .5, 7), (4510, .15, 11)])
+    return x * np.clip(t / 0.003, 0, 1)
+
+
+def whisk(sec=1.3):
+    """chasen whisking: rapid brushy strokes in the bowl"""
+    t = t_axis(sec)
+    n = bandpass(rng.normal(0, 1, len(t)), 1800, 7500)
+    strokes = (0.5 + 0.5 * np.sin(2 * np.pi * 9.5 * t)) ** 3
+    env = np.clip(t / 0.15, 0, 1) * np.clip((sec - t) / 0.4, 0, 1)
+    return fade(norm(n * strokes * env, 0.2), 0.01, 0.2)
+
+
+# ------------------------------------------------------------------ compositions used by the deck
 # ------------------------------------------------------------------ compositions used by the deck
 def make(kind, p, path):
-    if kind == "whoosh":
-        x = whoosh(p.get("sec", 1.4))
-    elif kind == "boom":
-        x = boom()
-    elif kind == "roll":                       # count-up: soft ticks per frame + a lock chime on the final value
+    if kind == "air":
+        x = air()
+    elif kind == "bowl":
+        x = bowl()
+    elif kind == "drop":
+        x = drop()
+    elif kind == "knock":
+        x = norm(knock(), 0.32)
+    elif kind == "whisk":
+        x = whisk()
+    elif kind == "roll":                       # count-up: soft wooden ticks per frame + ceramic tink on the final value
         step, n = p["step"] / 1000, p["n"]
-        parts = [(i * step, click(amp=0.55 + 0.45 * i / n, freq=2400 + 40 * i), 1) for i in range(n)]
-        parts.append((n * step, chime(), 0.55))
-        parts.append((n * step, click(freq=3200), 0.8))
-        x = norm(mix(n * step + 1.0, parts), 0.42)
-    elif kind == "assemble":                   # digits landing: metallic clacks, then chime
-        parts = [(ms / 1000, clack(), 1) for ms in p["times"]]
-        parts.append((p["final"] / 1000, chime(), 0.7))
-        x = norm(mix(p["final"] / 1000 + 1.0, parts), 0.45)
-    elif kind == "servo":
-        parts = [(0, servo(p["sec"]), 1), (p["sec"] - 0.05, clack(), 0.6)]
-        x = norm(mix(p["sec"] + 0.35, parts), 0.4)
-    elif kind == "ping":
-        x = norm(ping(), 0.3)
-    elif kind == "clack":
-        x = norm(clack(), 0.38)
+        parts = [(i * step, tick(amp=0.5 + 0.5 * i / n, f0=1150 + 15 * i), 1) for i in range(n)]
+        parts.append((n * step, tink(), 0.5))
+        x = norm(mix(n * step + 1.2, parts), 0.34)
+    elif kind == "assemble":                   # digits settling: bamboo knocks, then tink
+        parts = [(ms / 1000, knock(f0=480 + 25 * i), 1) for i, ms in enumerate(p["times"])]
+        parts.append((p["final"] / 1000, tink(), 0.6))
+        x = norm(mix(p["final"] / 1000 + 1.2, parts), 0.36)
     else:
         raise ValueError(kind)
     write(path, fade(x, 0.001, 0.02))

@@ -1,4 +1,4 @@
-// Dec Matcha — "Porcelain & Forest" identity. Content strings are copied verbatim from the original deck.
+// Dec Matcha — "Ivory, Forest & Matcha" identity. Content strings are copied verbatim from the original deck.
 const pptxgen = require("pptxgenjs");
 const React = require("react");
 const RDS = require("react-dom/server");
@@ -13,12 +13,14 @@ const OUT = process.argv[3] || "deck.pptx";
 
 // ------------------------------------------------------------ design tokens
 const C = {
-  porc: "F6F5F0",   // ground
+  porc: "FAF7F0",   // warm ivory ground
   white: "FFFFFF",  // surfaces
   forest: "1F3A2B", // brand anchor
   sage: "7E9C68",   // secondary
   sageL: "DCE6D3",  // light text on forest
-  tint: "EEF3E8",   // emphasis surface
+  tint: "EDF2E3",   // emphasis surface (matcha tint)
+  beige: "F0E9DA",  // notes surface
+  matcha: "8DA65B", // natural matcha — data accents
   gold: "B39257",   // champagne metal — graphics
   goldD: "8E7140",  // champagne — small text on light
   goldL: "D9C79F",  // champagne — small text on forest
@@ -93,7 +95,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
 const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy: -0.01 });
 
 (async () => {
-  const P = "#F6F5F0";
+  const P = "#FAF7F0";
   const I = {
     leaf: await icon(fa.FaLeaf, P), handshake: await icon(fa.FaHandshake, P), mug: await icon(fa.FaMugHot, P),
     users: await icon(fa.FaUsers, P), pin: await icon(fa.FaMapMarkerAlt, P), heart: await icon(fa.FaHeart, P),
@@ -123,6 +125,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     const s = pres.addSlide({ masterName: "COVER" });
     s.background = { path: A("bg1.jpg") };
     mist(s, 0, 0);
+    s.addImage({ objectName: "!!powder", path: A("powder.png"), x: -0.55, y: 0.05, w: 6.2, h: 6.2 * 825 / 1350, altText: "Drifting matcha powder" });
     orb(s, 1.3, 1.65, 2.3);
     s.addShape("ellipse", { objectName: "!!plate", x: 0.6, y: 0.95, w: 3.7, h: 3.7, fill: { color: C.white }, line: { color: C.hair, width: 0.75 }, shadow: { type: "outer", color: C.forest, blur: 30, offset: 8, angle: 90, opacity: 0.16 } });
     ring(s, 0.42, 0.77, 4.06);
@@ -142,7 +145,9 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     });
     leaves(s, [4.25, 0.35, 0.55, 15], [-0.6, 4.35, 1.6, -25]);
     const fx = [
-      { type: "fade", names: ["!!plate"], at: 0, dur: 900, sound: { kind: "boom", vol: 0.7 } },
+      { type: "fade", names: ["!!plate"], at: 0, dur: 900, sound: { kind: "bowl", vol: 0.7 } },
+      { type: "fade", names: ["!!powder"], at: 500, dur: 1800, sound: { kind: "whisk", vol: 0.5 } },
+      { type: "emergeX", names: ["!!powder"], at: 500, dur: 2400, dx: -0.03 },
       { type: "fade", names: ["!!logo"], at: 350, dur: 900 },
       { type: "fade", names: ["!!ring"], at: 700, dur: 900 },
       { type: "spin", names: ["!!ring"], at: 700, dur: 90000 },
@@ -199,13 +204,13 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     });
     leaves(s, [8.95, 0.3, 0.5, 40], [-0.75, 4.6, 1.5, 10]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 45000 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000, rev: true },
       ...spokes.map((n, i) => ({ type: "wipe", dir: n.includes("L") ? "right" : "left", names: [n], at: 100 + (i >> 1) * 120, dur: 600 })),
       ...groups.map(({ g, col }, i) => ({ type: "emerge", names: g, at: 450 + (i % 3) * 170 + col * 85, dur: 850, fx: 0.5, fy: 0.52 })),
       floatLeaf(3800),
     ];
-    SPEC.slides.push({ n: 2, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx });
+    SPEC.slides.push({ n: 2, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx });
   }
 
   // =================================================================== 3 — target market (radar)
@@ -222,8 +227,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
 
     label(s, "Competitors label", "COMPETITORS IN NIZWA", 5.4, 1.08, 3);
     ring(s, 5.675, 1.35, 2.65);
-    s.addImage({ objectName: "Radar", path: A("radar.png"), x: 5.725, y: 1.4, w: 2.55, h: 2.55, altText: "Radar showing competitors" });
-    s.addImage({ objectName: "Radar sweep", path: A("sweep.png"), x: 5.725, y: 1.4, w: 2.55, h: 2.55, altText: "Radar sweep" });
+    s.addImage({ objectName: "Radar", path: A("radar.png"), x: 5.725, y: 1.4, w: 2.55, h: 2.55, altText: "Ripple rings around the bowl" });
     orb(s, 6.69, 2.365, 0.62);
     const comp = [["Drisha", 6.33, 1.98], ["Fusul Cafe", 7.82, 2.3], ["Rive", 6.72, 3.33]];
     const cg = [];
@@ -239,7 +243,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     diffs.forEach((d, i) => {
       const x = 0.5 + i * 2.3;
       card(s, `Diff card ${i}`, x, 4.4, 2.1, 0.5, { r: 0.25 });
-      s.addShape("ellipse", { objectName: `Check ${i}`, x: x + 0.12, y: 4.5, w: 0.3, h: 0.3, fill: { color: C.forest }, line: { type: "none" } });
+      s.addShape("ellipse", { objectName: `Check ${i}`, x: x + 0.12, y: 4.5, w: 0.3, h: 0.3, fill: { color: C.matcha }, line: { type: "none" } });
       s.addImage({ objectName: `Check icon ${i}`, data: I.check, x: x + 0.195, y: 4.575, w: 0.15, h: 0.15, altText: "Check" });
       txt(s, `Diff ${i}`, d, x + 0.52, 4.4, 1.55, 0.5, { fontSize: 12, bold: true, color: C.ink, valign: "middle" });
       dg.push([`Diff card ${i}`, `Check ${i}`, `Check icon ${i}`, `Diff ${i}`]);
@@ -252,17 +256,15 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       { type: "counter", frames: k.frames, final: k.final, at: 450, step: 80, sound: { vol: 0.7 } },
       { type: "rise", names: ["Customers"], at: 1250, dur: 600 },
       { type: "rise", names: ["Also welcome"], at: 1400, dur: 600 },
-      { type: "zoom", names: ["Radar"], at: 200, dur: 900, from: 0.7 },
+      { type: "zoom", names: ["Radar"], at: 200, dur: 1400, from: 0.4 },
       { type: "fade", names: ["Competitors label"], at: 400, dur: 600 },
-      { type: "fade", names: ["Radar sweep"], at: 900, dur: 400 },
-      { type: "spin", names: ["Radar sweep"], at: 900, dur: 5000 },
-      { type: "spin", names: ["!!orb"], at: 0, dur: 35000 },
-      ...cg.map((g, i) => ({ type: "pop", names: g, at: 1300 + i * 350, dur: 450, sound: { kind: "ping", vol: 0.5 } })),
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
+      ...cg.map((g, i) => ({ type: "pop", names: g, at: 1300 + i * 350, dur: 450, sound: { kind: "drop", vol: 0.4 } })),
       { type: "fade", names: ["Difference label"], at: 2100, dur: 500 },
       ...dg.map((g, i) => ({ type: "rise", names: g, at: 2200 + i * 130, dur: 600 })),
       floatLeaf(3400),
     ];
-    SPEC.slides.push({ n: 3, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx, text3d: [k.final] });
+    SPEC.slides.push({ n: 3, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, text3d: [k.final] });
   }
 
   // =================================================================== 4 — macro-economics (gauge)
@@ -271,10 +273,15 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     s.background = { path: A("bg4.jpg") };
     mist(s, -0.75, 0.05);
     header(s, "03", "Macro-Economic Factors");
-    s.addImage({ objectName: "Gauge", path: A("gauge.png"), x: 0.5, y: 1.15, w: 3.8, h: 3.8, altText: "Gauge dial for inflation" });
-    s.addImage({ objectName: "Needle", path: A("needle.png"), x: 0.5, y: 1.15, w: 3.8, h: 3.8, rotate: 303.3, altText: "Gauge needle" });
-    orb(s, 2.09, 2.74, 0.62);
-    const k = counter(s, "Inflation value", "2.9%", (f) => `${(2.9 * f).toFixed(1)}%`, { x: 1.6, y: 3.38, w: 1.6, h: 0.62, fill: C.forest }, { fontFace: H, fontSize: 38, bold: true, color: C.porc, align: "center", valign: "middle" }, 12);
+    // a single drop lands in the bowl: ripples spread from the inflation figure
+    const ox = 2.425, oy = 3.05;
+    orb(s, ox - 1.975, oy - 1.975, 3.95);
+    const ripples = [[1.75, 25], [2.25, 45], [2.7, 62]].map(([d, tr], i) => {
+      s.addShape("ellipse", { objectName: `Ripple ${i + 1}`, x: ox - d / 2, y: oy - d / 2, w: d, h: d, fill: { type: "none" }, line: { color: C.porc, width: 1.25, transparency: tr } });
+      return `Ripple ${i + 1}`;
+    });
+    s.addShape("ellipse", { objectName: "Drop", x: ox - 0.72, y: oy - 0.72, w: 1.44, h: 1.44, fill: { color: C.forest }, line: { color: C.porc, width: 1.5, transparency: 20 }, shadow: shadow(0.3, 12) });
+    const k = counter(s, "Inflation value", "2.9%", (f) => `${(2.9 * f).toFixed(1)}%`, { x: ox - 0.62, y: oy - 0.3, w: 1.24, h: 0.6, fill: C.forest }, { fontFace: H, fontSize: 32, bold: true, color: C.porc, align: "center", valign: "middle" }, 12);
 
     txt(s, "Inflation title", "Inflation", 5.0, 1.2, 4.4, 0.42, { fontFace: H, fontSize: 22, bold: true, color: C.forest });
     txt(s, "Inflation text", "Higher prices for matcha, milk, cups, and rent can increase our costs.", 5.0, 1.65, 4.4, 0.48, { fontSize: 12.5, color: C.body });
@@ -291,19 +298,17 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     });
     leaves(s, [9.05, 0.3, 0.5, 160], [-0.9, 4.25, 1.5, 30]);
     const fx = [
-      { type: "zoom", names: ["Gauge"], at: 0, dur: 800, from: 0.85 },
-      { type: "rotby", names: ["Needle"], at: 0, dur: 1, by: -78.3 },
-      { type: "fade", names: ["Needle"], at: 500, dur: 300 },
-      { type: "rotby", names: ["Needle"], at: 600, dur: 1300, by: 78.3, decel: true, sound: { kind: "servo", sec: 1.3, vol: 0.6 } },
-      { type: "counter", frames: k.frames, final: k.final, at: 600, step: 108 },
-      { type: "spin", names: ["!!orb"], at: 0, dur: 35000 },
+      { type: "pop", names: ["Drop"], at: 250, dur: 500, sound: { kind: "drop", vol: 0.6 } },
+      ...ripples.map((r, i) => ({ type: "zoom", names: [r], at: 450 + i * 220, dur: 1500, from: 0.45 })),
+      { type: "counter", frames: k.frames, final: k.final, at: 600, step: 100 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "rise", names: ["Inflation title"], at: 900, dur: 600 },
       { type: "rise", names: ["Inflation text"], at: 1050, dur: 600 },
       { type: "fade", names: ["Inflation source"], at: 1300, dur: 600 },
       ...cg.map((g, i) => ({ type: "emergeX", names: g, at: 1700 + i * 300, dur: 800, dx: 0.06 })),
       floatLeaf(3600),
     ];
-    SPEC.slides.push({ n: 4, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx, text3d: [k.final] });
+    SPEC.slides.push({ n: 4, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, text3d: [k.final] });
   }
 
   // =================================================================== 5 — 4 Ps
@@ -331,12 +336,12 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     orb(s, 4.5, 2.55, 1.0);
     leaves(s, [9.15, 0.3, 0.45, 200], [4.3, 5.0, 1.3, 0]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 35000 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000, rev: true },
       ...pg.map((g, i) => ({ type: "emerge", names: g, at: 150 + i * 220, dur: 900, fx: 0.5, fy: 0.54 })),
       floatLeaf(3300),
     ];
-    SPEC.slides.push({ n: 5, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx });
+    SPEC.slides.push({ n: 5, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx });
   }
 
   // =================================================================== 6 — human resources
@@ -365,23 +370,23 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       txt(s, `Duty ${t}`, d, x + 0.1, 3.7, 1.85, 0.3, { fontSize: 11, color: C.body, align: "center", valign: "middle" }); g.push(`Duty ${t}`);
       rg.push(g);
     });
-    card(s, "Staff bar", 0.55, 4.45, 8.95, 0.5, { fill: C.tint, r: 0.25, noShadow: true });
+    card(s, "Staff bar", 0.55, 4.45, 8.95, 0.5, { fill: C.beige, line: "E4DCC9", r: 0.25, noShadow: true });
     txt(s, "Staff text", [
       { text: "Additional staff: ", options: { bold: true, color: C.forest } },
       { text: "baristas and a cashier/service assistant", options: { color: C.body } },
     ], 0.55, 4.45, 8.95, 0.5, { fontSize: 12, align: "center", valign: "middle" });
     leaves(s, [9.55, 2.0, 0.45, 300], [-0.85, 0.9, 1.5, 60]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 35000 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "drop", names: ["GM card", "GM title", "GM text"], at: 0, dur: 800 },
       { type: "wipe", dir: "top", names: ["Trunk"], at: 700, dur: 300 },
-      { type: "barn", names: ["Branch"], at: 950, dur: 600, sound: { kind: "clack", vol: 0.5 } },
+      { type: "barn", names: ["Branch"], at: 950, dur: 600, sound: { kind: "knock", vol: 0.5 } },
       ...drops.map((d) => ({ type: "wipe", dir: "top", names: [d], at: 1450, dur: 250 })),
       ...rg.map((g, i) => ({ type: "flip", names: g, at: 1600 + i * 150, dur: 700 })),
       { type: "zoom", names: ["Staff bar", "Staff text"], at: 2400, dur: 700, from: 0.94 },
       floatLeaf(3500),
     ];
-    SPEC.slides.push({ n: 6, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx });
+    SPEC.slides.push({ n: 6, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx });
   }
 
   // =================================================================== 7 — start-up costs & finance
@@ -410,7 +415,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       const y = 2.2 + i * 0.47;
       txt(s, `Cost label ${i}`, l, 0.5, y, 1.8, 0.4, { fontSize: 10, color: C.body, valign: "middle" });
       s.addShape("roundRect", { objectName: `Track ${i}`, x: 2.4, y: y + 0.13, w: 1.75, h: 0.14, rectRadius: 0.07, fill: { color: "E4EAE0" }, line: { type: "none" } });
-      s.addShape("roundRect", { objectName: `Bar ${i}`, x: 2.4, y: y + 0.13, w: 1.75 * n / 2200, h: 0.14, rectRadius: 0.07, fill: { color: i === 4 ? C.gold : C.forest }, line: { type: "none" } });
+      s.addShape("roundRect", { objectName: `Bar ${i}`, x: 2.4, y: y + 0.13, w: 1.75 * n / 2200, h: 0.14, rectRadius: 0.07, fill: { color: i === 4 ? C.gold : C.matcha }, line: { type: "none" } });
       txt(s, `Cost value ${i}`, v, 4.25, y, 0.85, 0.4, { fontSize: 10, bold: true, color: C.ink, valign: "middle" });
     });
     txt(s, "Estimate note", "These costs are estimates, not final prices.", 0.5, 4.7, 4.6, 0.28, { fontSize: 9.5, italic: true, color: C.muted });
@@ -432,7 +437,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     const f2 = counter(s, "Fin value 2", "OMR 2,500", (f) => omr(2500 * f), { x: 8.3, y: 3.35, w: 1.12, h: 0.42, fill: C.white }, { fontFace: H, fontSize: 16, bold: true, color: C.goldD, valign: "middle" }, 10);
     leaves(s, [9.1, 4.35, 0.45, 20], [9.0, -0.65, 1.5, -10]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 35000 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000 },
       { type: "zoom", names: ["Total card", "Total label"], at: 0, dur: 700, from: 0.94 },
       { type: "assemble", digits: digitNames, final: "Total value", at: 250, step: 110, dur: 450, sound: { vol: 0.7 } },
@@ -449,7 +454,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       { type: "counter", frames: f2.frames, final: f2.final, at: 2150, step: 75, sound: { vol: 0.45 } },
       floatLeaf(3100),
     ];
-    SPEC.slides.push({ n: 7, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx, text3d: ["Total value"] });
+    SPEC.slides.push({ n: 7, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, text3d: ["Total value"] });
   }
 
   // =================================================================== 8 — references
@@ -476,18 +481,18 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       txt(s, `URL ${i}`, [{ text: url, options: { hyperlink: { url } } }], 1.48, y + 0.47, 7.85, 0.2, { fontSize: 8.5, color: "4E7A55", valign: "middle" });
       rg.push({ node: [`Node ${i}`, `Node num ${i}`], card: [`Ref card ${i}`, `Ref ${i}`, `URL ${i}`] });
     });
-    card(s, "Note bar", 1.3, 4.45, 8.2, 0.48, { fill: C.tint, r: 0.24, noShadow: true });
+    card(s, "Note bar", 1.3, 4.45, 8.2, 0.48, { fill: C.beige, line: "E4DCC9", r: 0.24, noShadow: true });
     txt(s, "Note", "Dec Matcha’s drink prices, start-up costs, and sources of finance are the team’s own estimates.", 1.48, 4.45, 7.85, 0.48, { fontSize: 10.5, italic: true, color: C.forest, valign: "middle" });
     leaves(s, [0.3, 4.55, 0.4, 40], [9.45, 1.0, 1.4, 120]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 35000 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "wipe", dir: "top", names: ["Timeline"], at: 0, dur: 2000 },
       ...rg.map((r, i) => ({ type: "pop", names: r.node, at: 150 + i * 480, dur: 400 })),
       ...rg.map((r, i) => ({ type: "emergeX", names: r.card, at: 250 + i * 480, dur: 700, dx: 0.04 })),
       { type: "rise", names: ["Note bar", "Note"], at: 2300, dur: 700 },
       floatLeaf(3200),
     ];
-    SPEC.slides.push({ n: 8, transition: "morph", tsound: { kind: "whoosh", vol: 0.6 }, effects: fx });
+    SPEC.slides.push({ n: 8, transition: "morph", tsound: { kind: "air", vol: 0.6 }, effects: fx });
   }
 
   // =================================================================== 9 — thank you
@@ -495,6 +500,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     const s = pres.addSlide({ masterName: "COVER" });
     s.background = { path: A("bg9.jpg") };
     mist(s, -2.0, 0.05);
+    s.addImage({ objectName: "!!powder", path: A("powder.png"), x: 1.75, y: -0.45, w: 5.6, h: 5.6 * 825 / 1350, altText: "Drifting matcha powder" });
     orb(s, 8.3, 3.3, 3.4);
     s.addShape("ellipse", { objectName: "!!plate", x: 3.6, y: 0.42, w: 2.8, h: 2.8, fill: { color: C.white }, line: { color: C.hair, width: 0.75 }, shadow: { type: "outer", color: C.forest, blur: 30, offset: 8, angle: 90, opacity: 0.16 } });
     ring(s, 3.42, 0.24, 3.16);
@@ -503,13 +509,13 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     txt(s, "Closing", "Dec Matcha aims to bring fresh matcha, good service, and a comfortable café experience to Nizwa.", 1.8, 4.25, 6.4, 0.6, { fontSize: 14, align: "center", color: C.body });
     leaves(s, [6.5, 0.4, 0.55, 30], [-0.6, 3.6, 1.7, -20]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 45000 },
+      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000 },
-      { type: "rise", names: ["Thanks"], at: 200, dur: 1000, sound: { kind: "boom", vol: 0.6 } },
+      { type: "rise", names: ["Thanks"], at: 200, dur: 1000, sound: { kind: "bowl", vol: 0.6 } },
       { type: "rise", names: ["Closing"], at: 900, dur: 900 },
       floatLeaf(3200),
     ];
-    SPEC.slides.push({ n: 9, transition: "morph", tsound: { kind: "whoosh", vol: 0.8 }, effects: fx, tilt: { "!!orb": 48 } });
+    SPEC.slides.push({ n: 9, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, tilt: { "!!orb": 48 } });
   }
 
   await pres.writeFile({ fileName: OUT });
