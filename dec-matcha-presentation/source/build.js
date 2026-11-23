@@ -131,7 +131,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
     });
     leaves(s, [4.45, 0.25, 0.6, 15], [-0.55, 4.3, 1.7, -25]);
     const fx = [
-      { type: "zoom", names: ["!!plate"], at: 0, dur: 1100, from: 0.6 },
+      { type: "zoom", names: ["!!plate"], at: 0, dur: 1100, from: 0.6, sound: { kind: "boom", vol: 0.9 } },
       { type: "fade", names: ["!!logo"], at: 500, dur: 900 },
       { type: "zoom", names: ["!!logo"], at: 500, dur: 900, from: 0.85, noFade: true },
       { type: "fade", names: ["!!ring"], at: 900, dur: 900 },
@@ -194,7 +194,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       ...groups.map(({ g, col }, i) => ({ type: "emerge", names: g, at: 500 + (i % 3) * 180 + col * 90, dur: 800, fx: 0.5, fy: 0.52 })),
       { type: "float", names: ["!!leafA"], at: 0, dur: 3400, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 2, transition: "morph", effects: fx });
+    SPEC.slides.push({ n: 2, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx });
   }
 
   // =================================================================== 3 — target market (radar)
@@ -238,7 +238,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "spin", names: ["!!ring"], at: 0, dur: 60000 },
       { type: "zoom", names: ["Hero card"], at: 0, dur: 700, from: 0.92 },
       { type: "fade", names: ["Main customers label"], at: 300, dur: 500 },
-      { type: "counter", frames: k.frames, final: k.final, at: 450, step: 80 },
+      { type: "counter", frames: k.frames, final: k.final, at: 450, step: 80, sound: { vol: 0.8 } },
       { type: "rise", names: ["Customers"], at: 1250, dur: 600 },
       { type: "rise", names: ["Also welcome"], at: 1400, dur: 600 },
       { type: "zoom", names: ["Radar"], at: 200, dur: 900, from: 0.6 },
@@ -246,12 +246,12 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "fade", names: ["Radar sweep"], at: 900, dur: 400 },
       { type: "spin", names: ["Radar sweep"], at: 900, dur: 4000 },
       { type: "spin", names: ["!!orb"], at: 0, dur: 30000 },
-      ...cg.map((g, i) => ({ type: "pop", names: g, at: 1200 + i * 330, dur: 450 })),
+      ...cg.map((g, i) => ({ type: "pop", names: g, at: 1200 + i * 330, dur: 450, sound: { kind: "ping", vol: 0.6 } })),
       { type: "fade", names: ["Difference label"], at: 2000, dur: 500 },
       ...dg.map((g, i) => ({ type: "rise", names: g, at: 2100 + i * 140, dur: 600 })),
       { type: "float", names: ["!!leafA"], at: 0, dur: 3000, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 3, transition: "morph", effects: fx, text3d: [k.final] });
+    SPEC.slides.push({ n: 3, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx, text3d: [k.final] });
   }
 
   // =================================================================== 4 — macro-economics (gauge)
@@ -283,7 +283,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "zoom", names: ["Gauge"], at: 0, dur: 800, from: 0.8 },
       { type: "rotby", names: ["Needle"], at: 0, dur: 1, by: -78.3, hidden: true },
       { type: "fade", names: ["Needle"], at: 500, dur: 300 },
-      { type: "rotby", names: ["Needle"], at: 600, dur: 1300, by: 78.3, decel: true },
+      { type: "rotby", names: ["Needle"], at: 600, dur: 1300, by: 78.3, decel: true, sound: { kind: "servo", sec: 1.3, vol: 0.8 } },
       { type: "counter", frames: k.frames, final: k.final, at: 600, step: 108 },
       { type: "spin", names: ["!!orb"], at: 0, dur: 30000 },
       { type: "rise", names: ["Inflation title"], at: 900, dur: 600 },
@@ -292,7 +292,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       ...cg.map((g, i) => ({ type: "emergeX", names: g, at: 1700 + i * 300, dur: 800, dx: 0.08 })),
       { type: "float", names: ["!!leafA"], at: 0, dur: 3600, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 4, transition: "morph", effects: fx, text3d: [k.final] });
+    SPEC.slides.push({ n: 4, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx, text3d: [k.final] });
   }
 
   // =================================================================== 5 — 4 Ps (quadrants around the bowl)
@@ -325,7 +325,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       ...pg.map((g, i) => ({ type: "emerge", names: g, at: 150 + i * 220, dur: 900, fx: 0.5, fy: 0.54 })),
       { type: "float", names: ["!!leafA"], at: 0, dur: 3300, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 5, transition: "morph", effects: fx });
+    SPEC.slides.push({ n: 5, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx });
   }
 
   // =================================================================== 6 — human resources (org chart)
@@ -364,13 +364,13 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "spin", names: ["!!orb"], at: 0, dur: 30000 },
       { type: "drop", names: ["GM card", "GM title", "GM text"], at: 0, dur: 800 },
       { type: "wipe", dir: "top", names: ["Trunk"], at: 700, dur: 300 },
-      { type: "barn", names: ["Branch"], at: 950, dur: 600 },
+      { type: "barn", names: ["Branch"], at: 950, dur: 600, sound: { kind: "clack", vol: 0.7 } },
       ...drops.map((d, i) => ({ type: "wipe", dir: "top", names: [d], at: 1450, dur: 250 })),
-      ...rg.map((g, i) => ({ type: "rise", names: g, at: 1600 + i * 150, dur: 700 })),
+      ...rg.map((g, i) => ({ type: "flip", names: g, at: 1600 + i * 150, dur: 700 })),
       { type: "zoom", names: ["Staff bar", "Staff text"], at: 2400, dur: 700, from: 0.9 },
       { type: "float", names: ["!!leafA"], at: 0, dur: 3500, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 6, transition: "morph", effects: fx });
+    SPEC.slides.push({ n: 6, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx });
   }
 
   // =================================================================== 7 — start-up costs & finance
@@ -381,7 +381,19 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
     header(s, "06", "Start-up Costs & Finance");
     card(s, "Total card", 0.5, 1.15, 4.6, 0.85, { fill: C.matcha, line: C.matchaL, r: 0.1 });
     txt(s, "Total label", "TOTAL START-UP BUDGET", 0.72, 1.15, 2.0, 0.85, { fontSize: 9, bold: true, color: C.ink, charSpacing: 1.5, valign: "middle" });
-    const k = counter(s, "Total value", "OMR 8,500", (f) => omr(8500 * f), { x: 2.6, y: 1.24, w: 2.32, h: 0.66, fill: C.matcha }, { fontFace: H, fontSize: 28, bold: true, color: C.ink, align: "right", valign: "middle" }, 12);
+    // digits assemble individually (glyph advances = Cambria Bold metrics), then the editable final value locks in on top
+    const MET = JSON.parse(fs.readFileSync(path.join(__dirname, "metrics.json")));
+    const TV = "OMR 8,500", FS = 28, right = 2.6 + 2.32;
+    const adv = (str) => [...str].reduce((a, ch) => a + MET[ch] * FS / 72, 0);
+    const x0 = right - adv(TV);
+    const pieces = [[0, "OMR"], [4, "8"], [5, ","], [6, "5"], [7, "0"], [8, "0"]];
+    const digitNames = pieces.map(([i, str], j) => {
+      const nm = `Total value counter frame digit ${j + 1}`;
+      txt(s, nm, str, x0 + adv(TV.slice(0, i)), 1.24, adv(str) + 0.12, 0.66, { fontFace: H, fontSize: FS, bold: true, color: C.ink, valign: "middle", wrap: false });
+      return nm;
+    });
+    txt(s, "Total value", TV, 2.6, 1.24, 2.32, 0.66, { fontFace: H, fontSize: FS, bold: true, color: process.env.DEBUG_DIGITS ? "FF0000" : C.ink, align: "right", valign: "middle", ...(process.env.DEBUG_DIGITS ? {} : { fill: { color: C.matcha } }) });
+    const k = { final: "Total value", digits: digitNames };
     // values for frames need scaling: rebuild text via fmt with target
     const costs = [["Rent and setup", "OMR 1,500", 1500], ["Furniture and interior", "OMR 1,800", 1800], ["Equipment", "OMR 2,000", 2000], ["Ingredients and packaging", "OMR 1,000", 1000], ["Other setup costs and working capital", "OMR 2,200", 2200]];
     const bars = [];
@@ -416,7 +428,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "spin", names: ["!!orb"], at: 0, dur: 30000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 60000 },
       { type: "zoom", names: ["Total card", "Total label"], at: 0, dur: 700, from: 0.9 },
-      { type: "counter", frames: k.frames, final: k.final, at: 300, step: 85 },
+      { type: "assemble", digits: k.digits, final: k.final, at: 250, step: 110, dur: 450, sound: { vol: 0.85 } },
       ...bars.map((i) => ({ type: "fade", names: [`Cost label ${i}`, `Track ${i}`], at: 600 + i * 120, dur: 500 })),
       ...bars.map((i) => ({ type: "wipe", dir: "left", names: [`Bar ${i}`], at: 900 + i * 120, dur: 800 })),
       ...bars.map((i) => ({ type: "emergeX", names: [`Cost value ${i}`], at: 1450 + i * 120, dur: 500, dx: -0.02 })),
@@ -425,12 +437,12 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "wheel", names: ["Arc partners"], at: 1000, dur: 1100 },
       { type: "wheel", names: ["Arc family"], at: 2000, dur: 600 },
       { type: "emergeX", names: ["Fin card 1", "Swatch 1", "Fin label 1"], at: 1300, dur: 600, dx: 0.04 },
-      { type: "counter", frames: f1.frames, final: f1.final, at: 1450, step: 75 },
+      { type: "counter", frames: f1.frames, final: f1.final, at: 1450, step: 75, sound: { vol: 0.55 } },
       { type: "emergeX", names: ["Fin card 2", "Swatch 2", "Fin label 2"], at: 2000, dur: 600, dx: 0.04 },
-      { type: "counter", frames: f2.frames, final: f2.final, at: 2150, step: 75 },
+      { type: "counter", frames: f2.frames, final: f2.final, at: 2150, step: 75, sound: { vol: 0.55 } },
       { type: "float", names: ["!!leafA"], at: 0, dur: 3100, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 7, transition: "morph", effects: fx, text3d: [k.final] });
+    SPEC.slides.push({ n: 7, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx, text3d: [k.final] });
   }
 
   // =================================================================== 8 — references (timeline)
@@ -468,7 +480,7 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
       { type: "rise", names: ["Note bar", "Note"], at: 2300, dur: 700 },
       { type: "float", names: ["!!leafA"], at: 0, dur: 3200, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 8, transition: "morph", effects: fx });
+    SPEC.slides.push({ n: 8, transition: "morph", tsound: { kind: "whoosh", vol: 0.7 }, effects: fx });
   }
 
   // =================================================================== 9 — thank you
@@ -486,11 +498,11 @@ const omr = (v) => "OMR " + Math.round(v).toLocaleString("en-US");
     const fx = [
       { type: "spin", names: ["!!orb"], at: 0, dur: 40000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 60000 },
-      { type: "letters", names: ["Thanks"], at: 200, dur: 500, step: 80 },
+      { type: "letters", names: ["Thanks"], at: 200, dur: 500, step: 80, sound: { kind: "boom", vol: 0.8 } },
       { type: "rise", names: ["Closing"], at: 1200, dur: 800 },
       { type: "float", names: ["!!leafA"], at: 0, dur: 3200, dy: -0.012 },
     ];
-    SPEC.slides.push({ n: 9, transition: "morph", effects: fx, tilt: { "!!orb": 48 } });
+    SPEC.slides.push({ n: 9, transition: "morph", tsound: { kind: "whoosh", vol: 1.0 }, effects: fx, tilt: { "!!orb": 48 } });
   }
 
   await pres.writeFile({ fileName: OUT });

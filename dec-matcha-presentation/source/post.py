@@ -1,5 +1,7 @@
 """Inject Morph transitions, choreographed animations and 3-D effects into the pptxgenjs deck."""
-import json, os, re, shutil, sys, zipfile
+import json, os, re, shutil, sys, zipfile, hashlib
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import sounds
 from lxml import etree
 
 SRC, DST, SPEC = sys.argv[1], sys.argv[2], sys.argv[3]
@@ -16,7 +18,8 @@ zipfile.ZipFile(SRC).extractall(work)
 class T:
     """Timing XML builder."""
 
-    def __init__(self, shapes):
+    def __init__(self, shapes, snd=None):
+        self.snd = snd
         self.id = 3
         self.shapes = shapes      # name -> (spid, kind)
         self.grp = {}             # spid -> next grpId
@@ -55,7 +58,16 @@ class T:
                 f'<p:cBhvr><p:cTn id="{self.nid()}" dur="{d}" fill="hold"/>{self.tgt(s)}'
                 f'<p:attrNameLst><p:attrName>ppt_x</p:attrName><p:attrName>ppt_y</p:attrName></p:attrNameLst></p:cBhvr></p:animMotion>')
 
-    def effect(self, name, at, cls, pid, sub, body_fn, extra="", iterate=""):
+    def audio(self, sound):
+        if not sound:
+            return ""
+        rid, fname = self.snd(sound)
+        vol = int(sound.get("vol", 1.0) * 100000)
+        return (f'<p:subTnLst><p:audio><p:cMediaNode vol="{vol}" showWhenStopped="0"><p:cTn id="{self.nid()}" display="0" masterRel="sameClick">'
+                '<p:stCondLst><p:cond delay="0"/></p:stCondLst><p:endCondLst><p:cond evt="onNext" delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:endCondLst></p:cTn>'
+                f'<p:tgtEl><p:sndTgt r:embed="{rid}" name="{fname}"/></p:tgtEl></p:cMediaNode></p:audio></p:subTnLst>')
+
+    def effect(self, name, at, cls, pid, sub, body_fn, extra="", iterate="", sound=None):
         if name not in self.shapes:
             raise SystemExit(f"unknown shape name {name!r}")
         s, kind = self.shapes[name]
@@ -67,7 +79,7 @@ class T:
         body = body_fn(s)
         xml = (f'<p:par><p:cTn id="{eid}" presetID="{pid}" presetClass="{cls}" presetSubtype="{sub}"{extra} fill="hold" '
                f'grpId="{g}" nodeType="withEffect"><p:stCondLst><p:cond delay="{int(at)}"/></p:stCondLst>{iterate}'
-               f'<p:childTnLst>{body}</p:childTnLst></p:cTn></p:par>')
+               f'<p:childTnLst>{body}</p:childTnLst>{self.audio(sound)}</p:cTn></p:par>')
         self.items.append((at, xml))
 
     # ---------------------------------------------------------------- effect vocabulary
@@ -78,10 +90,38 @@ class T:
         if t == "counter":
             fr, step = e["frames"], e["step"]
             for i, n in enumerate(fr):
-                self.effect(n, at + i * step, "entr", 1, 0, lambda s: self.setvis(s))
+                snd = dict(e["sound"], kind="roll", step=step, n=len(fr)) if (i == 0 and e.get("sound")) else None
+                self.effect(n, at + i * step, "entr", 1, 0, lambda s: self.setvis(s), sound=snd)
                 self.effect(n, at + (i + 1) * step, "exit", 1, 0, lambda s: self.setvis(s, "hidden"))
             self.effect(e["final"], at + len(fr) * step, "entr", 1, 0, lambda s: self.setvis(s))
             return
+        if t == "assemble":                       # digits fly in from the camera and lock into place
+            dg, step = e["digits"], e["step"]
+            end = at + (len(dg) - 1) * step + d + 60
+            land = [i * step + d for i in range(len(dg))]
+            for i, n in enumerate(dg):
+                snd = dict(e["sound"], kind="assemble", times=land, final=end - at) if (i == 0 and e.get("sound")) else None
+                self.effect(n, at + i * step, "entr", 53, 16, lambda s: self.setvis(s) + self.filt(s, "fade", int(d * 0.6))
+                            + self.anim(s, "ppt_w", "#ppt_w*2.6", "#ppt_w", d) + self.anim(s, "ppt_h", "#ppt_h*2.6", "#ppt_h", d)
+                            + self.anim(s, "ppt_y", "#ppt_y-0.05", "#ppt_y", d), sound=snd)
+                self.effect(n, end, "exit", 1, 0, lambda s: self.setvis(s, "hidden"))
+            self.effect(e["final"], end, "entr", 1, 0, lambda s: self.setvis(s))
+            return
+        orig_effect = self.effect
+        first = [True]
+
+        def effect_with_sound(*a, **k):
+            if first[0] and e.get("sound"):
+                k["sound"] = e["sound"]
+            first[0] = False
+            return orig_effect(*a, **k)
+        self.effect = effect_with_sound
+        try:
+            self._names(e, t, at, d, WIPE)
+        finally:
+            self.effect = orig_effect
+
+    def _names(self, e, t, at, d, WIPE):
         for n in e["names"]:
             if t == "fade":
                 self.effect(n, at, "entr", 10, 0, lambda s: self.setvis(s) + self.filt(s, "fade", d))
@@ -104,6 +144,9 @@ class T:
                 sgn = "+" if dx >= 0 else "-"
                 self.effect(n, at, "entr", 2, 2 if dx >= 0 else 8, lambda s: self.setvis(s) + self.filt(s, "fade", d)
                             + self.anim(s, "ppt_x", f"#ppt_x{sgn}{abs(dx)}", "#ppt_x", d))
+            elif t == "flip":
+                self.effect(n, at, "entr", 53, 16, lambda s: self.setvis(s) + self.filt(s, "fade", int(d * 0.5))
+                            + self.anim(s, "ppt_w", "#ppt_w*0.02", "#ppt_w", d) + self.anim(s, "ppt_y", "#ppt_y+0.03", "#ppt_y", d))
             elif t == "wipe":
                 f, sub = WIPE[e["dir"]]
                 self.effect(n, at, "entr", 22, sub, lambda s: self.setvis(s) + self.filt(s, f"wipe({f})", d))
@@ -192,15 +235,42 @@ for sl in spec["slides"]:
         for ch in frag(tilt(deg)):
             sp.append(ch)
 
-    t = T({k: (v[0], v[1]) for k, v in shapes.items()})
+    relp = os.path.join(work, "ppt", "slides", "_rels", f"slide{sl['n']}.xml.rels")
+    rels = open(relp, encoding="utf-8").read()
+    added = {}
+
+    def snd(sd):
+        key = json.dumps({k: v for k, v in sd.items() if k != "vol"}, sort_keys=True)
+        if key in added:
+            return added[key]
+        fname = "snd_" + sd["kind"] + "_" + hashlib.sha1(key.encode()).hexdigest()[:8] + ".wav"
+        sounds.make(sd["kind"], sd, os.path.join(work, "ppt", "media", fname))
+        rid = f"rIdSnd{len(added) + 1}"
+        added[key] = (rid, fname)
+        return added[key]
+
+    t = T({k: (v[0], v[1]) for k, v in shapes.items()}, snd)
     for e in sl["effects"]:
         t.add(e)
     xml = etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True).decode()
     trans = FADE if sl["transition"] == "fade" else MORPH
+    if sl.get("tsound"):
+        rid, fname = snd(sl["tsound"])
+        sa = f'<p:sndAc><p:stSnd><p:snd r:embed="{rid}" name="{fname}"/></p:stSnd></p:sndAc>'
+        trans = trans.replace("</p:transition>", sa + "</p:transition>")
+    if added:
+        extra = "".join(f'<Relationship Id="{rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/audio" Target="../media/{fn}"/>' for rid, fn in added.values())
+        open(relp, "w", encoding="utf-8").write(rels.replace("</Relationships>", extra + "</Relationships>"))
     assert "<p:timing" not in xml and "<p:transition" not in xml
     xml = xml.replace("</p:clrMapOvr>", "</p:clrMapOvr>" + trans + t.xml(), 1)
     assert trans in xml
     open(p, "w", encoding="utf-8").write(xml)
+
+ctp = os.path.join(work, "[Content_Types].xml")
+ct = open(ctp, encoding="utf-8").read()
+if 'Extension="wav"' not in ct:
+    ct = ct.replace("<Default ", '<Default Extension="wav" ContentType="audio/wav"/><Default ', 1)
+    open(ctp, "w", encoding="utf-8").write(ct)
 
 # dedupe identical media (pptxgenjs embeds one copy per use)
 import hashlib, glob
