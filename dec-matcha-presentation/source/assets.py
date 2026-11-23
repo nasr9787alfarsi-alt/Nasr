@@ -13,36 +13,37 @@ def save_rgba(arr, name):
     Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA").save(os.path.join(OUT, name), optimize=True)
 
 
-# ---------------------------------------------------------------- backgrounds
-def background(name, glows, W=1600, H=900):
+# ---------------------------------------------------------------- backgrounds (porcelain)
+def background(name, glows, W=1600, H=900, base=(246, 245, 240), vig=0.05, grain=1.3):
     y, x = np.mgrid[0:H, 0:W].astype(np.float32)
     nx, ny = x / W, y / H
-    base = np.array([9, 19, 13], np.float32)
-    img = np.ones((H, W, 3), np.float32) * base
+    img = np.ones((H, W, 3), np.float32) * np.array(base, np.float32)
     for gx, gy, rad, col, k in glows:
-        d2 = ((nx - gx) * 16 / 9) ** 2 + (ny - gy) ** 2
+        d2 = ((nx - gx) * W / H) ** 2 + (ny - gy) ** 2
         img += np.exp(-d2 / (2 * rad * rad))[..., None] * np.array(col, np.float32) * k
-    # vignette
     v = ((nx - 0.5) * 1.2) ** 2 + ((ny - 0.5) * 1.4) ** 2
-    img *= (1 - 0.55 * np.clip(v, 0, 1))[..., None]
-    img += rng.normal(0, 2.2, (H, W, 1))  # film grain / dithering
+    img *= (1 - vig * np.clip(v, 0, 1))[..., None]
+    img += rng.normal(0, grain, (H, W, 1))
     Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(os.path.join(OUT, name), quality=90)
 
 
-GREEN, GOLD = (52, 88, 40), (70, 58, 26)
+LIFT, SAGE, CHAMP = (9, 10, 15), (-14, -6, -16), (-6, -10, -22)
 bgs = {
-    1: [(0.27, 0.5, 0.33, GREEN, 1.0), (0.85, 0.15, 0.30, GOLD, 0.5)],
-    2: [(0.5, 0.52, 0.30, GREEN, 1.0), (0.1, 0.9, 0.3, GOLD, 0.35)],
-    3: [(0.72, 0.45, 0.30, GREEN, 0.9), (0.2, 0.4, 0.3, GOLD, 0.35)],
-    4: [(0.24, 0.55, 0.30, GREEN, 1.0), (0.85, 0.85, 0.30, GOLD, 0.4)],
-    5: [(0.5, 0.55, 0.32, GREEN, 0.9), (0.9, 0.1, 0.3, GOLD, 0.35)],
-    6: [(0.5, 0.25, 0.32, GREEN, 0.85), (0.1, 0.95, 0.3, GOLD, 0.35)],
-    7: [(0.68, 0.5, 0.30, GREEN, 0.9), (0.15, 0.2, 0.3, GOLD, 0.4)],
-    8: [(0.1, 0.5, 0.30, GREEN, 0.8), (0.9, 0.9, 0.3, GOLD, 0.35)],
-    9: [(0.5, 0.35, 0.33, GREEN, 1.1), (0.85, 0.85, 0.3, GOLD, 0.5)],
+    1: [(0.22, 0.45, 0.30, LIFT, 0.8), (0.25, 0.9, 0.25, SAGE, 0.5)],
+    2: [(0.5, 0.5, 0.30, LIFT, 0.8), (0.1, 0.95, 0.3, SAGE, 0.5)],
+    3: [(0.7, 0.45, 0.30, LIFT, 0.8), (0.95, 0.95, 0.3, SAGE, 0.5)],
+    4: [(0.24, 0.55, 0.30, LIFT, 0.8), (0.9, 0.9, 0.3, CHAMP, 0.4)],
+    5: [(0.5, 0.55, 0.32, LIFT, 0.8), (0.05, 0.05, 0.3, SAGE, 0.4)],
+    6: [(0.5, 0.3, 0.32, LIFT, 0.8), (0.95, 0.95, 0.3, SAGE, 0.5)],
+    7: [(0.68, 0.5, 0.30, LIFT, 0.8), (0.05, 0.95, 0.3, CHAMP, 0.4)],
+    8: [(0.2, 0.5, 0.30, LIFT, 0.8), (0.95, 0.05, 0.3, SAGE, 0.4)],
+    9: [(0.5, 0.35, 0.33, LIFT, 0.9), (0.9, 0.95, 0.3, SAGE, 0.6)],
 }
 for k, g in bgs.items():
     background(f"bg{k}.jpg", g)
+# deep-forest cover panel (5.05in x 5.625in)
+background("panel.jpg", [(0.25, 0.2, 0.45, (16, 24, 18), 1.0), (0.9, 1.0, 0.4, (-8, -8, -8), 1.0)],
+           W=900, H=1002, base=(31, 58, 43), vig=0.25, grain=1.6)
 
 
 # ---------------------------------------------------------------- the matcha bowl (top view, 3D shaded)
@@ -82,8 +83,8 @@ def orb(N=1000):
     coarse = np.array(Image.fromarray(((coarse * 40) + 128).clip(0, 255).astype(np.uint8)).resize((N, N), Image.BICUBIC).filter(ImageFilter.GaussianBlur(6)), np.float32) / 128 - 1
     spiral = np.sin(th - 13.0 * rho + 0.6 * coarse)
     froth = np.clip((spiral - 0.35) / 0.65, 0, 1) ** 1.5 * np.clip(rho / 0.15, 0, 1) * np.clip((0.95 - rho) / 0.2, 0, 1)
-    base = np.array([112, 146, 52], np.float32)
-    foam = np.array([200, 218, 140], np.float32)
+    base = np.array([122, 146, 84], np.float32)
+    foam = np.array([214, 222, 186], np.float32)
     liquid = base * (1 - froth[..., None] * 0.85) + foam * froth[..., None] * 0.85
     liquid *= (1 + 0.10 * fine + 0.06 * coarse)[..., None]
     shade = 1 + 0.16 * (-(dx + dy) / (R * 1.4))
@@ -99,7 +100,7 @@ def orb(N=1000):
 
     # drop shadow
     sh = Image.new("L", (N, N), 0)
-    ImageDraw.Draw(sh).ellipse([c - R, c - R + 0.05 * R, c + R, c + R + 0.05 * R], fill=170)
+    ImageDraw.Draw(sh).ellipse([c - R, c - R + 0.05 * R, c + R, c + R + 0.05 * R], fill=120)
     sh = np.array(sh.filter(ImageFilter.GaussianBlur(0.06 * R)), np.float32) / 255
     out = np.zeros((N, N, 4), np.float32)
     out[..., :3] = col * alpha[..., None]
@@ -117,28 +118,37 @@ orb()
 logo = Image.open(LOGO).convert("RGBA")
 leaf = logo.crop((380, 10, 572, 186))
 arr = np.array(leaf, np.float32)
-arr[..., :3] = np.clip(arr[..., :3] * np.array([1.55, 1.6, 1.35]), 0, 255)
+arr[..., :3] = np.clip(arr[..., :3] * np.array([1.08, 1.1, 1.05]), 0, 255)
 leaf = Image.fromarray(arr.astype(np.uint8), "RGBA")
 pad = Image.new("RGBA", (leaf.width + 80, leaf.height + 80), (0, 0, 0, 0))
 pad.paste(leaf, (40, 40))
 pad.save(os.path.join(OUT, "leafA.png"), optimize=True)
 big = pad.resize((pad.width * 2, pad.height * 2), Image.LANCZOS).filter(ImageFilter.GaussianBlur(9))
-b = np.array(big, np.float32); b[..., 3] *= 0.75
+b = np.array(big, np.float32); b[..., 3] *= 0.55
 save_rgba(b, "leafB.png")
 
 
-# ---------------------------------------------------------------- bokeh layer
-W, H = 2300, 1300
-bok = np.zeros((H, W, 4), np.float32)
-layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+# ---------------------------------------------------------------- soft mist layer (parallax)
+W, H = 1600, 904
+layer = Image.new("RGBA", (W, H), (255, 255, 255, 0))
 d = ImageDraw.Draw(layer)
-for i in range(46):
-    rr = rng.uniform(12, 70)
+for i in range(9):
+    rr = rng.uniform(140, 300)
     cx, cy = rng.uniform(0, W), rng.uniform(0, H)
-    colr = [(186, 214, 120), (226, 200, 130), (150, 190, 100)][i % 3]
-    d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=colr + (int(rng.uniform(10, 34)),))
-layer = layer.filter(ImageFilter.GaussianBlur(5))
-layer.save(os.path.join(OUT, "bokeh.png"), optimize=True)
+    colr = [(255, 255, 255), (255, 253, 246), (250, 252, 246)][i % 3]
+    d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=colr + (int(rng.uniform(70, 110)),))
+for i in range(22):
+    rr = rng.uniform(8, 22)
+    cx, cy = rng.uniform(0, W), rng.uniform(0, H)
+    d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=(179, 146, 87, int(rng.uniform(10, 22))))
+layer = layer.filter(ImageFilter.GaussianBlur(10))
+big = layer.filter(ImageFilter.GaussianBlur(60))
+mist_img = Image.alpha_composite(big, layer.filter(ImageFilter.GaussianBlur(3)))
+ma = np.array(mist_img, np.float32); ma[..., :3] = np.maximum(ma[..., :3], 200)  # never darker than near-white / champagne
+Image.fromarray(ma.astype(np.uint8), "RGBA").save(os.path.join(OUT, "bokeh.png"), optimize=True)
+
+# emblem: bowl + leaf, cropped from the original logo (no redrawing)
+logo.crop((286, 8, 664, 452)).save(os.path.join(OUT, "emblem.png"), optimize=True)
 
 
 # ---------------------------------------------------------------- gauge + needle
@@ -150,15 +160,15 @@ def gauge(N=1000, S=2):
     # bezel
     for i in range(60):
         rr = M * (0.445 - i * 0.0007)
-        g = int(40 + 50 * (i / 60))
-        d.ellipse([c - rr, c - rr, c + rr, c + rr], outline=(g, g + 18, g + 4, 255), width=2)
+        f = i / 60
+        d.ellipse([c - rr, c - rr, c + rr, c + rr], outline=(int(186 + 56 * f), int(176 + 62 * f), int(150 + 80 * f), 255), width=2)
     rr = M * 0.40
-    d.ellipse([c - rr, c - rr, c + rr, c + rr], fill=(15, 30, 20, 255))
+    d.ellipse([c - rr, c - rr, c + rr, c + rr], fill=(31, 58, 43, 255))
     # glowing arc band
     for j in range(271):
         a0 = 135 + j
         f = j / 270
-        col = (int(157 + (216 - 157) * f), int(191 + (181 - 191) * f), int(94 + (106 - 94) * f), 255)
+        col = (int(160 + (217 - 160) * f), int(190 + (199 - 190) * f), int(140 + (159 - 140) * f), 255)
         r1 = M * 0.385
         d.arc([c - r1, c - r1, c + r1, c + r1], a0, a0 + 1.5, fill=col, width=int(M * 0.012))
     # ticks
@@ -168,20 +178,20 @@ def gauge(N=1000, S=2):
         r_in = M * (0.325 if major else 0.345)
         r_out = M * 0.368
         w = 7 if major else 3
-        colr = (242, 238, 227, 255) if major else (160, 180, 150, 200)
+        colr = (246, 245, 240, 255) if major else (170, 195, 160, 200)
         d.line([c + r_in * math.cos(ang), c + r_in * math.sin(ang), c + r_out * math.cos(ang), c + r_out * math.sin(ang)], fill=colr, width=w)
     im = im.resize((N, N), Image.LANCZOS)
-    glow = im.filter(ImageFilter.GaussianBlur(10))
-    out = Image.alpha_composite(glow, im)
+    sh = Image.new('RGBA', im.size, (0, 0, 0, 0)); sh.putalpha(im.getchannel('A').point(lambda a: a * 0.35)); sh = sh.filter(ImageFilter.GaussianBlur(14))
+    out = Image.new('RGBA', im.size, (0, 0, 0, 0)); out.alpha_composite(sh, (0, 10)); out = Image.alpha_composite(out, im)
     out.save(os.path.join(OUT, "gauge.png"), optimize=True)
 
     nd = Image.new("RGBA", (M, M), (0, 0, 0, 0))
     d = ImageDraw.Draw(nd)
     tip, base_w = M * 0.33, M * 0.018
-    d.polygon([(c - base_w, c), (c, c - tip), (c + base_w, c), (c, c + M * 0.05)], fill=(216, 181, 106, 255))
-    d.polygon([(c, c), (c, c - tip), (c + base_w, c)], fill=(240, 214, 150, 255))
+    d.polygon([(c - base_w, c), (c, c - tip), (c + base_w, c), (c, c + M * 0.05)], fill=(200, 172, 112, 255))
+    d.polygon([(c, c), (c, c - tip), (c + base_w, c)], fill=(236, 222, 186, 255))
     nd = nd.resize((N, N), Image.LANCZOS)
-    g2 = nd.filter(ImageFilter.GaussianBlur(8))
+    g2 = Image.new('RGBA', nd.size, (0, 0, 0, 0)); g2.putalpha(nd.getchannel('A').point(lambda a: a * 0.4)); g2 = g2.filter(ImageFilter.GaussianBlur(6))
     Image.alpha_composite(g2, nd).save(os.path.join(OUT, "needle.png"), optimize=True)
 
 
@@ -194,20 +204,20 @@ def radar(N=1000, S=2):
     im = Image.new("RGBA", (M, M), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     c = M / 2
-    d.ellipse([c - M * 0.48, c - M * 0.48, c + M * 0.48, c + M * 0.48], fill=(16, 32, 21, 170))
+    d.ellipse([c - M * 0.48, c - M * 0.48, c + M * 0.48, c + M * 0.48], fill=(255, 255, 255, 215))
     for f, w, a in [(0.16, 3, 90), (0.29, 3, 90), (0.42, 3, 110), (0.48, 5, 160)]:
         rr = M * f
-        d.ellipse([c - rr, c - rr, c + rr, c + rr], outline=(157, 191, 94, a), width=w)
+        d.ellipse([c - rr, c - rr, c + rr, c + rr], outline=(31, 58, 43, int(a * 0.8)), width=w)
     for k in range(0, 360, 45):
         a = math.radians(k)
         for s in np.arange(0.05, 0.47, 0.025):
             p1 = (c + M * s * math.cos(a), c + M * s * math.sin(a))
             p2 = (c + M * (s + 0.012) * math.cos(a), c + M * (s + 0.012) * math.sin(a))
-            d.line([p1, p2], fill=(157, 191, 94, 70), width=2)
+            d.line([p1, p2], fill=(31, 58, 43, 45), width=2)
     for k in range(0, 360, 5):
         a = math.radians(k)
         r1 = M * (0.455 if k % 30 else 0.44)
-        d.line([c + r1 * math.cos(a), c + r1 * math.sin(a), c + M * 0.47 * math.cos(a), c + M * 0.47 * math.sin(a)], fill=(200, 220, 160, 120), width=3)
+        d.line([c + r1 * math.cos(a), c + r1 * math.sin(a), c + M * 0.47 * math.cos(a), c + M * 0.47 * math.sin(a)], fill=(31, 58, 43, 90), width=3)
     im.resize((N, N), Image.LANCZOS).save(os.path.join(OUT, "radar.png"), optimize=True)
 
     y, x = np.mgrid[0:N, 0:N].astype(np.float32)
@@ -215,10 +225,10 @@ def radar(N=1000, S=2):
     r = np.sqrt(dx * dx + dy * dy) / N
     th = (np.degrees(np.arctan2(dy, dx)) + 360) % 360  # 0 = east, clockwise (y down)
     lag = (0 - th) % 360  # degrees behind the leading edge at 0deg
-    a = np.where(lag < 70, (1 - lag / 70) ** 2, 0) * (r < 0.47) * 120
-    a += np.where(lag < 1.2, 1, 0) * (r < 0.47) * 120
+    a = np.where(lag < 70, (1 - lag / 70) ** 2, 0) * (r < 0.47) * 95
+    a += np.where(lag < 1.2, 1, 0) * (r < 0.47) * 140
     out = np.zeros((N, N, 4), np.float32)
-    out[..., 0], out[..., 1], out[..., 2] = 180, 220, 110
+    out[..., 0], out[..., 1], out[..., 2] = 126, 156, 104
     out[..., 3] = a
     save_rgba(out, "sweep.png")
 
