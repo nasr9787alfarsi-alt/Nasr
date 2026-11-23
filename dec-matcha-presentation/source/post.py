@@ -144,6 +144,17 @@ class T:
                 sgn = "+" if dx >= 0 else "-"
                 self.effect(n, at, "entr", 2, 2 if dx >= 0 else 8, lambda s: self.setvis(s) + self.filt(s, "fade", d)
                             + self.anim(s, "ppt_x", f"#ppt_x{sgn}{abs(dx)}", "#ppt_x", d))
+            elif t == "converge":               # particles gather inward from a larger cloud
+                k = e.get("from", 2.2)
+                self.effect(n, at, "entr", 53, 16, lambda s: self.setvis(s) + self.filt(s, "fade", int(d * 0.4))
+                            + self.anim(s, "ppt_w", f"#ppt_w*{k}", "#ppt_w", d) + self.anim(s, "ppt_h", f"#ppt_h*{k}", "#ppt_h", d))
+            elif t == "fadeOut":
+                self.effect(n, at, "exit", 10, 0, lambda s: self.filt(s, "fade", d, "out")
+                            + (f'<p:set><p:cBhvr><p:cTn id="{self.nid()}" dur="1" fill="hold"><p:stCondLst><p:cond delay="{d - 1}"/></p:stCondLst></p:cTn>'
+                               f'{self.tgt(s)}<p:attrNameLst><p:attrName>style.visibility</p:attrName></p:attrNameLst></p:cBhvr><p:to><p:strVal val="hidden"/></p:to></p:set>'))
+            elif t == "push":                   # slow camera push-in (emphasis grow)
+                k = int(e.get("scale", 1.08) * 100000)
+                self.effect(n, at, "emph", 6, 0, lambda s: f'<p:animScale><p:cBhvr><p:cTn id="{self.nid()}" dur="{d}" fill="hold" decel="60000"/>{self.tgt(s)}</p:cBhvr><p:by x="{k}" y="{k}"/></p:animScale>')
             elif t == "flip":
                 self.effect(n, at, "entr", 53, 16, lambda s: self.setvis(s) + self.filt(s, "fade", int(d * 0.5))
                             + self.anim(s, "ppt_w", "#ppt_w*0.02", "#ppt_w", d) + self.anim(s, "ppt_y", "#ppt_y+0.03", "#ppt_y", d))
@@ -188,6 +199,22 @@ MORPH = ('<mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/marku
          '<p:transition xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" spd="slow" p14:dur="1600"><p159:morph option="byObject"/></p:transition>'
          '</mc:Choice><mc:Fallback><p:transition spd="slow"><p:fade/></p:transition></mc:Fallback></mc:AlternateContent>')
 FADE = '<p:transition spd="slow"><p:fade thruBlk="1"/></p:transition>'
+
+
+def alt(req, ns, body, dur):
+    return ('<mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">'
+            f'<mc:Choice xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" {ns} Requires="{req}">'
+            f'<p:transition spd="slow" p14:dur="{dur}">{body}</p:transition>'
+            '</mc:Choice><mc:Fallback><p:transition spd="slow"><p:fade/></p:transition></mc:Fallback></mc:AlternateContent>')
+
+
+TRANS = {
+    "fade": FADE,
+    "morph": MORPH,
+    "ripple": alt("p14", "", '<p14:ripple dir="center"/>', 1600),
+    "vortex": alt("p14", "", '<p14:vortex dir="r"/>', 2600),
+    "wind": alt("p15", 'xmlns:p15="http://schemas.microsoft.com/office/powerpoint/2012/main"', '<p15:prstTrans prst="wind"/>', 2000),
+}
 
 BEVEL = ('<a:scene3d><a:camera prst="orthographicFront"/><a:lightRig rig="threePt" dir="t"/></a:scene3d>'
          '<a:sp3d><a:bevelT w="57150" h="25400" prst="circle"/></a:sp3d>')
@@ -253,7 +280,7 @@ for sl in spec["slides"]:
     for e in sl["effects"]:
         t.add(e)
     xml = etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True).decode()
-    trans = FADE if sl["transition"] == "fade" else MORPH
+    trans = TRANS[sl["transition"]]
     if sl.get("tsound"):
         rid, fname = snd(sl["tsound"])
         sa = f'<p:sndAc><p:stSnd><p:snd r:embed="{rid}" name="{fname}"/></p:stSnd></p:sndAc>'

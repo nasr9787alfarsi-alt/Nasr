@@ -124,7 +124,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
   {
     const s = pres.addSlide({ masterName: "COVER" });
     s.background = { path: A("bg1.jpg") };
-    mist(s, 0, 0);
+    s.addImage({ objectName: "!!dunes", path: A("dunes.jpg"), x: 0, y: 0, w: 10, h: 5.625, altText: "Landscape of matcha powder dunes" });
     s.addImage({ objectName: "!!powder", path: A("powder.png"), x: -0.55, y: 0.05, w: 6.2, h: 6.2 * 825 / 1350, altText: "Drifting matcha powder" });
     orb(s, 1.3, 1.65, 2.3);
     s.addShape("ellipse", { objectName: "!!plate", x: 0.6, y: 0.95, w: 3.7, h: 3.7, fill: { color: C.white }, line: { color: C.hair, width: 0.75 }, shadow: { type: "outer", color: C.forest, blur: 30, offset: 8, angle: 90, opacity: 0.16 } });
@@ -145,6 +145,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     });
     leaves(s, [4.25, 0.35, 0.55, 15], [-0.6, 4.35, 1.6, -25]);
     const fx = [
+      { type: "push", names: ["!!dunes"], at: 0, dur: 16000, scale: 1.07 },
       { type: "fade", names: ["!!plate"], at: 0, dur: 900, sound: { kind: "bowl", vol: 0.7 } },
       { type: "fade", names: ["!!powder"], at: 500, dur: 1800, sound: { kind: "whisk", vol: 0.5 } },
       { type: "emergeX", names: ["!!powder"], at: 500, dur: 2400, dx: -0.03 },
@@ -158,7 +159,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       ...rows.map((g, i) => ({ type: "emergeX", names: g, at: 1750 + i * 130, dur: 700, dx: 0.04 })),
       floatLeaf(3600),
     ];
-    SPEC.slides.push({ n: 1, transition: "fade", effects: fx, tilt: { "!!orb": 52 } });
+    SPEC.slides.push({ n: 1, transition: "fade", effects: fx, tilt: { "!!orb": 52 }, text3d: ["Cover title"] });
   }
 
   // =================================================================== 2 — business background (hub & spokes)
@@ -221,6 +222,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     header(s, "02", "Target Market & Competition");
     card(s, "Hero card", 0.5, 1.2, 4.4, 2.75, { fill: C.forest, line: null, so: 0.22 });
     label(s, "Main customers label", "MAIN CUSTOMERS", 0.78, 1.45, 3, { color: C.goldL });
+    s.addImage({ objectName: "Age dust", path: A("dust_light.png"), x: 2.35 - 0.16, y: 2.27 - 0.09, w: 0.32, h: 0.32 * 800 / 1400, altText: "Matcha particles gathering" }); // parked behind the number; scaled up only during the show
     const k = counter(s, "Age range", "18–30", (f) => `${Math.round(18 * f)}–${Math.round(30 * f)}`, { x: 0.75, y: 1.7, w: 3.9, h: 1.15, fill: C.forest }, { fontFace: H, fontSize: 72, bold: true, color: C.porc, valign: "middle" });
     txt(s, "Customers", "University students and young adults", 0.78, 2.97, 3.95, 0.35, { fontSize: 15, bold: true, color: C.sageL });
     txt(s, "Also welcome", "We also welcome matcha lovers and café visitors.", 0.78, 3.36, 3.95, 0.4, { fontSize: 11.5, color: "B9C8B4" });
@@ -253,7 +255,9 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000 },
       { type: "zoom", names: ["Hero card"], at: 0, dur: 700, from: 0.94 },
       { type: "fade", names: ["Main customers label"], at: 300, dur: 500 },
-      { type: "counter", frames: k.frames, final: k.final, at: 450, step: 80, sound: { vol: 0.7 } },
+      { type: "converge", names: ["Age dust"], at: 250, dur: 1300, from: 13, sound: { kind: "dust", vol: 0.6 } },
+      { type: "fadeOut", names: ["Age dust"], at: 1450, dur: 700 },
+      { type: "counter", frames: k.frames, final: k.final, at: 650, step: 80, sound: { vol: 0.55 } },
       { type: "rise", names: ["Customers"], at: 1250, dur: 600 },
       { type: "rise", names: ["Also welcome"], at: 1400, dur: 600 },
       { type: "zoom", names: ["Radar"], at: 200, dur: 1400, from: 0.4 },
@@ -308,7 +312,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       ...cg.map((g, i) => ({ type: "emergeX", names: g, at: 1700 + i * 300, dur: 800, dx: 0.06 })),
       floatLeaf(3600),
     ];
-    SPEC.slides.push({ n: 4, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, text3d: [k.final] });
+    SPEC.slides.push({ n: 4, transition: "ripple", tsound: { kind: "air", vol: 0.8 }, effects: fx, text3d: [k.final] });
   }
 
   // =================================================================== 5 — 4 Ps
@@ -386,7 +390,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       { type: "zoom", names: ["Staff bar", "Staff text"], at: 2400, dur: 700, from: 0.94 },
       floatLeaf(3500),
     ];
-    SPEC.slides.push({ n: 6, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx });
+    SPEC.slides.push({ n: 6, transition: "vortex", tsound: { kind: "dust", vol: 0.7 }, effects: fx });
   }
 
   // =================================================================== 7 — start-up costs & finance
@@ -396,6 +400,7 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
     mist(s, -1.5, 0.05);
     header(s, "06", "Start-up Costs & Finance");
     card(s, "Total card", 0.5, 1.15, 4.6, 0.85, { fill: C.forest, line: null, r: 0.1, so: 0.22 });
+    s.addImage({ objectName: "Total dust", path: A("dust_light.png"), x: 3.9 - 0.15, y: 1.57 - 0.085, w: 0.3, h: 0.3 * 800 / 1400, altText: "Matcha particles gathering" }); // parked behind the total
     txt(s, "Total label", "TOTAL START-UP BUDGET", 0.75, 1.15, 2.0, 0.85, { fontSize: 9, bold: true, color: C.goldL, charSpacing: 1.5, valign: "middle" });
     // digits assemble individually (Cambria Bold advances), then the editable value locks in on top
     const MET = JSON.parse(fs.readFileSync(path.join(__dirname, "metrics.json")));
@@ -440,7 +445,9 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000 },
       { type: "zoom", names: ["Total card", "Total label"], at: 0, dur: 700, from: 0.94 },
-      { type: "assemble", digits: digitNames, final: "Total value", at: 250, step: 110, dur: 450, sound: { vol: 0.7 } },
+      { type: "converge", names: ["Total dust"], at: 100, dur: 1000, from: 10 },
+      { type: "fadeOut", names: ["Total dust"], at: 1150, dur: 600 },
+      { type: "assemble", digits: digitNames, final: "Total value", at: 350, step: 110, dur: 450, sound: { vol: 0.7 } },
       ...costs.map((_, i) => ({ type: "fade", names: [`Cost label ${i}`, `Track ${i}`], at: 600 + i * 120, dur: 500 })),
       ...costs.map((_, i) => ({ type: "wipe", dir: "left", names: [`Bar ${i}`], at: 900 + i * 120, dur: 800 })),
       ...costs.map((_, i) => ({ type: "emergeX", names: [`Cost value ${i}`], at: 1450 + i * 120, dur: 500, dx: -0.02 })),
@@ -492,30 +499,32 @@ const floatLeaf = (dur) => ({ type: "float", names: ["!!leafA"], at: 0, dur, dy:
       { type: "rise", names: ["Note bar", "Note"], at: 2300, dur: 700 },
       floatLeaf(3200),
     ];
-    SPEC.slides.push({ n: 8, transition: "morph", tsound: { kind: "air", vol: 0.6 }, effects: fx });
+    SPEC.slides.push({ n: 8, transition: "wind", tsound: { kind: "air", vol: 0.6 }, effects: fx });
   }
 
-  // =================================================================== 9 — thank you
+  // =================================================================== 9 — thank you: the finished bowl rests on the matcha dunes
   {
     const s = pres.addSlide({ masterName: "COVER" });
     s.background = { path: A("bg9.jpg") };
-    mist(s, -2.0, 0.05);
-    s.addImage({ objectName: "!!powder", path: A("powder.png"), x: 1.75, y: -0.45, w: 5.6, h: 5.6 * 825 / 1350, altText: "Drifting matcha powder" });
-    orb(s, 8.3, 3.3, 3.4);
-    s.addShape("ellipse", { objectName: "!!plate", x: 3.6, y: 0.42, w: 2.8, h: 2.8, fill: { color: C.white }, line: { color: C.hair, width: 0.75 }, shadow: { type: "outer", color: C.forest, blur: 30, offset: 8, angle: 90, opacity: 0.16 } });
-    ring(s, 3.42, 0.24, 3.16);
-    s.addImage({ objectName: "!!logo", path: LOGO, x: 3.9, y: 0.93, w: 2.2, h: 2.2 * 782 / 936, altText: "Dec Matcha logo: matcha bowl with a leaf" });
-    txt(s, "Thanks", "Thank You!", 1.5, 3.4, 7.0, 0.8, { fontFace: H, fontSize: 44, bold: true, align: "center", valign: "middle", color: C.forest });
-    txt(s, "Closing", "Dec Matcha aims to bring fresh matcha, good service, and a comfortable café experience to Nizwa.", 1.8, 4.25, 6.4, 0.6, { fontSize: 14, align: "center", color: C.body });
-    leaves(s, [6.5, 0.4, 0.55, 30], [-0.6, 3.6, 1.7, -20]);
+    s.addImage({ objectName: "!!dunes", path: A("dunes_low.jpg"), x: 0, y: 0, w: 10, h: 5.625, altText: "Landscape of matcha powder dunes" });
+    s.addImage({ objectName: "!!powder", path: A("powder.png"), x: -0.95, y: -0.35, w: 5.4, h: 5.4 * 825 / 1350, altText: "Drifting matcha powder" });
+    s.addShape("ellipse", { objectName: "!!plate", x: 0.75, y: 0.45, w: 2.7, h: 2.7, fill: { color: C.white }, line: { color: C.hair, width: 0.75 }, shadow: { type: "outer", color: C.forest, blur: 30, offset: 8, angle: 90, opacity: 0.16 } });
+    ring(s, 0.58, 0.28, 3.04);
+    s.addImage({ objectName: "!!logo", path: LOGO, x: 1.075, y: 0.94, w: 2.05, h: 2.05 * 782 / 936, altText: "Dec Matcha logo: matcha bowl with a leaf" });
+    // the top-view bowl from every previous scene morphs into the finished chawan
+    s.addImage({ objectName: "!!orb", path: A("chawan.png"), x: 6.05, y: 2.45, w: 3.7, h: 3.7 * 1000 / 1200, altText: "Bowl of whisked matcha" });
+    txt(s, "Thanks", "Thank You!", 3.95, 0.72, 5.6, 0.85, { fontFace: H, fontSize: 46, bold: true, valign: "middle", color: C.forest });
+    txt(s, "Closing", "Dec Matcha aims to bring fresh matcha, good service, and a comfortable café experience to Nizwa.", 3.95, 1.62, 4.9, 0.7, { fontSize: 14, color: C.body });
+    leaves(s, [3.5, 0.3, 0.5, 30], [-0.6, 4.1, 1.6, -20]);
     const fx = [
-      { type: "spin", names: ["!!orb"], at: 0, dur: 60000 },
+      { type: "push", names: ["!!dunes"], at: 0, dur: 16000, scale: 1.06 },
       { type: "spin", names: ["!!ring"], at: 0, dur: 90000 },
-      { type: "rise", names: ["Thanks"], at: 200, dur: 1000, sound: { kind: "bowl", vol: 0.6 } },
+      { type: "rise", names: ["Thanks"], at: 300, dur: 1000, sound: { kind: "bowl", vol: 0.6 } },
       { type: "rise", names: ["Closing"], at: 900, dur: 900 },
+      { type: "float", names: ["!!orb"], at: 1600, dur: 4200, dy: -0.006 },
       floatLeaf(3200),
     ];
-    SPEC.slides.push({ n: 9, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, tilt: { "!!orb": 48 } });
+    SPEC.slides.push({ n: 9, transition: "morph", tsound: { kind: "air", vol: 0.8 }, effects: fx, text3d: ["Thanks"] });
   }
 
   await pres.writeFile({ fileName: OUT });

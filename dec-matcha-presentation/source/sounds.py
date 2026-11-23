@@ -183,6 +183,16 @@ def whisk(sec=1.3):
     return fade(norm(n * strokes * env, 0.2), 0.01, 0.2)
 
 
+def dust(sec=1.6):
+    """powder gathering: airy shimmer swelling into a soft tink"""
+    t = t_axis(sec)
+    n = bandpass(rng.normal(0, 1, len(t)), 3000, 9000)
+    sw = np.clip(t / (sec * 0.7), 0, 1) ** 2 * np.clip((sec - t) / 0.35, 0, 1)
+    x = n * sw * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * t))
+    x = norm(x, 0.16)
+    return x + np.pad(tink(), (int(sec * 0.68 * SR), 0))[:len(t)] * 0.12
+
+
 # ------------------------------------------------------------------ compositions used by the deck
 # ------------------------------------------------------------------ compositions used by the deck
 def make(kind, p, path):
@@ -194,6 +204,8 @@ def make(kind, p, path):
         x = drop()
     elif kind == "knock":
         x = norm(knock(), 0.32)
+    elif kind == "dust":
+        x = dust()
     elif kind == "whisk":
         x = whisk()
     elif kind == "roll":                       # count-up: soft wooden ticks per frame + ceramic tink on the final value
