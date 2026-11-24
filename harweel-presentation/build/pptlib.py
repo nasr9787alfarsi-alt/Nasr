@@ -212,9 +212,14 @@ class Anim:
     def zoom(self, sh, t, dur=500):
         return self.add(sh, "zoom", t, dur)
 
-    def move(self, sh, t, dx, dy, dur=1500, repeat=True, rev=False, accel=0):
-        """Motion path by (dx, dy) inches relative to the shape."""
-        return self.add(sh, "path", t, dur, dx=dx / SW, dy=dy / SH, repeat=repeat, rev=rev, accel=accel)
+    def move(self, sh, t, dx, dy, dur=1500, repeat=True, rev=False, accel=0, decel=None):
+        """Motion path by (dx, dy) inches relative to the shape (accel/decel in 1/100000)."""
+        return self.add(sh, "path", t, dur, dx=dx / SW, dy=dy / SH, repeat=repeat, rev=rev, accel=accel,
+                        decel=accel if decel is None else decel)
+
+    def appear(self, sh, t):
+        """Instant entrance (PowerPoint 'Appear')."""
+        return self.add(sh, "appear", t, 1)
 
     def spin(self, sh, t, deg, dur=2000):
         return self.add(sh, "spin", t, dur, deg=deg)
@@ -263,9 +268,12 @@ class Anim:
             first = False
             oid = nid()
             extra = ""
-            if k in ("fade", "wipe", "float", "zoom"):
+            if k in ("fade", "wipe", "float", "zoom", "appear"):
                 cls = "entr"
-                if k == "fade":
+                if k == "appear":
+                    pid, sub = 1, 0
+                    body = setv(sid, "visible")
+                elif k == "fade":
                     pid, sub = 10, 0
                     body = setv(sid, "visible") + effect(sid, "fade", d)
                 elif k == "wipe":
@@ -296,7 +304,9 @@ class Anim:
                 if e["rev"]:
                     extra += ' autoRev="1"'
                 if e["accel"]:
-                    extra += f' accel="{e["accel"]}" decel="{e["accel"]}"'
+                    extra += f' accel="{e["accel"]}"'
+                if e.get("decel"):
+                    extra += f' decel="{e["decel"]}"'
                 body = (f'<p:animMotion origin="layout" path="M 0 0 L {e["dx"]:.5f} {e["dy"]:.5f} E" '
                         f'pathEditMode="relative" ptsTypes="AA"><p:cBhvr><p:cTn id="{nid()}" dur="{d}" fill="hold"/>'
                         f'{tgt(sid)}<p:attrNameLst><p:attrName>ppt_x</p:attrName><p:attrName>ppt_y</p:attrName>'

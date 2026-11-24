@@ -3,7 +3,7 @@
 Nothing visual is touched: each sound is attached to an animation effect that
 already exists (PowerPoint's "Effect Options > Sound"), so it fires exactly when
 that animation starts. One transition sound is added to the Morph zoom (slide 11).
-Usage: python3 add_sound.py <original.pptx> <sfx_dir> <out.pptx>
+Usage: python3 add_sound.py <original.pptx> <sfx_dir> <out.pptx> [cues.json]
 """
 import os
 import re
@@ -43,6 +43,10 @@ CUES = {
     15: [("s15_i4", "entr", "spark_shimmer")],
 }
 TRANSITION_SOUNDS = {11: "zoom_in_whoosh"}
+if len(sys.argv) > 4:  # optional JSON cue list (used by later stages); no transition sounds then
+    import json
+    CUES = {int(k): [tuple(c) for c in v] for k, v in json.load(open(sys.argv[4])).items()}
+    TRANSITION_SOUNDS = {}
 
 
 def wav_len(name):
