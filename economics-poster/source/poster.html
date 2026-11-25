@@ -1,92 +1,111 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Econoland: Economic Systems</title>
+<html lang="en"><head><meta charset="utf-8"><title>Who's Cooking the Economy?</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 @page { size: 420mm 594mm; margin: 0; }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:420mm;height:594mm}
-body{font-family:'Bricolage Grotesque',sans-serif;font-stretch:semi-condensed;color:#1C2433;font-size:24pt;line-height:1.13;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact;
-  background:linear-gradient(180deg,#FBE3C4 0mm,#F7D2AA 222mm,#3C93A0 222mm,#21677A 300mm,#163F4E 450mm,#112F3B 594mm);}
-.page{position:relative;width:420mm;height:594mm;overflow:hidden}
-.abs{position:absolute}
+body{font-family:'Bricolage Grotesque',sans-serif;font-stretch:semi-condensed;color:#1C2433;font-size:24pt;line-height:1.13;background:#FBF1E1;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
 svg text{font-family:'Bricolage Grotesque';font-stretch:semi-condensed}
-.lbl{letter-spacing:.05px}
 b{font-weight:700}
+.page{position:relative;width:420mm;height:594mm;overflow:hidden;display:flex;flex-direction:column;gap:1.9mm;padding:0 11mm 3mm}
+.page > *{flex-shrink:0}
 .ic{width:9mm;height:9mm;flex:none;overflow:visible}
+.plate{width:12mm;height:12mm;border-radius:50%;background:#fff;border:.55mm solid #1C2433;box-shadow:inset 0 0 0 1.2mm #fff, inset 0 0 0 1.6mm var(--pc);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.plate span{font-family:'Shrikhand';font-size:22pt;color:var(--pc);line-height:1;transform:translateY(.4mm)}
+.src{font-size:15pt;color:#6a6f7d;font-weight:500;white-space:nowrap}
+.box{background:#FFFBF4;border:.6mm solid #1C2433;border-radius:4.5mm;box-shadow:1.3mm 1.3mm 0 #1C2433}
+h2.sh{display:flex;align-items:center;gap:2.6mm;font-weight:800;font-size:26pt;line-height:1;white-space:nowrap;letter-spacing:-.01em}
+
+/* credits band (top) */
+.credits{margin:0 -11mm;background:#1C2433;color:#FFF6E6;display:flex;align-items:center;justify-content:space-between;padding:2mm 11mm 2.2mm;font-size:22pt;line-height:1.1}
+.credits .who{font-weight:800;letter-spacing:.1em;color:#F0B13B;font-size:18pt}
+.credits .m{display:flex;gap:2mm;align-items:baseline}
+.credits .m b{font-weight:700}
+.credits .m i{font-style:normal;font-stretch:condensed;color:#BFD0F0;font-weight:600}
 
 /* header */
-.titlewrap{left:11mm;top:6.5mm;width:255mm}
-.chips{display:flex;gap:3mm;margin-bottom:1.4mm}
-.chip{font-size:22pt;font-weight:700;padding:.8mm 4mm 1.1mm;border-radius:10mm;border:.5mm solid #1C2433;background:#FFF8EC;line-height:1.1}
-.chip.dark{background:#1C2433;color:#FFF8EC}
-.crew{right:11mm;top:7mm;width:141mm;background:#FFF8EC;border:.6mm solid #1C2433;border-radius:4mm;padding:3mm 4.5mm 3mm 5mm;box-shadow:1.4mm 1.4mm 0 #1C2433}
-.crew h3{font-size:20pt;font-weight:800;letter-spacing:.12em;color:#B9472F;display:flex;justify-content:space-between;align-items:center;border-bottom:.45mm dashed #1C2433;padding-bottom:1.2mm;margin-bottom:.8mm}
-.crew h3 span{color:#1C2433;opacity:.6}
-.crew .m{display:flex;justify-content:space-between;align-items:baseline;line-height:1.28}
-.crew .m .nm{font-weight:700}
-.crew .m .id{font-weight:600;font-stretch:condensed;color:#2A386B;letter-spacing:.03em}
+header{display:grid;grid-template-columns:1fr 46mm;column-gap:6mm;align-items:center;margin-top:1mm}
+.title{font-family:'Shrikhand';font-size:59pt;line-height:1;color:#D9503F;-webkit-text-stroke:.5mm #1C2433;text-shadow:1.2mm 1.2mm 0 #1C2433;letter-spacing:.2mm;white-space:nowrap}
+.title em{font-style:normal;color:#2F8F7A} .title u{text-decoration:none;color:#2E4A86}
+.summary{font-size:24pt;margin-top:2mm;white-space:nowrap}
+.summary b{font-weight:800}
+.chips{display:flex;gap:3mm;margin-top:1.8mm}
+.chip{font-size:22pt;font-weight:700;padding:.8mm 4mm 1.1mm;border-radius:10mm;border:.5mm solid #1C2433;background:#fff;line-height:1.1}
+.chip.dark{background:#1C2433;color:#FFF6E6}
 
-/* intro cards */
-.card{background:#FFF8EC;border:.6mm solid #1C2433;border-radius:5mm;box-shadow:1.4mm 1.4mm 0 rgba(28,36,51,.9)}
-.intro{top:67mm;width:140mm;padding:3.2mm 5mm 3.4mm}
-.pinh{display:flex;align-items:center;gap:3mm;font-weight:800;font-size:25.5pt;line-height:1.02;margin-bottom:1.6mm;white-space:nowrap}
-.pin{width:11mm;height:11mm;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#E5674A;border:.5mm solid #1C2433;display:flex;align-items:center;justify-content:center;flex:none}
-.pin span{transform:rotate(45deg);color:#fff;font-weight:800;font-size:22pt;font-stretch:normal}
-.src{font-size:15pt;font-style:normal;color:#5d6475;font-weight:500}
-.qrow{display:flex;gap:2.5mm;margin-top:2.4mm}
-.q{flex:1;display:flex;flex-direction:row;gap:1.6mm;justify-content:center;align-items:center;white-space:nowrap;background:#fff;border:.45mm solid #1C2433;border-radius:3mm;padding:1.6mm 1mm 1.4mm;font-weight:800;font-size:22pt}
-.q .ic{width:9mm;height:9mm}
+/* intro */
+.intro{display:grid;grid-template-columns:1fr 94mm 1fr;column-gap:5mm;align-items:stretch}
+.recipe{padding:2.8mm 4.5mm 3mm;background-image:repeating-linear-gradient(180deg,transparent 0 9.1mm,#E9D9BF 9.1mm 9.4mm);background-position:0 15mm}
+.order{padding:2.8mm 4.5mm 3mm}
+.qrow{display:flex;gap:2mm;margin-top:1.8mm}
+.q{flex:1;display:flex;gap:1.4mm;justify-content:center;align-items:center;white-space:nowrap;background:#fff;border:.45mm solid #1C2433;border-radius:3mm;padding:1.2mm 1mm;font-weight:800;font-size:21pt}
+.q .ic{width:8.5mm;height:8.5mm}
 
-/* island names over scene */
-.iname{top:160mm;width:132mm;text-align:center;font-family:'Fraunces';font-weight:900;font-size:30pt;line-height:1;letter-spacing:-.01em}
+/* kitchens */
+.kitchens{display:grid;grid-template-columns:repeat(3,1fr);column-gap:7mm;position:relative}
+.vtab{position:absolute;left:-10.4mm;top:0;bottom:0;width:9.4mm;display:flex;flex-direction:column-reverse;align-items:center;justify-content:center;gap:2mm}
+.vtab span{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:800;font-size:22pt;white-space:nowrap;line-height:1}
+.vtab .plate{width:9mm;height:9mm} .vtab .plate span{writing-mode:horizontal-tb;transform:none;font-family:'Shrikhand';font-size:17pt;font-weight:400}
+.kit{overflow:hidden;display:flex;flex-direction:column}
+.kit .sign{display:flex;justify-content:space-between;align-items:baseline;white-space:nowrap;padding:1.8mm 4mm 2mm;color:#fff;border-bottom:.6mm solid #1C2433}
+.kit .sign b{font-family:'Shrikhand';font-weight:400;font-size:23pt;line-height:1}
+.kit .sign span{font-size:17pt;font-weight:700;opacity:.95}
+.kit .art{border-bottom:.6mm solid #1C2433}
+.kit ul{list-style:none;padding:1.8mm 4mm 0;white-space:nowrap}
+.kit li{padding-left:5.6mm;position:relative;line-height:1.06;margin-bottom:.2mm}
+.kit li::before{content:"";position:absolute;left:.6mm;top:2.6mm;width:3mm;height:3mm;border-radius:50%;background:var(--k);border:.35mm solid #1C2433}
+.kit .flowlbl{margin:1.2mm 4mm .2mm;font-size:15pt;font-weight:800;letter-spacing:.12em;color:var(--kd)}
+.kit .flow{margin:2.4mm auto 1.6mm}
 
-/* underwater cards */
-.syscard{top:238mm;width:128mm;padding:0 0 2.6mm;overflow:hidden}
-.syscard .hd{padding:2.4mm 5mm 2.4mm;color:#fff;display:flex;justify-content:space-between;align-items:baseline;border-bottom:.6mm solid #1C2433}
-.syscard .hd b{font-family:'Fraunces';font-weight:800;font-size:28pt;font-stretch:normal}
-.syscard .hd span{font-size:19pt;font-weight:600;opacity:.92}
-.syscard .body{padding:2.4mm 5mm 0}
-.syscard .def{margin:0 0 1.8mm}
-.flow{display:block;margin:0 auto 1mm;overflow:visible}
-.ql{display:flex;align-items:center;gap:2.4mm;line-height:1.12;margin-top:1mm}
-.ql .ic{width:8mm;height:8mm}
-.ql .k{font-weight:800;font-size:18pt;width:19mm;flex:none;letter-spacing:.02em}
+/* chalkboard */
+.chalk{background:#26342F;color:#F3EEE2;border:2mm solid #A9754A;border-radius:4mm;box-shadow:1.3mm 1.3mm 0 #1C2433;padding:2mm 4mm 1.8mm;outline:.6mm solid #1C2433;outline-offset:0}
+.chalk h2{display:flex;align-items:center;gap:2.6mm;font-weight:800;font-size:26pt;line-height:1;margin-bottom:.6mm}
+.chalk h2 .s{margin-left:auto;font-size:15pt;font-weight:500;color:#C9CFC4}
+.cg{display:grid;grid-template-columns:61mm repeat(3,1fr)}
+.cg > div{padding:.9mm 3mm;white-space:nowrap;border-top:.35mm dashed rgba(243,238,226,.35);display:flex;align-items:center;gap:2.2mm}
+.cg .hd{font-family:'Shrikhand';font-size:21pt;border-top:none;justify-content:center;padding-top:0;padding-bottom:.4mm}
+.cg .lab{font-weight:800;font-size:24pt}
+.cg .lab .ic{width:9mm;height:9mm;background:#F3EEE2;border-radius:50%;padding:.6mm}
 
-/* logbook table */
-.log{left:11mm;width:398mm;padding:0 0 1mm;overflow:hidden}
-.log .ttl{display:flex;align-items:center;gap:3.5mm;padding:2.6mm 5mm;background:#1C2433;color:#FFF8EC}
-.log .ttl h2{font-family:'Fraunces';font-weight:800;font-size:30pt;font-stretch:normal}
-.log .ttl .sub{font-size:20pt;opacity:.8;margin-left:auto}
-.grid{display:grid;grid-template-columns:78mm repeat(3,1fr)}
-.grid > div{padding:1.3mm 3.5mm;border-top:.35mm solid #D8CCB4;display:flex;align-items:center}
-.grid .lab{gap:2.4mm;font-weight:800;line-height:1.0;font-size:23pt}
-.grid .lab .ic{width:9.5mm;height:9.5mm}
-.grid .h{font-family:'Fraunces';font-weight:800;font-size:25pt;justify-content:center;border-top:none;padding:1.8mm 2mm;font-stretch:normal}
-.cm{background:#FCE6DC} .cx{background:#DDF0E9} .cc{background:#E2E7F5}
-.cm b{color:#B9472F} .cx b{color:#1F7563} .cc b{color:#2A386B}
-.grid ul{list-style:none}
-.grid li{padding-left:4.6mm;position:relative;line-height:1.06}
-.grid li::before{content:"";position:absolute;left:.4mm;top:2.7mm;width:2.2mm;height:2.2mm;border-radius:50%}
-.adv li::before{background:#3E9B5F} .dis li::before{background:#C8463C}
+/* table */
+.review{overflow:hidden}
+.gingham{height:5mm;background-color:#fff;background-image:linear-gradient(90deg,rgba(217,80,63,.55) 50%,transparent 50%),linear-gradient(0deg,rgba(217,80,63,.55) 50%,transparent 50%);background-size:6mm 6mm;border-bottom:.6mm solid #1C2433}
+.review h2{padding:1.8mm 5mm 1.4mm}
+.review h2 .s{margin-left:auto;font-size:15pt;font-weight:500;color:#6a6f7d}
+.tg{display:grid;grid-template-columns:80mm repeat(3,1fr)}
+.tg > div{padding:.75mm 3.4mm;white-space:nowrap;border-top:.35mm solid #DCCDB3;display:flex;align-items:center}
+.tg .lab{padding-right:.6mm !important;padding-left:2.4mm !important;gap:2mm;font-weight:800;line-height:1;font-size:20.5pt}
+.tg .lab .ic{width:9.5mm;height:9.5mm}
+.tg .h{font-family:'Shrikhand';font-size:23pt;justify-content:center;color:#fff;border-top:.6mm solid #1C2433;padding:1.6mm 2mm 1.8mm}
+.c1{background:#FBE3DC} .c2{background:#DCEFE8} .c3{background:#E0E6F3}
+.c1 b{color:#A93A2C} .c2 b{color:#1F6B5B} .c3 b{color:#22376A}
+.tg ul{list-style:none}
+.tg li{padding-left:5mm;position:relative;line-height:1.08}
+.tg li::before{position:absolute;left:0;top:0;font-weight:800}
+.adv li::before{content:"+";color:#2E8A50} .dis li::before{content:"\2013";color:#C0392B}
 
 /* oman */
-.oman{left:11mm;width:398mm;background:#FBEBD0;display:grid;grid-template-columns:84mm 1fr 1fr;grid-template-rows:auto 1fr;column-gap:5mm;padding:3mm 5mm 3mm 3mm;overflow:hidden}
-.oman .top{grid-column:2 / 4;display:flex;align-items:center;gap:3mm;white-space:nowrap}
-.oman h2{font-family:'Fraunces';font-weight:900;font-size:30pt;line-height:1;font-stretch:normal;color:#1F7563}
-.oman .role h4{font-size:25pt;font-weight:800;margin:1.4mm 0 0}
-.oman .it{display:flex;gap:2.2mm;align-items:center;line-height:1.08;margin-top:1.1mm}
-.oman .it .ic{width:9mm;height:9mm}
+.oman{position:relative;background:#FFF3DC;padding:2.2mm 5mm 2.4mm 3mm;display:grid;grid-template-columns:68mm 1fr 1fr;column-gap:5mm;grid-template-rows:auto 1fr;border-color:#1F6B5B;box-shadow:1.3mm 1.3mm 0 #1F6B5B}
+.oman .top{grid-column:2 / 4;display:flex;align-items:center;gap:3mm}
+.oman h2{font-family:'Shrikhand';font-weight:400;font-size:28pt;color:#1F6B5B;line-height:1;white-space:nowrap}
+.oman .lead{font-size:23pt;line-height:1.08}
+.oman h4{font-size:24pt;font-weight:800;margin:1mm 0 .4mm;display:flex;align-items:center;gap:2mm}
+.oman .it{display:flex;gap:2.2mm;align-items:center;line-height:1.06;margin-top:1mm}
+.oman .it .ic{width:8.5mm;height:8.5mm}
+.arch{position:absolute;left:-.6mm;right:-.6mm;top:-5.4mm;height:5.4mm;overflow:visible}
 
-/* footer */
-.refs{left:11mm;width:398mm;bottom:3.5mm;display:grid;grid-template-columns:40mm 1fr;column-gap:4mm;align-items:start}
-.refs h3{font-family:'Fraunces';font-weight:900;font-size:20pt;font-stretch:normal;line-height:1}
-.refs h3 small{display:block;font-family:'Bricolage Grotesque';font-weight:600;font-size:11pt;color:#6b5a3c;margin-top:1mm}
-.refs ul{columns:3;column-gap:5mm;list-style:none;font-size:11.5pt;line-height:1.18}
-.refs li{break-inside:avoid;padding-left:4mm;text-indent:-4mm;margin-bottom:.6mm}
+/* conclusion + refs */
+.concl{display:flex;align-items:center;gap:3mm;background:#F0B13B;border:.6mm solid #1C2433;border-radius:20mm;padding:.9mm 6mm .9mm 1.4mm;box-shadow:1.3mm 1.3mm 0 #1C2433}
+.concl b{font-family:'Shrikhand';font-weight:400;font-size:22pt;white-space:nowrap}
+.refs{display:grid;grid-template-columns:35mm 1fr;column-gap:4mm;border-top:.5mm solid #1C2433;padding-top:1.4mm;margin-top:auto}
+.refs h3{font-family:'Shrikhand';font-weight:400;font-size:17pt;line-height:1.05}
+.refs h3 small{display:block;font-family:'Bricolage Grotesque';font-weight:600;font-size:11pt;color:#6a6f7d;margin-top:.6mm}
+.refs ul{columns:4;column-gap:4.5mm;list-style:none;font-size:10.5pt;line-height:1.14}
+.refs li{break-inside:avoid;padding-left:4mm;text-indent:-4mm;margin-bottom:.5mm}
 </style></head>
 <body><div class="page">
-
 <svg width="0" height="0" style="position:absolute"><defs>
 <linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1">
   <stop offset="0" stop-color="#3C93A0"/><stop offset=".25" stop-color="#21677A"/><stop offset="1" stop-color="#123846"/></linearGradient>
@@ -224,343 +243,145 @@ b{font-weight:700}
 <g id="i-compass"><circle r="4.8" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -3.8 L1.1 0 L0 3.8 L-1.1 0Z" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle r=".7" fill="#1C2433"/></g>
 <g id="i-branch"><path d="M-4.4 4 V0 Q-4.4 -2.2 -2 -2.2 H4.4 M-4.4 0 Q-4.4 -4.6 0 -4.6 H4.4 M-4.4 2.2 H4.4" fill="none" stroke="#E5674A" stroke-width="1.1" stroke-linecap="round"/><path d="M3.2 -5.8 L4.8 -4.6 L3.2 -3.4 M3.2 -3.4 L4.8 -2.2 L3.2 -1 M3.2 1 L4.8 2.2 L3.2 3.4" fill="none" stroke="#E5674A" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/></g>
 <g id="i-bridge"><path d="M-5.4 3 V-.6 Q0 -5.6 5.4 -.6 V3" fill="none" stroke="#1F7563" stroke-width="1.1"/><path d="M-5.6 1 H5.6" stroke="#1C2433" stroke-width=".9"/><path d="M-2.6 1 V-2.4 M0 1 V-3.2 M2.6 1 V-2.4" stroke="#1F7563" stroke-width=".5"/></g>
+
+<g id="toque"><circle cx="-2.3" cy="-16.3" r="2.1" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.3" cy="-16.3" r="2.1" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="0" cy="-17.6" r="2.4" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-2.9" y="-15.6" width="5.8" height="3" rx=".4" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="tray"><rect x="-4.6" y="-6.4" width="9.2" height="1.3" rx=".5" fill="#B9BFCC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-2.4 -6.4 Q0 -9.6 2.4 -6.4Z" fill="#F0B13B" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="clip"><rect x="-1.6" y="-1" width="3.2" height="3.4" rx=".6" fill="#B9BFCC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="dallah">
+  <path d="M-4.4 -7 Q-11 -9 -7.6 -17" fill="none" stroke="#1C2433" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M4.2 -8.6 Q10.6 -11 11.6 -21.4 Q10.2 -20.6 9.6 -14.6 Q8.2 -10 4 -6.8Z" fill="#E0AE4A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-6.6 0 Q-9.6 -6.2 -4.8 -10.4 L-2.8 -16.6 Q-4 -18.4 -2 -19.2 H2 Q4 -18.4 2.8 -16.6 L4.8 -10.4 Q9.6 -6.2 6.6 0Z" fill="#E0AE4A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-5.6 -6 H5.6" stroke="#B9862C" stroke-width=".6"/>
+  <path d="M-2.6 -19.2 Q0 -24.4 2.6 -19.2Z" fill="#E0AE4A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="0" cy="-24.6" r=".9" fill="#E0AE4A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7.2" y="-.6" width="14.4" height="1.6" rx=".6" fill="#C9963A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="cup"><path d="M-2.4 -3.2 H2.4 L1.8 0 H-1.8Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="megaphone"><path d="M0 -1 L5 -3.4 V3.4 L0 1Z" fill="#F0B13B" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.6" y="-1.2" width="1.8" height="2.4" fill="#22376A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="jar"><rect x="-8" y="-17" width="16" height="17" rx="3" fill="#EAF4F3" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-6.4" y="-19.6" width="12.8" height="3" rx="1" style="fill:var(--lid,#D9503F)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7" y="-7.6" width="14" height="5" rx="1" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="ejar"><rect x="-8" y="-17" width="16" height="17" rx="3" fill="none" stroke="#1C2433" stroke-width=".45" stroke-dasharray="1.2 1"/><rect x="-6.4" y="-19.6" width="12.8" height="3" rx="1" fill="none" stroke="#1C2433" stroke-width=".45" stroke-dasharray="1.2 1"/></g>
 </defs></svg>
 
-<!-- sky decor -->
-<svg class="abs" style="left:0;top:0" width="420mm" height="250mm" viewBox="0 0 420 250">
-  <circle cx="210" cy="104" r="40" fill="#F6B860" opacity=".28"/>
-  <circle cx="210" cy="104" r="27" fill="#F4A94A" opacity=".35"/>
-  <use href="#cloud" transform="translate(150.00 150.00) scale(0.5)"/><use href="#cloud" transform="translate(282.00 150.00) scale(0.5)"/><use href="#cloud" transform="translate(20.00 152.00) scale(0.45)"/><use href="#cloud" transform="translate(404.00 146.00) scale(0.45)"/>
-  <path d="M0 210 Q60 203 120 208 T240 206 T420 208 V222 H0Z" fill="#E9C9A0" opacity=".5"/>
-</svg>
-
-<!-- sea decor -->
-<svg class="abs" style="left:0;top:0" width="420mm" height="594mm" viewBox="0 0 420 594"><path d="M40 222 L70 222 L130 545 L70 545Z" fill="#FFFFFF" opacity=".035"/>
-<path d="M150 222 L172 222 L232 545 L180 545Z" fill="#FFFFFF" opacity=".035"/>
-<path d="M260 222 L294 222 L354 545 L290 545Z" fill="#FFFFFF" opacity=".035"/>
-<path d="M360 222 L384 222 L444 545 L390 545Z" fill="#FFFFFF" opacity=".035"/>
-<circle cx="138.1" cy="281.9" r="1.22" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="35.6" cy="398.9" r="0.90" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="29.7" cy="390.3" r="0.54" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="182.9" cy="257.2" r="0.60" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="179.2" cy="487.4" r="0.64" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="97.1" cy="426.7" r="1.54" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="241.5" cy="356.6" r="1.57" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="25.0" cy="497.0" r="0.82" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="64.9" cy="271.8" r="0.84" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="339.0" cy="290.9" r="1.14" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="266.7" cy="349.2" r="1.10" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="31.6" cy="254.1" r="0.73" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="283.6" cy="366.0" r="0.85" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="244.9" cy="373.8" r="0.83" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="330.1" cy="448.5" r="0.77" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="240.4" cy="395.7" r="1.46" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="303.6" cy="323.5" r="1.58" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="54.2" cy="363.1" r="1.33" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="68.0" cy="384.6" r="0.54" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="278.6" cy="468.4" r="1.13" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="363.2" cy="331.4" r="1.26" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="248.5" cy="412.3" r="1.00" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="348.7" cy="523.2" r="1.02" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="277.0" cy="254.4" r="1.27" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="270.0" cy="537.9" r="1.40" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="122.1" cy="353.3" r="1.24" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="15.2" cy="376.4" r="0.68" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="53.8" cy="253.9" r="1.35" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="58.8" cy="311.3" r="0.93" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="361.5" cy="260.5" r="0.99" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="230.2" cy="504.5" r="1.40" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="358.5" cy="320.6" r="0.96" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="152.4" cy="504.8" r="1.55" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="67.6" cy="289.6" r="0.76" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="101.2" cy="383.4" r="1.15" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="113.2" cy="237.2" r="0.96" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="156.7" cy="408.2" r="1.55" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<circle cx="287.7" cy="392.7" r="1.18" fill="none" stroke="#BFE3EA" stroke-opacity=".45" stroke-width=".3"/>
-<path d="M72 234 V238" stroke="#E9D6B0" stroke-width=".8" stroke-dasharray="1.4 1"/>
-<path d="M210 234 V238" stroke="#E9D6B0" stroke-width=".8" stroke-dasharray="1.4 1"/>
-<path d="M348 234 V238" stroke="#E9D6B0" stroke-width=".8" stroke-dasharray="1.4 1"/>
-<path d="M0 551 Q40 543 90 548 T190 547 T300 545 T420 547 V594 H0Z" fill="#EFD9AE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M0 556 Q60 551 120 555 T260 553 T420 555" fill="none" stroke="#D6B57A" stroke-width=".5"/>
-<path d="M6 551 q-3 -7.333333333333333 0 -11.0 t0 -11.0" fill="none" stroke="#3E9B6B" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M10 551 q-3 -5.333333333333333 0 -8.0 t0 -8.0" fill="none" stroke="#3E9B6B" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M410 551 q-3 -6.666666666666667 0 -10.0 t0 -10.0" fill="none" stroke="#3E9B6B" stroke-width="1.6" stroke-linecap="round"/>
-<path d="M415 551 q-3 -4.666666666666667 0 -7.0 t0 -7.0" fill="none" stroke="#3E9B6B" stroke-width="1.6" stroke-linecap="round"/>
-  <use href="#fish" transform="translate(52.00 232.00) scale(0.7)" style="--fish:#F2B33D"/><use href="#fish" transform="translate(366.00 231.00) scale(0.6)" style="--fish:#E5674A"/><use href="#fish" transform="translate(300.00 234.00) scale(0.45)" style="--fish:#9AAAD0"/>
-</svg>
-
-<!-- islands scene -->
-<svg class="abs" style="left:0;top:140mm" width="420mm" height="96mm" viewBox="0 0 420 96"><text x="348" y="9" font-family="Fraunces" font-weight="900" font-size="10.4" text-anchor="middle" fill="#2A386B" stroke="#FBE3C4" stroke-width="1.6" paint-order="stroke">Command Island</text>
-<text x="210" y="9" font-family="Fraunces" font-weight="900" font-size="10.4" text-anchor="middle" fill="#1F7563" stroke="#FBE3C4" stroke-width="1.6" paint-order="stroke">Mixed Island</text>
-<text x="72" y="9" font-family="Fraunces" font-weight="900" font-size="10.4" text-anchor="middle" fill="#B9472F" stroke="#FBE3C4" stroke-width="1.6" paint-order="stroke">Market Island</text>
-<rect x="0" y="82" width="420" height="14" fill="#3C93A0"/>
-<path d="M-4.0 84.5 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.5" stroke-linecap="round"/>
-<path d="M0.5 88.5 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0" fill="none" stroke="#FFFFFF" stroke-opacity="0.29" stroke-width="0.5" stroke-linecap="round"/>
-<path d="M-4.0 93 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0" fill="none" stroke="#FFFFFF" stroke-opacity="0.22999999999999998" stroke-width="0.5" stroke-linecap="round"/>
-<path d="M0.5 98 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0 q2.75 -1.1 5.5 0 q2.75 1.1 5.5 0" fill="none" stroke="#FFFFFF" stroke-opacity="0.16999999999999998" stroke-width="0.5" stroke-linecap="round"/>
-<path d="M8.0 82 C20.0 92 48 99 72 101 C96 99 124.0 92 136.0 82Z" fill="url(#gRock)"/><path d="M6.0 82 C11.0 72 18.0 69 28.0 69 L116.0 69 C126.0 69 133.0 72 138.0 82Z" fill="#EFD9AE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M15.0 71.6 C19.0 68.8 23.0 68.4 30.0 68.4 L114.0 68.4 C121.0 68.4 125.0 68.8 129.0 71.6 Q72 73.6 15.0 71.6Z" fill="#8CC084" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="22.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="42.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="62.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="82.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="102.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="122.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/>
-<path d="M146.0 82 C158.0 92 186 99 210 101 C234 99 262.0 92 274.0 82Z" fill="url(#gRock)"/><path d="M144.0 82 C149.0 72 156.0 69 166.0 69 L254.0 69 C264.0 69 271.0 72 276.0 82Z" fill="#EFD9AE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M153.0 71.6 C157.0 68.8 161.0 68.4 168.0 68.4 L252.0 68.4 C259.0 68.4 263.0 68.8 267.0 71.6 Q210 73.6 153.0 71.6Z" fill="#8CC084" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="160.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="180.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="200.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="220.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="240.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="260.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/>
-<path d="M284.0 82 C296.0 92 324 99 348 101 C372 99 400.0 92 412.0 82Z" fill="url(#gRock)"/><path d="M282.0 82 C287.0 72 294.0 69 304.0 69 L392.0 69 C402.0 69 409.0 72 414.0 82Z" fill="#EFD9AE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M291.0 71.6 C295.0 68.8 299.0 68.4 306.0 68.4 L390.0 68.4 C397.0 68.4 401.0 68.8 405.0 71.6 Q348 73.6 291.0 71.6Z" fill="#8CC084" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="298.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="318.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="338.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="358.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="378.0" cy="75.4" rx="1.4" ry=".7" fill="#D6B57A"/><ellipse cx="398.0" cy="77.2" rx="1.4" ry=".7" fill="#D6B57A"/>
-<use href="#tree" transform="translate(16.00 70.40) scale(0.9)"/>
-<use href="#house" transform="translate(28.00 70.40) scale(1.0)" style="--roof:#E5674A"/>
-<use href="#house" transform="translate(44.00 70.40) scale(0.86)" style="--roof:#F2B33D;--wall:#FFE9D6"/>
-<rect x="18.0" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="20.6" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="23.2" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="25.8" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="28.4" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="36.2" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="38.8" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="41.4" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="44.0" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="46.6" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="49.2" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="51.8" y="67.2" width="1.1" height="3.2" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M18 68.2 H54" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<use href="#person" transform="translate(35.50 70.40) scale(0.78)" style="--shirt:#2F9C83;--skin:#C98B5E"/>
-<use href="#shop" transform="translate(66.00 70.40) scale(0.95)" style="--awn:#E5674A"/>
-<use href="#shop" transform="translate(88.00 70.40) scale(0.95)" style="--awn:#2F9C83"/>
-<use href="#tag" transform="translate(58.00 56.80) scale(0.9)"/>
-<use href="#tag" transform="translate(81.00 56.80) scale(0.9)"/>
-<text x="66" y="51.800000000000004" font-size="2.6" font-weight="800" text-anchor="middle" fill="#fff">BAZAAR</text>
-<text x="88" y="51.800000000000004" font-size="2.6" font-weight="800" text-anchor="middle" fill="#fff">SHOP</text>
-<use href="#person" transform="translate(77.00 70.40) scale(0.9)" style="--shirt:#3B4E92;--skin:#F1C9A5"/>
-<use href="#bag" transform="translate(77.00 70.40) scale(0.9)"/>
-<use href="#person" transform="translate(54.50 70.40) scale(0.82)" style="--shirt:#F2B33D"/>
-<use href="#bag" transform="translate(54.50 70.40) scale(0.82)"/>
-<use href="#podium" transform="translate(114.00 70.40) scale(1.0)"/>
-<use href="#person" transform="translate(114.00 60.40) scale(0.62)" style="--shirt:#E5674A"/>
-<use href="#gov" transform="translate(129.00 70.40) scale(0.38)"/>
-<circle cx="129" cy="66.60000000000001" r="5.8" fill="none" stroke="#3B4E92" stroke-width=".45" stroke-dasharray="1.1 .8"/>
-<rect x="4.7" y="30.5" width="58.6" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-key" transform="translate(9.29 35.00) scale(0.62)"/><text x="37.3" y="37.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Private property</text>
-<rect x="16.1" y="73.5" width="43.8" height="7.5" rx="3.7" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-motive" transform="translate(20.71 77.20) scale(0.62)"/><text x="41.3" y="79.1" font-size="5.2" font-weight="700" text-anchor="middle" fill="#B9472F" class="lbl">Profit motive</text>
-<path d="M34 39.6 L34 49" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="43.2" y="17.5" width="61.5" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-what" transform="translate(47.83 22.00) scale(0.62)"/><text x="77.3" y="24.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Freedom of choice</text>
-<path d="M74 26.6 L74 47" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="95.5" y="30.5" width="37.1" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><text x="114.0" y="37.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Competition</text>
-<path d="M114 39.6 L114 51" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-
-<rect x="76.0" y="73.5" width="56.0" height="7.5" rx="3.7" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-gov" transform="translate(80.60 77.20) scale(0.62)"/><text x="107.3" y="79.1" font-size="5.2" font-weight="700" text-anchor="middle" fill="#2A386B" class="lbl">Limited government</text>
-<use href="#palm" transform="translate(150.00 70.40) scale(0.9)"/>
-<use href="#gov" transform="translate(167.00 70.40) scale(1.05)"/>
-<use href="#hospital" transform="translate(188.00 70.40) scale(1.0)"/>
-<use href="#office" transform="translate(254.00 70.40) scale(0.92)"/>
-<use href="#shop" transform="translate(236.00 70.40) scale(0.92)" style="--awn:#F2B33D"/>
-<use href="#palm" transform="translate(269.00 70.40) scale(0.85)"/>
-<path d="M210 70.4 V40.400000000000006" stroke="#1C2433" stroke-width=".7"/>
-<path d="M210 40.400000000000006 H221 L218.6 44.400000000000006 L221 48.400000000000006 H210Z" fill="#2F9C83" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="214.6" y="45.800000000000004" font-size="2.9" font-weight="800" text-anchor="middle" fill="#fff">PLAN</text>
-<use href="#person" transform="translate(204.80 70.40) scale(0.9)" style="--shirt:#3B4E92"/>
-<use href="#person" transform="translate(215.20 70.40) scale(0.9)" style="--shirt:#E5674A;--skin:#C98B5E"/>
-<path d="M207.6 65.80000000000001 Q210 64.2 212.4 65.80000000000001" fill="none" stroke="#1C2433" stroke-width=".9" stroke-linecap="round"/>
-<circle cx="210" cy="65.0" r="1.1" fill="#E8B48C" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<rect x="149.1" y="30.5" width="49.9" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-gov" transform="translate(153.66 35.00) scale(0.62)"/><text x="177.3" y="37.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#2A386B" class="lbl">Public sector</text>
-<path d="M172 39.6 L172 50" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="219.6" y="30.5" width="52.8" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-tag" transform="translate(224.20 35.00) scale(0.62)"/><text x="249.3" y="37.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#B9472F" class="lbl">Private sector</text>
-<path d="M250 39.6 L252 41" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="179.2" y="17.5" width="61.5" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-plan" transform="translate(183.83 22.00) scale(0.62)"/><text x="213.3" y="24.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#1F7563" class="lbl">Economic planning</text>
-<path d="M210 26.6 L210 40" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="157.7" y="73.5" width="48.7" height="7.5" rx="3.7" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-shield" transform="translate(162.27 77.20) scale(0.62)"/><text x="185.3" y="79.1" font-size="5.2" font-weight="700" text-anchor="middle" fill="#1F7563" class="lbl">Consumer rights</text>
-<rect x="216.1" y="73.5" width="43.8" height="7.5" rx="3.7" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-hat" transform="translate(220.71 77.20) scale(0.62)"/><text x="241.3" y="79.1" font-size="5.2" font-weight="700" text-anchor="middle" fill="#1F7563" class="lbl">Labour rights</text>
-<use href="#factory" transform="translate(304.00 70.40) scale(0.95)"/>
-<use href="#smoke" transform="translate(314.00 49.40) scale(0.7)"/>
-<use href="#factory" transform="translate(386.00 70.40) scale(0.95)"/>
-<use href="#smoke" transform="translate(396.00 49.40) scale(0.7)"/>
-<use href="#tower" transform="translate(348.00 70.40) scale(1.0)"/>
-<rect x="326" y="45.400000000000006" width="13" height="9" rx="1" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="332.5" y="50.800000000000004" font-size="3.4" font-weight="800" text-anchor="middle" fill="#2A386B">PLAN</text>
-<path d="M339 49.900000000000006 H341.5" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<rect x="317" y="67.2" width="22" height="2.4" rx="1.2" fill="#9AAAD0" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<use href="#pkg" transform="translate(321.00 67.20) scale(0.8)"/><use href="#pkg" transform="translate(327.20 67.20) scale(0.8)"/><use href="#pkg" transform="translate(333.40 67.20) scale(0.8)"/>
-<use href="#person" transform="translate(360.00 70.40) scale(0.74)" style="--shirt:#9AAAD0;--skin:#C98B5E"/>
-<use href="#hardhat" transform="translate(360.00 70.40) scale(0.74)"/>
-<use href="#person" transform="translate(366.20 70.40) scale(0.74)" style="--shirt:#9AAAD0;--skin:#E8B48C"/>
-<use href="#hardhat" transform="translate(366.20 70.40) scale(0.74)"/>
-<use href="#person" transform="translate(372.40 70.40) scale(0.74)" style="--shirt:#9AAAD0;--skin:#C98B5E"/>
-<use href="#hardhat" transform="translate(372.40 70.40) scale(0.74)"/>
-<use href="#person" transform="translate(378.60 70.40) scale(0.74)" style="--shirt:#9AAAD0;--skin:#E8B48C"/>
-<use href="#hardhat" transform="translate(378.60 70.40) scale(0.74)"/>
-<path d="M407 70.4 V58.400000000000006" stroke="#1C2433" stroke-width=".7"/>
-<rect x="399" y="49.400000000000006" width="16" height="10" rx="1" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="407" y="53.60000000000001" font-size="2.8" font-weight="800" text-anchor="middle" fill="#2A386B">PRICE</text>
-<text x="407" y="57.50000000000001" font-size="2.8" font-weight="800" text-anchor="middle" fill="#E5674A">FIXED</text>
-<rect x="339.2" y="17.5" width="61.5" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-gov" transform="translate(343.83 22.00) scale(0.62)"/><text x="373.3" y="24.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#2A386B" class="lbl">Central authority</text>
-<path d="M354 26.6 L350.5 30" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="281.2" y="30.5" width="61.5" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-key" transform="translate(285.83 35.00) scale(0.62)"/><text x="315.3" y="37.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#2A386B" class="lbl">State-owned firms</text>
-<path d="M304 39.6 L304 56" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="368.5" y="30.5" width="47.0" height="8.9" rx="4.5" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-tag" transform="translate(373.12 35.00) scale(0.62)"/><text x="395.3" y="37.2" font-size="6.2" font-weight="700" text-anchor="middle" fill="#2A386B" class="lbl">Fixed prices</text>
-<path d="M405 39.6 L407 48.4" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/>
-<rect x="351.3" y="73.5" width="41.3" height="7.5" rx="3.7" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-hat" transform="translate(355.94 77.20) scale(0.62)"/><text x="375.3" y="79.1" font-size="5.2" font-weight="700" text-anchor="middle" fill="#2A386B" class="lbl">Jobs for all</text>
-<use href="#dhow" transform="translate(140.00 90.40) scale(0.62)"/>
-<use href="#boat" transform="translate(279.00 85.40) scale(0.9)"/></svg>
-
-<!-- ===== HEADER ===== -->
-<div class="abs titlewrap">
-  <div class="chips"><span class="chip dark">BSEC1103 &middot; Principles of Economics</span><span class="chip">Chapter 2 &middot; Economic Systems</span></div>
-  <svg width="255mm" height="37mm" viewBox="0 0 255 37" style="display:block;overflow:visible">
-    <text x="1.5" y="34.4" font-family="Fraunces" font-weight="900" font-size="41" letter-spacing="-.8" fill="#1C2433">ECONOLAND</text>
-    <text x="0" y="33" font-family="Fraunces" font-weight="900" font-size="41" letter-spacing="-.8" fill="url(#gTitle)" stroke="#1C2433" stroke-width=".55">ECONOLAND</text>
-  </svg>
-  <div style="font-family:'Fraunces';font-style:italic;font-weight:600;font-size:27pt;line-height:1.05;margin:.4mm 0 0 .6mm">An explorer&rsquo;s map of economic systems</div>
+<div class="credits">
+  <span class="who">THE CHEFS</span>
+  <span class="m"><b>Mais altoubi</b><i>31j2573</i></span>
+  <span class="m"><b>Alshima Almahrooqi</b><i>21S252540139</i></span>
+  <span class="m"><b>Nardeen alfarsi</b><i>21J2583</i></span>
+  <span class="m"><b>shatha al_umeiri</b><i>21J25157</i></span>
 </div>
 
-<div class="abs crew">
-  <h3>EXPEDITION CREW <span>ID</span></h3>
-  <div class="m"><span class="nm">Mais altoubi</span><span class="id">31j2573</span></div>
-  <div class="m"><span class="nm">Alshima Almahrooqi</span><span class="id">21S252540139</span></div>
-  <div class="m"><span class="nm">Nardeen alfarsi</span><span class="id">21J2583</span></div>
-  <div class="m"><span class="nm">shatha al_umeiri</span><span class="id">21J25157</span></div>
-</div>
-
-<!-- ===== INTRO ===== -->
-<div class="abs card intro" style="left:11mm">
-  <div class="pinh"><div class="pin"><span>1</span></div>What is an economic system?</div>
-  <p>The <b>means by which a society or government organises and distributes</b> its resources, goods and services: its <b>mode of production and distribution</b>. <span class="src">(Fernando, 2026)</span></p>
-</div>
-
-<svg class="abs" style="left:161.5mm;top:64mm" width="97mm" height="75.6mm" viewBox="0 0 118 92"><ellipse cx="59" cy="84" rx="54" ry="5.5" fill="#BFE3EA" stroke="#1C2433" stroke-width=".45"/>
-<path d="M10 84 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0 q2.0 -0.9 4.0 0 q2.0 0.9 4.0 0" fill="none" stroke="#3C93A0" stroke-opacity="0.6" stroke-width="0.45" stroke-linecap="round"/>
-<path d="M12 82 L40 36 L50 48 L62 24 L80 52 L88 44 L106 82Z" fill="#9C8A78" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M62 24 L70 37 L66 35 L62 40 L58 35 L54 37Z" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M40 36 L45 44 L41 43 L37 45 L35 44Z" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M62 24 L80 52 L88 44 L106 82 L70 82 Q74 60 62 40Z" fill="#000" opacity=".10"/>
-<path d="M14 82 Q30 74 46 78 Q60 82 74 76 Q90 72 104 82Z" fill="#8CC084" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<use href="#tree" transform="translate(28.00 80.00) scale(0.8)"/><use href="#tree" transform="translate(92.00 80.00) scale(0.7)"/>
-<circle cx="20" cy="30" r="7.4" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-wheat" transform="translate(20.00 30.00) scale(1.05)"/>
-<text x="20" y="43.4" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Land</text>
-<circle cx="59" cy="8" r="7.4" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-hat" transform="translate(59.00 8.00) scale(1.05)"/>
-<text x="59" y="21.4" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Labour</text>
-<circle cx="98" cy="30" r="7.4" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#i-how" transform="translate(98.00 30.00) scale(1.05)"/>
-<text x="98" y="43.4" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Capital</text>
-<rect x="31" y="58" width="56" height="10.6" rx="5.3" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="59" y="65.4" font-size="6" font-weight="800" text-anchor="middle" fill="#fff" letter-spacing=".2" class="lbl">SCARCE RESOURCES</text></svg>
-
-<div class="abs card intro" style="right:11mm">
-  <div class="pinh"><div class="pin"><span>2</span></div>Why societies need one</div>
-  <p>Resources are <b>scarce</b> but wants are <b>unlimited</b>, so every society must choose. Its system answers: <span class="src">(Mankiw, 2021)</span></p>
-  <div class="qrow">
-    <div class="q"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.05)"/></svg>WHAT?</div><div class="q"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.05)"/></svg>HOW?</div><div class="q" style="flex:1.5"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.05)"/></svg>FOR WHOM?</div>
+<header>
+  <div>
+    <div class="title">Who&rsquo;s Cooking <em>the</em> <u>Economy?</u></div>
+    <p class="summary"><b>Scarce ingredients</b>, one big question: who decides <b>what</b> to cook, <b>how</b>, and <b>for whom</b>?</p>
+    <div class="chips"><span class="chip dark">BSEC1103 &middot; Principles of Economics</span><span class="chip">Chapter 2 &middot; Economic Systems</span></div>
   </div>
-</div>
+  <svg class="" viewBox="0 0 46 48" width="46mm" height="48mm" style="display:block;overflow:visible;"><use href="#person" transform="translate(23.00 46.00) scale(2.2)" style="--shirt:#fff;--skin:#C98B5E"/><use href="#toque" transform="translate(23.00 46.00) scale(2.2)"/><use href="#i-what" transform="translate(36.00 30.00) scale(1.2)"/><path d="M4 46 H42" stroke="#1C2433" stroke-width=".8"/><use href="#tray" transform="translate(9.50 39.00) scale(1.3)"/></svg>
+</header>
 
-
-<!-- ===== UNDERWATER: HOW EACH SYSTEM WORKS ===== -->
-<div class="abs card syscard" style="left:8mm">
-  <div class="hd" style="background:#E5674A"><b>Capitalist</b><span>market &middot; free economy</span></div>
-  <div class="body">
-    
-    <svg class="flow" viewBox="0 -8.6 114 34" width="114mm" height="34mm"><circle cx="15" cy="10" r="7.6" fill="#fff" stroke="#E5674A" stroke-width=".8"/><use href="#i-whom" transform="translate(15.00 10.00) scale(1.0)"/><text x="15" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Consumers</text><path d="M24 10 H45.4" stroke="#B9472F" stroke-width=".9"/><path d="M44.4 8.2 L47 10 L44.4 11.8Z" fill="#B9472F"/><text x="35.5" y="7.6" font-size="4.4" text-anchor="middle" fill="#B9472F" font-weight="600" class="lbl">demand</text><circle cx="57" cy="10" r="7.6" fill="#fff" stroke="#E5674A" stroke-width=".8"/><use href="#i-tag" transform="translate(57.00 10.00) scale(1.0)"/><text x="57" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Market prices</text><path d="M66 10 H87.4" stroke="#B9472F" stroke-width=".9"/><path d="M86.4 8.2 L89 10 L86.4 11.8Z" fill="#B9472F"/><text x="77.5" y="7.6" font-size="4.4" text-anchor="middle" fill="#B9472F" font-weight="600" class="lbl">profit</text><circle cx="99" cy="10" r="7.6" fill="#fff" stroke="#E5674A" stroke-width=".8"/><use href="#i-how" transform="translate(99.00 10.00) scale(1.0)"/><text x="99" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Producers</text><path d="M99 -0.6 Q99 -4.6 57 -4.6 Q15 -4.6 15 -0.6" fill="none" stroke="#B9472F" stroke-width=".7" stroke-dasharray="1.6 1"/><path d="M13.4 -2.4 L15 0 L16.6 -2.4Z" fill="#B9472F"/><rect x="38" y="-7.4" width="38" height="5.4" rx="2.7" fill="#FFF8EC"/><text x="57" y="-3.2" font-size="4.4" text-anchor="middle" fill="#B9472F" font-weight="600" class="lbl">variety of goods</text></svg>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.0)"/></svg><span class="k" style="color:#B9472F">WHAT</span><span>consumer demand</span></div>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg><span class="k" style="color:#B9472F">HOW</span><span>firms decide, for profit</span></div>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.0)"/></svg><span class="k" style="color:#B9472F">WHOM</span><span>buyers, by their income</span></div>
+<section class="intro">
+  <div class="box recipe">
+    <h2 class="sh"><span class="plate" style="--pc:#D9503F"><span>1</span></span>What is an economic system?</h2>
+    <p style="margin-top:1.6mm">The <b>means by which a society organises and distributes</b> its resources, goods and services: its <b>mode of production and distribution</b>. <span class="src">(Fernando, 2026)</span></p>
   </div>
-</div>
-<div class="abs card syscard" style="left:146mm">
-  <div class="hd" style="background:#2F9C83"><b>Mixed</b><span>public + private</span></div>
-  <div class="body">
-    
-    <svg class="flow" viewBox="0 -8.6 114 34" width="114mm" height="34mm"><circle cx="12" cy="10" r="7.6" fill="#fff" stroke="#2F9C83" stroke-width=".8"/><use href="#i-gov" transform="translate(12.00 10.00) scale(1.0)"/><text x="12" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Public</text><text x="32.5" y="13" font-size="10" font-weight="800" text-anchor="middle" fill="#1F7563">+</text><circle cx="53" cy="10" r="7.6" fill="#fff" stroke="#2F9C83" stroke-width=".8"/><use href="#i-tag" transform="translate(53.00 10.00) scale(1.0)"/><text x="53" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Private</text><path d="M62 10 H84.4" stroke="#1F7563" stroke-width=".9"/><path d="M83.4 8.2 L86 10 L83.4 11.8Z" fill="#1F7563"/><text x="74.0" y="7.6" font-size="4.4" text-anchor="middle" fill="#1F7563" font-weight="600" class="lbl">together</text><circle cx="95" cy="10" r="7.6" fill="#fff" stroke="#2F9C83" stroke-width=".8"/><use href="#i-what" transform="translate(95.00 10.00) scale(1.0)"/><text x="95" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Goods &amp; services</text><rect x="6.5" y="-7.4" width="52" height="5.4" rx="2.7" fill="#2F9C83"/><text x="32.5" y="-3.3" font-size="4.4" text-anchor="middle" fill="#fff" font-weight="700" class="lbl">guided by planning</text></svg>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.0)"/></svg><span class="k" style="color:#1F7563">WHAT</span><span>demand + state plan</span></div>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg><span class="k" style="color:#1F7563">HOW</span><span>private + public sectors</span></div>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.0)"/></svg><span class="k" style="color:#1F7563">WHOM</span><span>market + social interest</span></div>
+  <svg class="" viewBox="0 0 104 65" width="104mm" height="65mm" style="display:block;overflow:visible;width:94mm;height:58.8mm;align-self:center"><rect x="8" y="9" width="88" height="48" rx="2" fill="#B98552" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="11" y="12" width="82" height="42" fill="#F3E2C6" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="11" y="32" width="82" height="2.6" fill="#B98552" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="20" y="1" width="64" height="9" rx="2" fill="#D9503F" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><text x="52" y="7.6" font-size="4.6" font-weight="800" text-anchor="middle" fill="#fff">PANTRY: LIMITED STOCK</text><use href="#jar" transform="translate(27.00 32.00) scale(1.0)" style="--lid:#F0B13B"/><use href="#i-wheat" transform="translate(27.00 20.60) scale(0.95)"/><text x="27" y="28.5" font-size="2.9" font-weight="800" text-anchor="middle" fill="#1C2433">LAND</text><use href="#jar" transform="translate(52.00 32.00) scale(1.0)" style="--lid:#D9503F"/><use href="#i-hat" transform="translate(52.00 20.60) scale(0.95)"/><text x="52" y="28.5" font-size="2.9" font-weight="800" text-anchor="middle" fill="#1C2433">LABOUR</text><use href="#jar" transform="translate(77.00 32.00) scale(1.0)" style="--lid:#2E4A86"/><use href="#i-how" transform="translate(77.00 20.60) scale(0.95)"/><text x="77" y="28.5" font-size="2.9" font-weight="800" text-anchor="middle" fill="#1C2433">CAPITAL</text><use href="#ejar" transform="translate(27.00 54.00) scale(1.0)"/><use href="#ejar" transform="translate(52.00 54.00) scale(1.0)"/><text x="39.5" y="46" font-size="4.2" font-weight="800" text-anchor="middle" fill="#A93A2C">empty!</text><path d="M66 37 H86 V58 Q84 60 82 58 Q80 56 78 58 Q76 60 74 58 Q72 56 70 58 Q68 60 66 58Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><text x="76" y="41.6" font-size="3.4" font-weight="800" text-anchor="middle" fill="#A93A2C">WANTS</text><path d="M68 44.6 H84" stroke="#1C2433" stroke-width=".35"/><path d="M68 47.0 H81" stroke="#1C2433" stroke-width=".35"/><path d="M68 49.4 H78" stroke="#1C2433" stroke-width=".35"/><path d="M68 51.8 H84" stroke="#1C2433" stroke-width=".35"/><path d="M68 54.2 H81" stroke="#1C2433" stroke-width=".35"/><path d="M80 58 Q90 62 96 58 Q100 56 101 61" fill="none" stroke="#1C2433" stroke-width=".35" stroke-dasharray="1 .8"/><text x="52" y="63.6" font-size="4.2" font-weight="700" text-anchor="middle" fill="#1C2433">scarce resources vs. unlimited wants</text></svg>
+  <div class="box order">
+    <h2 class="sh"><span class="plate" style="--pc:#2F8F7A"><span>2</span></span>Why every society needs one</h2>
+    <p style="margin-top:1.6mm">Resources are <b>scarce</b>, wants are <b>unlimited</b>, so every society must choose. Its system answers: <span class="src">(Mankiw, 2021)</span></p>
+    <div class="qrow"><div class="q"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.0)"/></svg>WHAT?</div><div class="q"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg>HOW?</div><div class="q" style="flex:1.45"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.0)"/></svg>FOR WHOM?</div></div>
   </div>
-</div>
-<div class="abs card syscard" style="left:284mm">
-  <div class="hd" style="background:#3B4E92"><b>Command</b><span>socialist economy</span></div>
-  <div class="body">
-    
-    <svg class="flow" viewBox="0 -8.6 114 34" width="114mm" height="34mm"><circle cx="15" cy="10" r="7.6" fill="#fff" stroke="#3B4E92" stroke-width=".8"/><use href="#i-plan" transform="translate(15.00 10.00) scale(1.0)"/><text x="15" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Central plan</text><path d="M24 10 H45.4" stroke="#2A386B" stroke-width=".9"/><path d="M44.4 8.2 L47 10 L44.4 11.8Z" fill="#2A386B"/><text x="35.5" y="7.6" font-size="4.4" text-anchor="middle" fill="#2A386B" font-weight="600" class="lbl">orders</text><circle cx="57" cy="10" r="7.6" fill="#fff" stroke="#3B4E92" stroke-width=".8"/><use href="#i-how" transform="translate(57.00 10.00) scale(1.0)"/><text x="57" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">State firms</text><path d="M66 10 H87.4" stroke="#2A386B" stroke-width=".9"/><path d="M86.4 8.2 L89 10 L86.4 11.8Z" fill="#2A386B"/><text x="77.5" y="7.6" font-size="4.4" text-anchor="middle" fill="#2A386B" font-weight="600" class="lbl">allocates</text><circle cx="99" cy="10" r="7.6" fill="#fff" stroke="#3B4E92" stroke-width=".8"/><use href="#i-whom" transform="translate(99.00 10.00) scale(1.0)"/><text x="99" y="23.6" font-size="5.6" font-weight="700" text-anchor="middle" fill="#1C2433" class="lbl">Citizens</text><rect x="38" y="-7.4" width="38" height="5.4" rx="2.7" fill="#3B4E92"/><text x="57" y="-3.3" font-size="4.4" text-anchor="middle" fill="#fff" font-weight="700" class="lbl">prices fixed</text></svg>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.0)"/></svg><span class="k" style="color:#2A386B">WHAT</span><span>set by the central plan</span></div>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg><span class="k" style="color:#2A386B">HOW</span><span>organised by the state</span></div>
-    <div class="ql"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.0)"/></svg><span class="k" style="color:#2A386B">WHOM</span><span>allocated by the state</span></div>
+</section>
+
+<section class="kitchens"><div class="vtab"><span class="plate" style="--pc:#2E4A86"><span>3</span></span><span>How each system works</span></div>
+  <div class="box kit" style="--k:#D9503F;--kd:#A93A2C">
+    <div class="sign" style="background:#D9503F"><b>Market Bistro</b><span>capitalist</span></div>
+    <div class="art"><svg class="" viewBox="0 0 128 62" width="128mm" height="62mm" style="display:block;overflow:visible;width:100%;height:auto"><rect x="0" y="0" width="128" height="62" fill="#FBE3DC"/><rect x="0" y="54" width="128" height="8" fill="#fff"/><rect x="0" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="4" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="8" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="12" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="16" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="20" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="24" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="28" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="32" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="36" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="40" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="44" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="48" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="52" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="56" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="60" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="64" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="68" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="72" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="76" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="80" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="84" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="88" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="92" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="96" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="100" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="104" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="108" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="112" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="116" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="120" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="124" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="128" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><path d="M0 54 H128" stroke="#1C2433" stroke-width=".6"/><use href="#shop" transform="translate(17.00 54.00) scale(1.08)" style="--awn:#D9503F"/><text x="17" y="33.772" font-size="2.9" font-weight="800" text-anchor="middle" fill="#fff">BURGERS</text><use href="#shop" transform="translate(45.00 54.00) scale(1.08)" style="--awn:#F0B13B"/><text x="45" y="33.772" font-size="2.9" font-weight="800" text-anchor="middle" fill="#fff">FALAFEL</text><use href="#shop" transform="translate(73.00 54.00) scale(1.08)" style="--awn:#2F8F7A"/><text x="73" y="33.772" font-size="2.9" font-weight="800" text-anchor="middle" fill="#fff">JUICE</text><use href="#tag" transform="translate(4.00 39.40) scale(0.95)"/><use href="#tag" transform="translate(34.00 39.40) scale(0.95)"/><use href="#tag" transform="translate(62.00 39.40) scale(0.95)"/><rect x="5.4" y="2.7" width="29.2" height="7.0" rx="3.5" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M18 9.520000000000001 L16.6 12.72 L21.4 9.520000000000001Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="17.8" y="8.520000000000001" width="3.8" height="1.4" fill="#fff"/><text x="20" y="7.784000000000001" font-size="4.4" font-weight="700" text-anchor="middle" fill="#A93A2C">Best price!</text><rect x="43.6" y="2.7" width="24.8" height="7.0" rx="3.5" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M54 9.520000000000001 L52.6 12.72 L57.4 9.520000000000001Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="53.8" y="8.520000000000001" width="3.8" height="1.4" fill="#fff"/><text x="56" y="7.784000000000001" font-size="4.4" font-weight="700" text-anchor="middle" fill="#A93A2C">New dish!</text><use href="#person" transform="translate(31.00 54.00) scale(0.95)" style="--shirt:#fff;--skin:#C98B5E"/><use href="#toque" transform="translate(31.00 54.00) scale(0.95)"/><use href="#person" transform="translate(94.00 54.00) scale(0.95)" style="--shirt:#2F8F7A;--skin:#E8B48C"/><use href="#bag" transform="translate(94.00 54.00) scale(0.95)"/><use href="#person" transform="translate(104.00 54.00) scale(0.95)" style="--shirt:#2E4A86;--skin:#F1C9A5"/><use href="#bag" transform="translate(104.00 54.00) scale(0.95)"/><rect x="86.0" y="16.6" width="26.0" height="6.7" rx="3.4" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M97 23.16 L95.6 26.36 L100.4 23.16Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="96.8" y="22.16" width="3.8" height="1.4" fill="#fff"/><text x="99" y="21.512" font-size="4.2" font-weight="700" text-anchor="middle" fill="#1C2433">Which one?</text><use href="#gov" transform="translate(120.00 54.00) scale(0.34)"/><circle cx="120" cy="50.4" r="5.6" fill="none" stroke="#2E4A86" stroke-width=".45" stroke-dasharray="1.1 .8"/><text x="114" y="37" font-size="3.8" font-weight="700" text-anchor="middle" fill="#22376A">little</text><text x="114" y="41.4" font-size="3.8" font-weight="700" text-anchor="middle" fill="#22376A">gov’t</text></svg></div>
+    <ul><li><b>Private</b> ownership of resources</li><li><b>No government</b> interference</li><li>Free choice, guided by <b>profit</b></li></ul>
+    <svg class="flow" viewBox="0 0 118 40" width="118mm" height="40mm" style="display:block;overflow:visible;"><path d="M1 2.4 H117" stroke="#8C93A3" stroke-width="1.3" stroke-linecap="round"/><rect x="-2" y="-3.2" width="27" height="5.2" rx="2.6" fill="#1C2433"/><text x="11.5" y="0.7" font-size="3.9" font-weight="800" text-anchor="middle" fill="#FFF6E6" letter-spacing=".35">FLOWCHART</text><path d="M1.0 5 H35.0 V29.7 L31.60 31.099999999999998 L28.20 29.7 L24.80 31.099999999999998 L21.40 29.7 L18.00 31.099999999999998 L14.60 29.7 L11.20 31.099999999999998 L7.80 29.7 L4.40 31.099999999999998 L1.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="1.0" y="5" width="34" height="2.4" fill="#D9503F"/><use href="#clip" transform="translate(18.00 3.40) scale(1.0)"/><use href="#i-whom" transform="translate(18.00 13.60) scale(0.95)"/><text x="18" y="23.4" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Consumers</text><path d="M35.4 17 H40.800000000000004" stroke="#A93A2C" stroke-width=".9"/><path d="M39.800000000000004 15.2 L42.6 17 L39.800000000000004 18.8Z" fill="#A93A2C"/><path d="M42.0 5 H76.0 V29.7 L72.60 31.099999999999998 L69.20 29.7 L65.80 31.099999999999998 L62.40 29.7 L59.00 31.099999999999998 L55.60 29.7 L52.20 31.099999999999998 L48.80 29.7 L45.40 31.099999999999998 L42.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="42.0" y="5" width="34" height="2.4" fill="#D9503F"/><use href="#clip" transform="translate(59.00 3.40) scale(1.0)"/><use href="#i-tag" transform="translate(59.00 13.60) scale(0.95)"/><text x="59" y="20.799999999999997" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Market</text><text x="59" y="25.999999999999996" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">price</text><path d="M76.4 17 H81.8" stroke="#A93A2C" stroke-width=".9"/><path d="M80.8 15.2 L83.6 17 L80.8 18.8Z" fill="#A93A2C"/><path d="M83.0 5 H117.0 V29.7 L113.60 31.099999999999998 L110.20 29.7 L106.80 31.099999999999998 L103.40 29.7 L100.00 31.099999999999998 L96.60 29.7 L93.20 31.099999999999998 L89.80 29.7 L86.40 31.099999999999998 L83.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="83.0" y="5" width="34" height="2.4" fill="#D9503F"/><use href="#clip" transform="translate(100.00 3.40) scale(1.0)"/><use href="#i-how" transform="translate(100.00 13.60) scale(0.95)"/><text x="100" y="23.4" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Producers</text><path d="M100 32.6 V36.6 H18 V33.4" fill="none" stroke="#A93A2C" stroke-width=".8"/><path d="M16.2 34.6 L18 31.8 L19.8 34.6Z" fill="#A93A2C"/><rect x="31" y="34" width="56" height="5.6" fill="#FBE3DC"/><text x="59" y="38.4" font-size="4.4" font-weight="700" text-anchor="middle" fill="#A93A2C">goods for buyers who can pay</text></svg>
   </div>
-</div>
+  <div class="box kit" style="--k:#2F8F7A;--kd:#1F6B5B">
+    <div class="sign" style="background:#2F8F7A"><b>Mixed Food Court</b><span>mixed</span></div>
+    <div class="art"><svg class="" viewBox="0 0 128 62" width="128mm" height="62mm" style="display:block;overflow:visible;width:100%;height:auto"><rect x="0" y="0" width="128" height="62" fill="#DCEFE8"/><rect x="0" y="54" width="128" height="8" fill="#fff"/><rect x="0" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="4" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="8" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="12" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="16" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="20" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="24" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="28" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="32" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="36" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="40" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="44" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="48" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="52" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="56" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="60" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="64" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="68" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="72" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="76" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="80" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="84" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="88" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="92" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="96" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="100" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="104" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="108" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="112" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="116" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="120" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="124" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="128" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><path d="M0 54 H128" stroke="#1C2433" stroke-width=".6"/><path d="M6 54 V4 M122 54 V4" stroke="#1C2433" stroke-width=".8"/><path d="M6 5 Q64 12 122 5 V11 Q64 18 6 11Z" fill="#2F8F7A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><text x="64" y="12.6" font-size="4.2" font-weight="800" text-anchor="middle" fill="#fff">PLANNING &amp; RULES</text><use href="#gov" transform="translate(24.00 54.00) scale(1.25)" style="--groof:#2E4A86"/><text x="24" y="27.6" font-size="3.6" font-weight="800" text-anchor="middle" fill="#22376A">PUBLIC</text><use href="#shop" transform="translate(92.00 54.00) scale(1.0)" style="--awn:#D9503F"/><text x="92" y="35.4" font-size="2.8" font-weight="800" text-anchor="middle" fill="#fff">PRIVATE</text><use href="#shop" transform="translate(114.00 54.00) scale(1.0)" style="--awn:#F0B13B"/><text x="114" y="35.4" font-size="2.8" font-weight="800" text-anchor="middle" fill="#fff">CAFÉ</text><use href="#person" transform="translate(58.00 54.00) scale(0.95)" style="--shirt:#1F6B5B;--skin:#C98B5E"/><use href="#i-shield" transform="translate(61.60 49.00) scale(0.55)"/><rect x="39.9" y="21.6" width="32.3" height="6.7" rx="3.4" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M54 28.16 L52.6 31.36 L57.4 28.16Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="53.8" y="27.16" width="3.8" height="1.4" fill="#fff"/><text x="56" y="26.512" font-size="4.2" font-weight="700" text-anchor="middle" fill="#1F6B5B">Fair for all!</text><use href="#person" transform="translate(47.00 54.00) scale(0.9)" style="--shirt:#D9503F;--skin:#F1C9A5"/><use href="#tray" transform="translate(47.00 52.60) scale(0.9)"/><use href="#person" transform="translate(69.00 54.00) scale(0.9)" style="--shirt:#2E4A86;--skin:#E8B48C"/><use href="#tray" transform="translate(69.00 52.60) scale(0.9)"/></svg></div>
+    <ul><li><b>Public &amp; private</b> co-exist</li><li><b>Both</b> decide what &amp; for whom</li><li>Planning + <b>profit &amp; welfare</b></li></ul>
+    <svg class="flow" viewBox="0 0 118 40" width="118mm" height="40mm" style="display:block;overflow:visible;"><path d="M1 2.4 H117" stroke="#8C93A3" stroke-width="1.3" stroke-linecap="round"/><rect x="-2" y="-3.2" width="27" height="5.2" rx="2.6" fill="#1C2433"/><text x="11.5" y="0.7" font-size="3.9" font-weight="800" text-anchor="middle" fill="#FFF6E6" letter-spacing=".35">FLOWCHART</text><path d="M1.0 5 H35.0 V29.7 L31.60 31.099999999999998 L28.20 29.7 L24.80 31.099999999999998 L21.40 29.7 L18.00 31.099999999999998 L14.60 29.7 L11.20 31.099999999999998 L7.80 29.7 L4.40 31.099999999999998 L1.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="1.0" y="5" width="34" height="2.4" fill="#2F8F7A"/><use href="#clip" transform="translate(18.00 3.40) scale(1.0)"/><use href="#i-gov" transform="translate(18.00 13.60) scale(0.95)"/><text x="18" y="20.799999999999997" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Public</text><text x="18" y="25.999999999999996" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">sector</text><text x="38.8" y="20.4" font-size="9" font-weight="800" text-anchor="middle" fill="#1F6B5B">+</text><path d="M42.0 5 H76.0 V29.7 L72.60 31.099999999999998 L69.20 29.7 L65.80 31.099999999999998 L62.40 29.7 L59.00 31.099999999999998 L55.60 29.7 L52.20 31.099999999999998 L48.80 29.7 L45.40 31.099999999999998 L42.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="42.0" y="5" width="34" height="2.4" fill="#2F8F7A"/><use href="#clip" transform="translate(59.00 3.40) scale(1.0)"/><use href="#i-tag" transform="translate(59.00 13.60) scale(0.95)"/><text x="59" y="20.799999999999997" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Private</text><text x="59" y="25.999999999999996" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">sector</text><path d="M76.4 17 H81.8" stroke="#1F6B5B" stroke-width=".9"/><path d="M80.8 15.2 L83.6 17 L80.8 18.8Z" fill="#1F6B5B"/><path d="M83.0 5 H117.0 V29.7 L113.60 31.099999999999998 L110.20 29.7 L106.80 31.099999999999998 L103.40 29.7 L100.00 31.099999999999998 L96.60 29.7 L93.20 31.099999999999998 L89.80 29.7 L86.40 31.099999999999998 L83.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="83.0" y="5" width="34" height="2.4" fill="#2F8F7A"/><use href="#clip" transform="translate(100.00 3.40) scale(1.0)"/><use href="#i-what" transform="translate(100.00 13.60) scale(0.95)"/><text x="100" y="20.799999999999997" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Goods &amp;</text><text x="100" y="25.999999999999996" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">services</text><rect x="10" y="34" width="98" height="5.6" rx="2.8" fill="#2F8F7A"/><text x="59" y="38.4" font-size="4.4" font-weight="700" text-anchor="middle" fill="#fff">price mechanism + government planning</text></svg>
+  </div>
+  <div class="box kit" style="--k:#2E4A86;--kd:#22376A">
+    <div class="sign" style="background:#2E4A86"><b>State Canteen</b><span>socialist / command</span></div>
+    <div class="art"><svg class="" viewBox="0 0 128 62" width="128mm" height="62mm" style="display:block;overflow:visible;width:100%;height:auto"><rect x="0" y="0" width="128" height="62" fill="#E0E6F3"/><rect x="0" y="54" width="128" height="8" fill="#fff"/><rect x="0" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="4" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="8" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="12" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="16" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="20" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="24" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="28" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="32" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="36" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="40" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="44" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="48" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="52" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="56" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="60" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="64" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="68" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="72" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="76" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="80" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="84" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="88" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="92" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="96" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="100" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="104" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="108" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="112" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="116" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="120" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="124" y="58" width="4" height="4" fill="#1C2433" opacity=".85"/><rect x="128" y="54" width="4" height="4" fill="#1C2433" opacity=".85"/><path d="M0 54 H128" stroke="#1C2433" stroke-width=".6"/><rect x="6" y="17" width="74" height="37" fill="#5A6FAE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="3" y="11" width="80" height="7" rx="1.2" fill="#22376A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><text x="43" y="16.4" font-size="4.4" font-weight="800" text-anchor="middle" fill="#fff">STATE CANTEEN No. 1</text><rect x="10.0" y="22" width="5" height="7" fill="#F4D67A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="17.6" y="22" width="5" height="7" fill="#F4D67A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="25.2" y="22" width="5" height="7" fill="#F4D67A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="32.8" y="22" width="5" height="7" fill="#F4D67A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="10.0" y="33" width="5" height="7" fill="#F4D67A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="32.8" y="33" width="5" height="7" fill="#F4D67A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="44" width="9" height="10" fill="#22376A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="44" y="21" width="32" height="24" rx="1.2" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><text x="60" y="26.6" font-size="3.8" font-weight="800" text-anchor="middle" fill="#22376A">TODAY’S MENU</text><path d="M47 28.6 H73" stroke="#1C2433" stroke-width=".35"/><text x="60" y="33.4" font-size="4.2" font-weight="700" text-anchor="middle" fill="#1C2433">Meal A only</text><text x="60" y="38.6" font-size="4.2" font-weight="800" text-anchor="middle" fill="#D9503F">Price: FIXED</text><text x="60" y="43.2" font-size="2.9" font-weight="600" text-anchor="middle" fill="#22376A">by central authority</text><use href="#person" transform="translate(30.00 11.00) scale(0.9)" style="--shirt:#22376A;--skin:#E8B48C"/><use href="#megaphone" transform="translate(33.40 4.60) scale(1.0)"/><rect x="35.6" y="0.8" width="40.7" height="6.7" rx="3.4" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="53.8" y="6.36" width="3.8" height="1.4" fill="#fff"/><text x="56" y="5.712" font-size="4.2" font-weight="700" text-anchor="middle" fill="#22376A">The plan decides!</text><use href="#person" transform="translate(89.00 54.00) scale(0.95)" style="--shirt:#9AAAD0;--skin:#C98B5E"/><use href="#tray" transform="translate(89.00 52.60) scale(0.95)"/><use href="#person" transform="translate(98.40 54.00) scale(0.95)" style="--shirt:#9AAAD0;--skin:#E8B48C"/><use href="#tray" transform="translate(98.40 52.60) scale(0.95)"/><use href="#person" transform="translate(107.80 54.00) scale(0.95)" style="--shirt:#9AAAD0;--skin:#C98B5E"/><use href="#tray" transform="translate(107.80 52.60) scale(0.95)"/><use href="#person" transform="translate(117.20 54.00) scale(0.95)" style="--shirt:#9AAAD0;--skin:#E8B48C"/><use href="#tray" transform="translate(117.20 52.60) scale(0.95)"/><text x="103" y="30" font-size="4" font-weight="700" text-anchor="middle" fill="#22376A">same meal</text><text x="103" y="34.6" font-size="4" font-weight="700" text-anchor="middle" fill="#22376A">for all</text></svg></div>
+    <ul><li><b>Government</b> owns resources</li><li><b>Central authority</b> decides all</li><li><b>Fixed prices</b>; social welfare</li></ul>
+    <svg class="flow" viewBox="0 0 118 40" width="118mm" height="40mm" style="display:block;overflow:visible;"><path d="M1 2.4 H117" stroke="#8C93A3" stroke-width="1.3" stroke-linecap="round"/><rect x="-2" y="-3.2" width="27" height="5.2" rx="2.6" fill="#1C2433"/><text x="11.5" y="0.7" font-size="3.9" font-weight="800" text-anchor="middle" fill="#FFF6E6" letter-spacing=".35">FLOWCHART</text><path d="M1.0 5 H35.0 V29.7 L31.60 31.099999999999998 L28.20 29.7 L24.80 31.099999999999998 L21.40 29.7 L18.00 31.099999999999998 L14.60 29.7 L11.20 31.099999999999998 L7.80 29.7 L4.40 31.099999999999998 L1.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="1.0" y="5" width="34" height="2.4" fill="#2E4A86"/><use href="#clip" transform="translate(18.00 3.40) scale(1.0)"/><use href="#i-plan" transform="translate(18.00 13.60) scale(0.95)"/><text x="18" y="20.799999999999997" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Central</text><text x="18" y="25.999999999999996" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">authority</text><path d="M35.4 17 H40.800000000000004" stroke="#22376A" stroke-width=".9"/><path d="M39.800000000000004 15.2 L42.6 17 L39.800000000000004 18.8Z" fill="#22376A"/><path d="M42.0 5 H76.0 V29.7 L72.60 31.099999999999998 L69.20 29.7 L65.80 31.099999999999998 L62.40 29.7 L59.00 31.099999999999998 L55.60 29.7 L52.20 31.099999999999998 L48.80 29.7 L45.40 31.099999999999998 L42.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="42.0" y="5" width="34" height="2.4" fill="#2E4A86"/><use href="#clip" transform="translate(59.00 3.40) scale(1.0)"/><use href="#i-how" transform="translate(59.00 13.60) scale(0.95)"/><text x="59" y="20.799999999999997" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">State-owned</text><text x="59" y="25.999999999999996" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">firms</text><path d="M76.4 17 H81.8" stroke="#22376A" stroke-width=".9"/><path d="M80.8 15.2 L83.6 17 L80.8 18.8Z" fill="#22376A"/><path d="M83.0 5 H117.0 V29.7 L113.60 31.099999999999998 L110.20 29.7 L106.80 31.099999999999998 L103.40 29.7 L100.00 31.099999999999998 L96.60 29.7 L93.20 31.099999999999998 L89.80 29.7 L86.40 31.099999999999998 L83.00 29.7Z" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="83.0" y="5" width="34" height="2.4" fill="#2E4A86"/><use href="#clip" transform="translate(100.00 3.40) scale(1.0)"/><use href="#i-whom" transform="translate(100.00 13.60) scale(0.95)"/><text x="100" y="23.4" font-size="5.0" font-weight="700" text-anchor="middle" fill="#1C2433">Citizens</text><rect x="20" y="34" width="78" height="5.6" rx="2.8" fill="#2E4A86"/><text x="59" y="38.4" font-size="4.4" font-weight="700" text-anchor="middle" fill="#fff">plan sets output &amp; fixed prices</text></svg>
+  </div>
+</section>
 
-<!-- ===== LOGBOOK ===== -->
-<div class="abs card log" id="log">
-  <div class="ttl"><div class="pin" style="background:#F2B33D"><span style="color:#1C2433">4</span></div><h2>Explorer&rsquo;s logbook: the three islands compared</h2><span class="sub">(Fernando, 2026)</span></div>
-  <div class="grid">
-    <div class="h" style="justify-content:flex-start;padding-left:5mm;font-family:'Bricolage Grotesque';font-weight:700;font-size:20pt;color:#6b6f7c">Feature</div>
-    <div class="h cm" style="color:#B9472F">Capitalist</div><div class="h cx" style="color:#1F7563">Mixed</div><div class="h cc" style="color:#2A386B">Command</div>
+<section class="chalk">
+  <h2><span class="plate" style="--pc:#F0B13B"><span>4</span></span>Today&rsquo;s menu: who answers the 3 central questions? <span class="s">(Fernando, 2026)</span></h2>
+  <div class="cg">
+    <div class="hd"></div><div class="hd" style="color:#F59A86">Capitalist / Market</div><div class="hd" style="color:#7FD3BC">Mixed</div><div class="hd" style="color:#A9BCF0">Socialist / Command</div>
+    <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.0)"/></svg>WHAT?</div><div>Whatever consumers demand</div><div>Demand + national plans</div><div>Central authority&rsquo;s plan</div>
+    <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg>HOW?</div><div>Producers choose, for profit</div><div>Private firms + public sector</div><div>State organises production</div>
+    <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.0)"/></svg>FOR WHOM?</div><div>Buyers, by their income</div><div>Market + social welfare</div><div>State allocates to citizens</div>
+  </div>
+</section>
 
-    <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-key" transform="scale(1.0)"/></svg>Ownership</div>
-    <div class="cm"><span><b>Private</b> individuals</span></div>
-    <div class="cx"><span><b>Both</b>: public + private</span></div>
-    <div class="cc"><span><b>Government</b> (the state)</span></div>
+<section class="box review">
+  <div class="gingham"></div>
+  <h2 class="sh"><span class="plate" style="--pc:#D9503F"><span>5</span></span>Comparison table: the three kitchens reviewed <span class="s">(Fernando, 2026)</span></h2>
+  <div class="tg">
+    <div class="h" style="background:#1C2433;justify-content:flex-start;padding-left:4mm;font-family:'Bricolage Grotesque';font-weight:800;font-size:20pt">Criteria</div>
+    <div class="h" style="background:#D9503F">Capitalist / Market</div><div class="h" style="background:#2F8F7A">Mixed</div><div class="h" style="background:#2E4A86">Socialist / Command</div>
 
+    <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-key" transform="scale(1.0)"/></svg>Resource ownership</div>
+    <div class="c1"><span><b>Private</b> individuals</span></div><div class="c2"><span><b>Public + private</b></span></div><div class="c3"><span><b>Government</b></span></div>
     <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-gov" transform="scale(1.0)"/></svg>Government role</div>
-    <div class="cm"><span><b>Little</b>: no interference</span></div>
-    <div class="cx"><span><b>Plans</b> &amp; regulates</span></div>
-    <div class="cc"><span><b>Total</b>: takes all decisions</span></div>
-
+    <div class="c1"><span><b>Little</b>: no interference</span></div><div class="c2"><span><b>Plans</b> &amp; regulates</span></div><div class="c3"><span><b>Total</b>: decides all</span></div>
     <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-tag" transform="scale(1.0)"/></svg>Price mechanism</div>
-    <div class="cm"><span><b>Free</b>: set in the market</span></div>
-    <div class="cx"><span><b>Works</b>, guided by planning</span></div>
-    <div class="cc"><span><b>Fixed</b> by central authority</span></div>
-
+    <div class="c1"><span><b>Free</b> market prices</span></div><div class="c2"><span><b>Market</b> + planning</span></div><div class="c3"><span><b>Fixed</b> by the state</span></div>
     <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-motive" transform="scale(1.0)"/></svg>Motive</div>
-    <div class="cm"><span><b>Profit</b></span></div>
-    <div class="cx"><span><b>Profit + social interest</b></span></div>
-    <div class="cc"><span><b>Social welfare</b></span></div>
-
+    <div class="c1"><span><b>Profit</b></span></div><div class="c2"><span><b>Profit + social interest</b></span></div><div class="c3"><span><b>Social welfare</b></span></div>
     <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-up" transform="scale(1.0)"/></svg>Advantages</div>
-    <div class="cm"><ul class="adv"><li>Equal opportunity</li><li>Innovation &amp; high growth</li></ul></div>
-    <div class="cx"><ul class="adv"><li>Best of both systems</li><li>Efficient allocation (prices, profit, freedom)</li></ul></div>
-    <div class="cc"><ul class="adv"><li>Efficient resource use</li><li>Stability, welfare, no monopoly</li></ul></div>
-
+    <div class="c1"><ul class="adv"><li>Equal opportunity for all</li><li>Innovation &amp; high growth</li></ul></div>
+    <div class="c2"><ul class="adv"><li>Best of both systems</li><li>Efficient allocation</li></ul></div>
+    <div class="c3"><ul class="adv"><li>Efficient use; stability</li><li>Max welfare; no monopoly</li></ul></div>
     <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-down" transform="scale(1.0)"/></svg>Disadvantages</div>
-    <div class="cm"><ul class="dis"><li>Inequality: rich get richer</li><li>No welfare &rarr; poverty</li></ul></div>
-    <div class="cx"><ul class="dis"><li>Sectors may not cooperate</li><li>Inefficient public sector</li></ul></div>
-    <div class="cc"><ul class="dis"><li>Bureaucracy; no freedom</li><li>Little tech or competition</li></ul></div>
+    <div class="c1"><ul class="dis"><li>Rich richer, poor poorer</li><li>No welfare &rarr; poverty</li></ul></div>
+    <div class="c2"><ul class="dis"><li>Sectors may not cooperate</li><li>Inefficient public sector</li></ul></div>
+    <div class="c3"><ul class="dis"><li>Bureaucracy; no freedom</li><li>Weak tech; no competition</li></ul></div>
   </div>
-</div>
+</section>
 
-<!-- ===== OMAN ===== -->
-<div class="abs card oman" id="oman">
-  <svg viewBox="0 0 92 56" width="84mm" height="51mm" style="align-self:center;grid-row:1 / 3">
-    <rect x="0" y="0" width="92" height="56" rx="4" fill="#BFE3EA"/>
-    <circle cx="72" cy="14" r="8" fill="#F4A94A" opacity=".8"/>
-    <path d="M0 40 H92 V52 Q92 56 88 56 H4 Q0 56 0 52Z" fill="#3C93A0"/>
-    <path d="M2 43 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0 q2.0 -0.8 4.0 0 q2.0 0.8 4.0 0" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="0.5" stroke-linecap="round"/>
-    <path d="M4 40 Q20 30 46 31 Q62 32 74 40Z" fill="#EFD9AE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
-    <use href="#fort" transform="translate(30.00 36.00) scale(0.95)"/><use href="#palm" transform="translate(12.00 37.00) scale(0.85)"/><use href="#palm" transform="translate(66.00 39.00) scale(0.7)"/>
-    <use href="#dhow" transform="translate(70.00 49.00) scale(0.85)"/>
-  </svg>
-  <div class="top"><div class="pin" style="background:#2F9C83"><span>5</span></div><h2>Oman: a mixed economy</h2><span>where public &amp; private sectors <b>co-exist</b></span></div>
+<section class="box oman">
+  <svg viewBox="0 -8.5 80 63" style="grid-row:1 / 3;align-self:center;width:66mm;height:52mm;overflow:visible"><clipPath id="archc"><path d="M4 54 V22 Q4 8 22 4 Q34 1.6 40 -4 Q46 1.6 58 4 Q76 8 76 22 V54Z"/></clipPath><g clip-path="url(#archc)"><rect x="0" y="-6" width="80" height="62" fill="#F4D9A8"/><circle cx="62" cy="13" r="7" fill="#F4A94A" opacity=".8"/><path d="M0 40 H80 V51 Q80 54 77 54 H3 Q0 54 0 51Z" fill="#3C93A0"/><path d="M2 43 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0 q1.75 -0.7 3.5 0 q1.75 0.7 3.5 0" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="0.5" stroke-linecap="round"/><path d="M2 40 Q16 31 40 32 Q54 33 64 40Z" fill="#EFD9AE" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><use href="#fort" transform="translate(26.00 37.00) scale(0.9)"/><use href="#palm" transform="translate(10.00 38.00) scale(0.8)"/><use href="#dhow" transform="translate(62.00 50.00) scale(0.7)"/><use href="#dallah" transform="translate(54.00 37.60) scale(0.62)"/><use href="#cup" transform="translate(61.00 37.60) scale(0.7)"/></g><path d="M4 54 V22 Q4 8 22 4 Q34 1.6 40 -4 Q46 1.6 58 4 Q76 8 76 22 V54Z" fill="none" stroke="#1C2433" stroke-width=".7"/><path d="M1 54 V21 Q1 5.6 21 1.2 Q33 -1.2 40 -7.6 Q47 -1.2 59 1.2 Q79 5.6 79 21 V54" fill="none" stroke="#2F8F7A" stroke-width="1.6"/></svg>
+  <div class="top"><span class="plate" style="--pc:#1F6B5B"><span>6</span></span><h2>Oman&rsquo;s kitchen: a mixed economy</h2><span class="src" style="margin-left:auto">(Vision 2040, 2019; Royal Decrees)</span></div>
   <div>
-    <div class="role">
-      <h4 style="color:#2A386B">Government roles</h4>
-      <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-compass" transform="scale(1.0)"/></svg><span>Plans the economy: <b>Oman Vision 2040</b></span></div>
-      <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-gov" transform="scale(1.0)"/></svg><span>Owns state firms: <b>Oman Investment Authority</b></span></div>
-      <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-shield" transform="scale(1.0)"/></svg><span>Protects consumers &amp; workers by law</span></div>
-    </div>
+    <h4 style="color:#22376A"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-gov" transform="scale(1.0)"/></svg>Government sector</h4>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-compass" transform="scale(1.0)"/></svg><span>Plans the economy: <b>Oman Vision 2040</b></span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-key" transform="scale(1.0)"/></svg><span>Owns state firms: <b>Oman Investment Authority</b></span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-shield" transform="scale(1.0)"/></svg><span>Protects consumers &amp; workers by law</span></div>
   </div>
   <div>
-    <div class="role">
-      <h4 style="color:#B9472F">Private sector roles</h4>
-      <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-branch" transform="scale(1.0)"/></svg><span>Leads diversification away from oil</span></div>
-      <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-bridge" transform="scale(1.0)"/></svg><span>Partners the state in <b>PPP</b> projects</span></div>
-    </div>
-    <p class="src" style="margin-top:1.4mm">(Oman Vision 2040 Main Committee, 2019; Royal Decree No. 66/2014, 52/2019, 61/2020, 53/2023)</p>
+    <h4 style="color:#A93A2C"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-tag" transform="scale(1.0)"/></svg>Private sector</h4>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-branch" transform="scale(1.0)"/></svg><span>Leads diversification beyond oil</span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-bridge" transform="scale(1.0)"/></svg><span>Partners the state in <b>PPP</b> projects</span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg><span>Runs firms sold by <b>privatisation</b></span></div>
   </div>
-</div>
+</section>
 
-<!-- ===== REFERENCES (seabed) ===== -->
-<div class="abs refs">
+<div class="concl"><span class="plate" style="--pc:#A93A2C"><span>!</span></span><b>Chef&rsquo;s note:</b><span style="white-space:nowrap">The mixed economy blends market freedom with social welfare: Oman&rsquo;s recipe.</span></div>
+
+<div class="refs">
   <h3>References<small>APA 7th ed.</small></h3>
   <ul>
     <li>Fernando, G. A. (2026). <i>Chapter 2: Economic systems</i> [PowerPoint slides]. BSEC1103 Principles of Economics, University of Technology and Applied Sciences.</li>
     <li>Mankiw, N. G. (2021). <i>Principles of economics</i> (9th ed.). Cengage Learning.</li>
     <li>Oman Vision 2040 Main Committee. (2019). <i>Oman Vision 2040: Vision document</i>. Sultanate of Oman. https://www.oman2040.om</li>
+    <li>Royal Decree No. 51/2019 issuing the Privatization Law. (2019). <i>Official Gazette of the Sultanate of Oman</i>.</li>
     <li>Royal Decree No. 52/2019 promulgating the Public-Private Partnership Law. (2019). <i>Official Gazette of the Sultanate of Oman</i>. https://decree.om/2019/rd20190052/</li>
     <li>Royal Decree No. 53/2023 promulgating the Labour Law. (2023). <i>Official Gazette of the Sultanate of Oman</i>.</li>
     <li>Royal Decree No. 61/2020 establishing the Oman Investment Authority. (2020). <i>Official Gazette of the Sultanate of Oman</i>. https://decree.om/2020/rd20200061/</li>
     <li>Royal Decree No. 66/2014 promulgating the Consumer Protection Law. (2014). <i>Official Gazette of the Sultanate of Oman</i>.</li>
   </ul>
 </div>
-
 </div>
-<script>
-// stack the lower sections: logbook under the tallest system card, oman under logbook
-document.fonts.ready.then(function(){
-  const mm=v=>v/3.7795;
-  const cards=[...document.querySelectorAll('.syscard')];
-  const bottom=Math.max(...cards.map(c=>c.getBoundingClientRect().bottom));
-  const log=document.getElementById('log'); log.style.top=(mm(bottom)+5)+'mm';
-  const lb=log.getBoundingClientRect().bottom;
-  const om=document.getElementById('oman'); om.style.top=(mm(lb)+5)+'mm';
-  // equalise system card heights
-  const h=Math.max(...cards.map(c=>c.getBoundingClientRect().height)); cards.forEach(c=>c.style.height=mm(h)+'mm');
-  document.body.dataset.ready='1';
-});
-</script>
+<script>document.fonts.ready.then(()=>{document.body.dataset.ready='1'});</script>
 </body></html>

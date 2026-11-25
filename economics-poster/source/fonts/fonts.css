@@ -229,3 +229,10 @@
   font-display: swap;
   src: url(v29.ttf) format('truetype');
 }
+@font-face {
+  font-family: 'Shrikhand';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(shrikhand.ttf) format('truetype');
+}
