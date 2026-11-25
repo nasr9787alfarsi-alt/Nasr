@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Who Decides? Economic Systems</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+@page { size: 594mm 420mm; margin: 0; }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:594mm;height:420mm}
+body{font-family:'Bricolage Grotesque',sans-serif;font-stretch:semi-condensed;color:#2A2540;font-size:24pt;line-height:1.12;
+  background:radial-gradient(120mm 90mm at 300mm 30mm,#4A3A9C 0%,rgba(74,58,156,0) 100%),linear-gradient(165deg,#221C55 0%,#2C2468 45%,#352A74 70%,#1F1A4A 100%);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+b{font-weight:700}
+.page{position:relative;width:594mm;height:420mm;overflow:hidden;display:flex;flex-direction:column;gap:1.9mm;padding:3mm 10mm 3mm}
+.page > *{flex-shrink:0;position:relative;z-index:1}
+.bg{position:absolute !important;inset:0;z-index:0 !important}
+.ic{width:9mm;height:9mm;flex:none;overflow:visible}
+.src{font-size:14pt;color:#8A8299;font-weight:500;white-space:nowrap}
+.lbl{font-family:'Poppins';font-weight:700;font-size:14pt;letter-spacing:.18em;text-transform:uppercase;line-height:1}
+.glass{background:rgba(44,36,104,.94);border:.4mm solid rgba(255,255,255,.2);border-radius:6mm;color:#F4EEFF}
+
+/* names */
+.names{display:flex;align-items:center;justify-content:space-between;padding:1.1mm 3mm 1.1mm 1.4mm;border-radius:20mm}
+.names .who{font-family:'Poppins';font-weight:700;color:#1F1A4A;background:linear-gradient(180deg,#FFE49C,#E9A222);font-size:19pt;padding:.6mm 4.4mm .8mm;border-radius:20mm;white-space:nowrap}
+.names .m{display:flex;gap:1.8mm;align-items:baseline;font-size:21pt;padding-left:4mm;border-left:.4mm solid rgba(255,255,255,.2)}
+.names .m b{font-weight:700;color:#fff} .names .m i{font-style:normal;color:#FFD877;font-weight:600;font-stretch:condensed}
+
+/* header */
+header{display:grid;grid-template-columns:112mm 1fr 112mm;align-items:center;height:47mm}
+.hc{display:flex;flex-direction:column;align-items:center}
+.script{font-family:'Playfair Display';font-style:italic;font-weight:500;font-size:25pt;color:#F6C766;display:flex;align-items:center;gap:4mm;white-space:nowrap;line-height:1}
+.script::before,.script::after{content:"";width:16mm;height:.5mm;background:linear-gradient(90deg,transparent,#F6C766)}
+.script::after{transform:scaleX(-1)}
+.hook{font-size:24pt;color:#E9E2FF;margin-top:.4mm;white-space:nowrap;line-height:1.05}
+.hook b{color:#FFD877}
+
+/* intro pills */
+.intro{display:grid;grid-template-columns:1fr 1fr;column-gap:6mm}
+.pill{display:grid;grid-template-columns:66mm 1fr;align-items:center;padding:2.4mm 5mm;border-radius:9mm}
+.pill h2{font-family:'Poppins';font-weight:700;font-size:21pt;line-height:1.1;color:#FFD877;padding-right:4mm;border-right:.4mm solid rgba(255,255,255,.2);margin-right:4.4mm}
+.pill p{color:#F1ECFF;line-height:1.1}
+.pill p b{color:#fff}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:6mm;margin-top:2.4mm}
+.badge{position:absolute;left:50%;top:-4.6mm;transform:translateX(-50%);z-index:3;font-family:'Poppins';font-weight:700;font-size:15pt;letter-spacing:.3em;color:#3A2A10;
+  background:linear-gradient(180deg,#FFE7A0,#EFAE36);padding:1.4mm 7mm 1.6mm 8mm;border-radius:20mm;box-shadow:0 .8mm 0 #B7801A;white-space:nowrap}
+.card{background:#FFF8EE;border-radius:5.4mm;padding:2.6mm 3.4mm 2mm;display:flex;flex-direction:column;border-bottom:2.2mm solid var(--c);box-shadow:0 1.6mm 0 rgba(0,0,0,.25)}
+.card .ttl{display:flex;align-items:center;gap:2.6mm;margin:2mm 1mm .4mm;white-space:nowrap}
+.card .ttl i{width:5mm;height:5mm;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.2mm var(--cs);flex:none}
+.card .ttl b{font-family:'Poppins';font-weight:700;font-size:24pt;color:#1F1A3A;line-height:1}
+.card .ttl span{margin-left:auto;font-size:16pt;font-weight:700;color:var(--cd)}
+.card .lbl{color:var(--cd);margin:1.6mm 1mm .7mm}
+.card p,.card ul{margin:0 1mm}
+.card ul{list-style:none;white-space:nowrap}
+.card li{padding-left:5.2mm;position:relative;line-height:1.08}
+.card li::before{content:"";position:absolute;left:.3mm;top:2.4mm;width:3mm;height:3mm;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,var(--c) 60%)}
+.card .flow{margin:1.2mm auto 0}
+
+/* bottom */
+.bottom{display:grid;grid-template-columns:1fr 190mm;column-gap:6mm}
+.cmp{padding:2mm 3mm 2mm;border-radius:5mm}
+.tg{display:grid;grid-template-columns:86mm repeat(3,minmax(0,1fr))}
+.tg > div{padding:.45mm 2.6mm;display:flex;align-items:center;white-space:nowrap;font-stretch:condensed;color:#F4EEFF;border-top:.3mm solid rgba(255,255,255,.14)}
+.tg .h{border-top:none;font-family:'Poppins';font-weight:700;font-size:18pt;gap:2mm;padding-bottom:1.2mm}
+.tg .h i{width:4.6mm;height:4.6mm;border-radius:50%;flex:none}
+.tg .cap{font-family:'Poppins';font-weight:800;font-size:23pt;color:#FFD877;line-height:1}
+.tg .lab{gap:2mm;font-family:'Poppins';font-weight:600;font-size:18.5pt;line-height:1.02;font-stretch:normal;color:#FFFFFF;white-space:normal}
+.tg .lab .ic{width:8.2mm;height:8.2mm;background:#FFF8EE;border-radius:50%;padding:.5mm}
+.tg .sec{grid-column:1 / -1;border-top:.4mm solid rgba(255,216,119,.5)}
+.tg .sec span{font-family:'Poppins';font-weight:700;font-size:13.5pt;letter-spacing:.22em;color:#FFD877}
+.tg b{font-weight:700}
+.k1 b{color:#FFD877} .k2 b{color:#7FE3C9} .k3 b{color:#FFA996}
+.tg ul{list-style:none}
+.tg li{display:flex;gap:1.4mm;align-items:center;line-height:1.06}
+.tg li::before{content:"";width:3.6mm;height:3.6mm;border-radius:50%;flex:none}
+.adv li::before{background:radial-gradient(circle at 35% 30%,#B6F5D2,#23A86A)} .dis li::before{background:radial-gradient(circle at 35% 30%,#FFC1B6,#E0503A)}
+
+.oman{background:#FFF8EE;border-radius:5.4mm;border-bottom:2.2mm solid #22A98C;box-shadow:0 1.6mm 0 rgba(0,0,0,.25);padding:2.4mm 4mm 2mm;display:flex;flex-direction:column;gap:.5mm}
+.oman .top{display:grid;grid-template-columns:64mm 1fr;column-gap:3.4mm;align-items:center;margin-bottom:.6mm}
+.oman h2{font-family:'Poppins';font-weight:800;font-size:24pt;line-height:1.02;color:#1F1A3A}
+.oman h2 em{font-style:normal;color:#147560}
+.oman .lbl{margin-top:1mm}
+.oman .it{display:flex;gap:2mm;align-items:center;line-height:1.04;white-space:nowrap}
+.oman .it .ic{width:7.4mm;height:7.4mm}
+
+/* footer */
+.foot{margin-top:auto}
+.concl{margin-top:auto;background:linear-gradient(180deg,#FFE7A0,#EFAE36);border-radius:4mm;padding:1.2mm 3.4mm 1.4mm;font-size:21pt;line-height:1.08;color:#2A1E05}
+.concl b{font-family:'Poppins';font-weight:800;font-size:17pt;display:block;letter-spacing:.12em;text-transform:uppercase}
+.concl p{font-size:21pt;line-height:1.1}
+.concl p b{font-family:'Poppins';color:#FFD877;font-weight:700}
+.refs{display:grid;grid-template-columns:34mm 1fr;column-gap:3mm;padding:1.6mm 3.4mm;border-radius:5mm}
+.refs h3{font-family:'Poppins';font-weight:700;font-size:17pt;color:#FFD877;line-height:1.1}
+.refs h3 small{display:block;font-family:'Bricolage Grotesque';font-weight:600;font-size:10pt;color:#B8B0D0}
+.refs ul{columns:4;column-gap:4mm;list-style:none;font-size:9.6pt;line-height:1.13;color:#E9E3FA}
+.refs li{break-inside:avoid;padding-left:3.4mm;text-indent:-3.4mm;margin-bottom:.35mm}
+</style></head>
+<body><div class="page">
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE49C"/><stop offset="1" stop-color="#E9A222"/></linearGradient><radialGradient id="gCoin" cx="0.35" cy="0.3" r=".75"><stop offset="0" stop-color="#FFF0B8"/><stop offset="1" stop-color="#E39C17"/></radialGradient><linearGradient id="gCoral" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFA592"/><stop offset="1" stop-color="#E5523C"/></linearGradient><linearGradient id="gTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7DE6CD"/><stop offset="1" stop-color="#1E9F83"/></linearGradient><linearGradient id="gCreamV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EFE2CC"/></linearGradient><linearGradient id="gLav" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D6D0FA"/><stop offset="1" stop-color="#8E84D8"/></linearGradient><linearGradient id="gPanelGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFEFC4"/><stop offset="1" stop-color="#F6C25E"/></linearGradient><linearGradient id="gPanelCoral" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD4C9"/><stop offset="1" stop-color="#F2866E"/></linearGradient><linearGradient id="gPanelTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFF5EA"/><stop offset="1" stop-color="#58C9AC"/></linearGradient><radialGradient id="gOrbV" cx="0.35" cy="0.3" r=".75"><stop offset="0" stop-color="#D8CCFF"/><stop offset="1" stop-color="#5B43C9"/></radialGradient><radialGradient id="gOrbT" cx="0.35" cy="0.3" r=".75"><stop offset="0" stop-color="#A6F5E0"/><stop offset="1" stop-color="#17977B"/></radialGradient><radialGradient id="gOrbG" cx="0.35" cy="0.3" r=".75"><stop offset="0" stop-color="#FFF0B0"/><stop offset="1" stop-color="#E19A12"/></radialGradient><radialGradient id="gOrbC" cx="0.35" cy="0.3" r=".75"><stop offset="0" stop-color="#FFC4B6"/><stop offset="1" stop-color="#D9452F"/></radialGradient><linearGradient id="gSand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6DDAE"/><stop offset="1" stop-color="#D9AE6C"/></linearGradient><linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C98E5A"/><stop offset="1" stop-color="#8B5A30"/></linearGradient><linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC3D0"/><stop offset="1" stop-color="#2A8C9C"/></linearGradient><linearGradient id="gTitleGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7A0"/><stop offset="1" stop-color="#EFA52A"/></linearGradient><linearGradient id="gTitleCream" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F3E6CF"/></linearGradient>
+<linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#3C93A0"/><stop offset=".25" stop-color="#21677A"/><stop offset="1" stop-color="#123846"/></linearGradient>
+<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#FBE3C4"/><stop offset="1" stop-color="#F6CFA6"/></linearGradient>
+<linearGradient id="gRock" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2B6E7C"/><stop offset="1" stop-color="#21677A" stop-opacity="0"/></linearGradient>
+<linearGradient id="gTitle" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0" stop-color="#E5674A"/><stop offset=".5" stop-color="#2F9C83"/><stop offset="1" stop-color="#3B4E92"/></linearGradient>
+
+<g id="person">
+  <path d="M-3.3 0 V-5.3 Q-3.3 -8.5 0 -8.5 Q3.3 -8.5 3.3 -5.3 V0 Z" style="fill:var(--shirt,#E5674A)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="0" cy="-10.9" r="2.45" style="fill:var(--skin,#E8B48C)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-2.45 -11.2 Q-2.5 -13.7 0 -13.65 Q2.6 -13.7 2.45 -11 Q0.6 -12.4 -2.45 -11.2Z" style="fill:var(--hair,#2B2230)"/>
+  <circle cx="-.85" cy="-10.6" r=".28" fill="#1C2433"/><circle cx=".85" cy="-10.6" r=".28" fill="#1C2433"/>
+</g>
+<g id="hardhat"><path d="M-2.9 -12.2 Q-2.9 -15.2 0 -15.2 Q2.9 -15.2 2.9 -12.2 Z" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-3.5" y="-12.6" width="7" height="1" rx=".4" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="bag"><rect x="2.4" y="-5.6" width="3.6" height="4" rx=".6" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M3.3 -5.6 Q4.2 -7.4 5.1 -5.6" fill="none" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+
+<g id="house">
+  <rect x="-7" y="-10" width="14" height="10" style="fill:var(--wall,#FFF1DC)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-8.8 -9.6 L0 -17 L8.8 -9.6Z" style="fill:var(--roof,#E5674A)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="1.2" y="-6" width="3.6" height="6" fill="#B9472F" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-5" y="-7" width="4.2" height="3.6" fill="#BFE3EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="3.4" y="-16" width="2.2" height="4" fill="#B9A08A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="shop">
+  <rect x="-10" y="-13" width="20" height="13" fill="#FFF1DC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7.6" y="-8.6" width="7.4" height="5.4" fill="#BFE3EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="2" y="-7.4" width="5" height="7.4" style="fill:var(--awn,#E5674A)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-11" y="-17.6" width="22" height="4" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7.33" y="-17.6" width="3.67" height="4" style="fill:var(--awn,#E5674A)"/>
+  <rect x="0" y="-17.6" width="3.67" height="4" style="fill:var(--awn,#E5674A)"/>
+  <rect x="7.33" y="-17.6" width="3.67" height="4" style="fill:var(--awn,#E5674A)"/>
+  <path d="M-11 -13.6 a1.833 1.6 0 0 0 3.667 0 a1.833 1.6 0 0 0 3.667 0 a1.833 1.6 0 0 0 3.667 0 a1.833 1.6 0 0 0 3.667 0 a1.833 1.6 0 0 0 3.667 0 a1.833 1.6 0 0 0 3.667 0" style="fill:var(--awn,#E5674A)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-11" y="-17.6" width="22" height="4" fill="none" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-6" y="-21.6" width="12" height="4" rx="1" fill="#1C2433"/>
+</g>
+<g id="tag"><path d="M0 0 L5.2 0 L7.4 2 L5.2 4 L0 4Z" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5.3" cy="2" r=".55" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="factory">
+  <rect x="7" y="-19" width="3.6" height="19" style="fill:var(--fac,#9AAAD0)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="7" y="-19" width="3.6" height="2" fill="#2A386B"/>
+  <path d="M-12 0 V-8 L-6 -12.5 V-8 L0 -12.5 V-8 L6 -12.5 V-8 L12 -12.5 V0Z" style="fill:var(--fac,#9AAAD0)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-9.5" y="-5.6" width="3" height="2.6" fill="#E9EEF8" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-3.5" y="-5.6" width="3" height="2.6" fill="#E9EEF8" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="2.5" y="-5.6" width="3" height="2.6" fill="#E9EEF8" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="7.6" y="-5" width="3.2" height="5" fill="#2A386B" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="smoke"><circle cx="0" cy="0" r="2.2" fill="#E7E3EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.8" cy="-2.6" r="2.8" fill="#EFECF1" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="6.4" cy="-4.4" r="2.2" fill="#F4F2F5" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="gov">
+  <rect x="-12" y="-2.2" width="24" height="2.2" fill="#E9DDC4" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-10.5" y="-12" width="21" height="9.8" style="fill:var(--gwall,#F7EEDC)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-8.6" y="-11.5" width="2.2" height="9.3" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-3.6" y="-11.5" width="2.2" height="9.3" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="1.4" y="-11.5" width="2.2" height="9.3" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="6.4" y="-11.5" width="2.2" height="9.3" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-12 -12 L0 -18.5 L12 -12Z" style="fill:var(--groof,#3B4E92)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="0" cy="-14.4" r="1.4" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="hospital">
+  <rect x="-9" y="-16" width="18" height="16" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-9" y="-16" width="18" height="3" fill="#2F9C83" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-2.6" y="-11.4" width="5.2" height="5.2" rx=".8" fill="#E5674A"/>
+  <rect x="-.75" y="-10.6" width="1.5" height="3.6" fill="#fff"/><rect x="-1.8" y="-9.55" width="3.6" height="1.5" fill="#fff"/>
+  <rect x="-2" y="-4.4" width="4" height="4.4" fill="#BFE3EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7.4" y="-4.4" width="3" height="2.6" fill="#BFE3EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="4.4" y="-4.4" width="3" height="2.6" fill="#BFE3EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="office">
+  <rect x="-7" y="-30" width="14" height="30" fill="#CFE6EA" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-7 -30 L7 -30 L7 -27 L-7 -27Z" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-5.0" y="-25.0" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.4" y="-25.0" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="2.2" y="-25.0" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-5.0" y="-20.8" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.4" y="-20.8" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="2.2" y="-20.8" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-5.0" y="-16.6" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.4" y="-16.6" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="2.2" y="-16.6" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-5.0" y="-12.4" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.4" y="-12.4" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="2.2" y="-12.4" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-5.0" y="-8.2" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.4" y="-8.2" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="2.2" y="-8.2" width="2.6" height="2.8" fill="#FFFFFF" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="tower">
+  <rect x="-6.5" y="-36" width="13" height="36" fill="#3B4E92" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-9" y="-43" width="18" height="8" rx="1.2" fill="#2A386B" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7.0" y="-41" width="2.4" height="4" fill="#F4D67A"/><rect x="-3.5" y="-41" width="2.4" height="4" fill="#F4D67A"/><rect x="0.0" y="-41" width="2.4" height="4" fill="#F4D67A"/><rect x="3.5" y="-41" width="2.4" height="4" fill="#F4D67A"/><rect x="7.0" y="-41" width="2.4" height="4" fill="#F4D67A"/>
+  <path d="M0 -43 V-50" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="0" cy="-50.8" r="1.2" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-4.6" y="-32.0" width="2.2" height="3" fill="#C8D3EE"/><rect x="-1.0" y="-32.0" width="2.2" height="3" fill="#C8D3EE"/><rect x="2.6" y="-32.0" width="2.2" height="3" fill="#C8D3EE"/><rect x="-4.6" y="-26.6" width="2.2" height="3" fill="#C8D3EE"/><rect x="-1.0" y="-26.6" width="2.2" height="3" fill="#C8D3EE"/><rect x="2.6" y="-26.6" width="2.2" height="3" fill="#C8D3EE"/><rect x="-4.6" y="-21.2" width="2.2" height="3" fill="#C8D3EE"/><rect x="-1.0" y="-21.2" width="2.2" height="3" fill="#C8D3EE"/><rect x="2.6" y="-21.2" width="2.2" height="3" fill="#C8D3EE"/><rect x="-4.6" y="-15.8" width="2.2" height="3" fill="#C8D3EE"/><rect x="-1.0" y="-15.8" width="2.2" height="3" fill="#C8D3EE"/><rect x="2.6" y="-15.8" width="2.2" height="3" fill="#C8D3EE"/><rect x="-4.6" y="-10.4" width="2.2" height="3" fill="#C8D3EE"/><rect x="-1.0" y="-10.4" width="2.2" height="3" fill="#C8D3EE"/><rect x="2.6" y="-10.4" width="2.2" height="3" fill="#C8D3EE"/>
+  <rect x="-2.4" y="-5" width="4.8" height="5" fill="#2A386B" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="tree"><rect x="-.9" y="-6" width="1.8" height="6" fill="#8B5E3C" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="0" cy="-9" r="4.6" fill="#8CC084" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="-1.4" cy="-10.4" r="1.4" fill="#A9D29B"/></g>
+<g id="palm">
+  <path d="M0 0 Q-.6 -8 1.4 -15" fill="none" stroke="#8B5E3C" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M1.4 -15 Q-4 -18 -8 -14 Q-3.6 -16 1.4 -15Z M1.4 -15 Q6.4 -18.6 10 -14 Q5.6 -16.4 1.4 -15Z M1.4 -15 Q-2 -21 -6 -21 Q-1 -19.4 1.4 -15Z M1.4 -15 Q4.4 -21.4 8.4 -20.4 Q3.6 -19.6 1.4 -15Z" fill="#5E9B66" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="podium">
+  <rect x="-11" y="-6" width="7" height="6" fill="#9AAAD0" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-4" y="-10" width="8" height="10" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="4" y="-4.4" width="7" height="4.4" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="-7.5" y="-1.6" font-size="3.6" font-weight="800" text-anchor="middle" fill="#1C2433">2</text>
+  <text x="0" y="-4" font-size="4.2" font-weight="800" text-anchor="middle" fill="#1C2433">1</text>
+  <text x="7.5" y="-1" font-size="3.2" font-weight="800" text-anchor="middle" fill="#fff">3</text>
+  <path d="M-2.6 -18 H2.6 V-16 Q2.6 -13 0 -13 Q-2.6 -13 -2.6 -16Z" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-2.6 -17 Q-4.4 -17 -4 -15.4 Q-3.6 -14.4 -2.4 -14.6 M2.6 -17 Q4.4 -17 4 -15.4 Q3.6 -14.4 2.4 -14.6" fill="none" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-.6" y="-13" width="1.2" height="1.8" fill="#C98E1E"/><rect x="-2" y="-11.4" width="4" height="1.4" fill="#C98E1E" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="crate"><rect x="-2.4" y="-4.4" width="4.8" height="4.4" fill="#C98E5A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-2.4 -4.4 L2.4 0 M2.4 -4.4 L-2.4 0" stroke="#8B5E3C" stroke-width=".35"/></g>
+<g id="pkg"><rect x="-2.6" y="-4.6" width="5.2" height="4.6" fill="#D9A866" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-.5" y="-4.6" width="1" height="4.6" fill="#F4E2BF"/></g>
+<g id="boat">
+  <path d="M-11 -3 L11 -3 L8 2 L-8 2Z" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="-7" y="-7" width="5" height="4" fill="#C98E5A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-1.6" y="-7" width="5" height="4" fill="#D9A866" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="3.6" y="-9.2" width="4.6" height="6.2" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="4.6" y="-8" width="2.6" height="1.8" fill="#BFE3EA"/>
+</g>
+<g id="dhow">
+  <path d="M-15 -4 Q-1 1 16 -6 L13 1.6 Q0 4.6 -11 1.6Z" fill="#9C6B3F" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-10 -2.6 Q0 0 12 -4.6" fill="none" stroke="#7A5030" stroke-width=".5"/>
+  <path d="M0 -2 V-24" stroke="#6B4528" stroke-width=".9"/>
+  <path d="M-12 -21 Q2 -30 13 -9 Q2 -9 -5 -5 Z" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-12 -21 L13 -9" stroke="#C9B89A" stroke-width=".4"/>
+  <path d="M0 -24 L5 -22.5 L0 -21Z" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="fort">
+  <path d="M-11 0 V-20 H-12.4 V-23.4 H-10 V-21.8 H-7.6 V-23.4 H-5.2 V-21.8 H-2.8 V-23.4 H-.4 V-21.8 H2 V-23.4 H4.4 V-21.8 H6.8 V-23.4 H9.2 V-21.8 H11.6 V-23.4 H12.4 V-20 H11 V0Z" fill="#E4BF86" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-11 -14 H11" stroke="#C9A066" stroke-width=".4"/>
+  <path d="M-3 0 V-6 Q0 -9.4 3 -6 V0Z" fill="#8B5E3C" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M-8 -16 V-18.6 Q-6.8 -20 -5.6 -18.6 V-16Z M5.6 -16 V-18.6 Q6.8 -20 8 -18.6 V-16Z" fill="#8B5E3C"/>
+  <path d="M18 0 V-14 H16.6 V-16.6 H18.8 V-15.4 H21 V-16.6 H23.2 V-15.4 H25.4 V-16.6 H27.6 V-14 H26.2 V0Z" fill="#DDB37A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M11 -10 H18 V0 H11Z" fill="#E9CB98" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+<g id="cloud"><path d="M-14 0 Q-15 -5 -9 -5 Q-8 -11 -1 -10 Q3 -15 9 -10 Q15 -10 14 -4 Q17 -1 13 0Z" fill="#FFFBF4" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="fish"><path d="M0 0 Q5 -3.4 10 0 Q5 3.4 0 0Z M10 0 L13 -2.4 L13 2.4Z" style="fill:var(--fish,#F2B33D)" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="2.6" cy="-.4" r=".45" fill="#1C2433"/></g>
+<g id="bubble"><circle r="1" fill="none" stroke="#BFE3EA" stroke-width=".35" opacity=".8"/></g>
+
+<!-- concept icons (centered, ~10mm) -->
+<g id="i-what"><path d="M-4.6 -1.4 L0 -4 L4.6 -1.4 L0 1.2Z" fill="#F4D49B" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-4.6 -1.4 V3.6 L0 6.2 V1.2Z" fill="#D9A866" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M4.6 -1.4 V3.6 L0 6.2 V1.2Z" fill="#C98E5A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-2.3 -2.7 L2.3 -.1 V1.6" fill="none" stroke="#fff" stroke-width=".6"/></g>
+<g id="i-how"><path d="M3.40 0.00 L4.61 0.92 L4.34 1.80 L2.83 1.89 L2.40 2.40 L2.61 3.91 L1.80 4.34 L0.66 3.33 L0.00 3.40 L-0.92 4.61 L-1.80 4.34 L-1.89 2.83 L-2.40 2.40 L-3.91 2.61 L-4.34 1.80 L-3.33 0.66 L-3.40 0.00 L-4.61 -0.92 L-4.34 -1.80 L-2.83 -1.89 L-2.40 -2.40 L-2.61 -3.91 L-1.80 -4.34 L-0.66 -3.33 L-0.00 -3.40 L0.92 -4.61 L1.80 -4.34 L1.89 -2.83 L2.40 -2.40 L3.91 -2.61 L4.34 -1.80 L3.33 -0.66Z" fill="#9AAAD0" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle r="1.5" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="i-whom"><use href="#person" transform="translate(-2.4 5.2) scale(.56)" style="--shirt:#E5674A"/><use href="#person" transform="translate(2.6 5.6) scale(.6)" style="--shirt:#2F9C83;--skin:#C98B5E"/></g>
+<g id="i-key"><circle cx="-2.6" cy="0" r="2.6" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle cx="-2.6" cy="0" r=".9" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -.8 H5.6 V.8 H0Z" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M3.4 .8 V2.6 H4.6 V.8 M5 .8 V2 H5.6 V.8" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="i-gov"><use href="#gov" transform="translate(0 4.6) scale(.42)"/></g>
+<g id="i-tag"><g transform="rotate(-20) translate(-4 -2.4) scale(1.15)"><use href="#tag"/></g></g>
+<g id="i-motive"><circle r="4.6" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle r="3" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle r="1.4" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 0 L5.6 -5.6" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M5.6 -5.6 L4 -5.8 M5.6 -5.6 L5.4 -4" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="i-up"><circle r="4.6" fill="#3E9B5F" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-2.2 .2 L-.6 1.9 L2.4 -1.6" fill="none" stroke="#fff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g id="i-down"><circle r="4.6" fill="#C8463C" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-1.8 -1.8 L1.8 1.8 M1.8 -1.8 L-1.8 1.8" stroke="#fff" stroke-width="1.1" stroke-linecap="round"/></g>
+<g id="i-shield"><path d="M0 -5 L4.4 -3.4 V.4 Q4.4 3.8 0 5.6 Q-4.4 3.8 -4.4 .4 V-3.4Z" fill="#2F9C83" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-1.8 .2 L-.4 1.6 L2 -1.2" fill="none" stroke="#fff" stroke-width=".9" stroke-linecap="round"/></g>
+<g id="i-hat"><path d="M-4.6 1.4 Q-4.6 -4.4 0 -4.4 Q4.6 -4.4 4.6 1.4Z" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-5.6" y="1" width="11.2" height="1.8" rx=".7" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -4.4 V1" stroke="#C98E1E" stroke-width=".7"/></g>
+<g id="i-plan"><rect x="-4" y="-5" width="8" height="10.4" rx="1" fill="#fff" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-2" y="-6" width="4" height="2" rx=".6" fill="#9AAAD0" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M-2.4 -1.6 H2.4 M-2.4 .8 H2.4 M-2.4 3.2 H1" stroke="#1C2433" stroke-width=".45"/></g>
+<g id="i-wheat"><path d="M0 5 V-4" stroke="#C98E1E" stroke-width=".7"/><ellipse cx="-1.3" cy="-3.2" rx="1.1" ry="1.9" transform="rotate(28 -1.3 -3.2)" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="1.3" cy="-3.2" rx="1.1" ry="1.9" transform="rotate(-28 1.3 -3.2)" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="-1.3" cy="-0.4" rx="1.1" ry="1.9" transform="rotate(28 -1.3 -0.4)" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="1.3" cy="-0.4" rx="1.1" ry="1.9" transform="rotate(-28 1.3 -0.4)" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="-1.3" cy="2.2" rx="1.1" ry="1.9" transform="rotate(28 -1.3 2.2)" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="1.3" cy="2.2" rx="1.1" ry="1.9" transform="rotate(-28 1.3 2.2)" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="0" cy="-5" rx="1" ry="1.8" fill="#F2B33D" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="i-bulb"><path d="M-3.4 -1.2 A3.8 3.8 0 1 1 3.4 -1.2 Q2 1 2 2.6 H-2 Q-2 1 -3.4 -1.2Z" fill="#F7D774" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><rect x="-2" y="2.6" width="4" height="2.2" rx=".5" fill="#9AAAD0" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g id="i-compass"><circle r="4.8" fill="#FFF8EC" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 -3.8 L1.1 0 L0 3.8 L-1.1 0Z" fill="#E5674A" stroke="#1C2433" stroke-width=".45" stroke-linejoin="round" stroke-linecap="round"/><circle r=".7" fill="#1C2433"/></g>
+<g id="i-branch"><path d="M-4.4 4 V0 Q-4.4 -2.2 -2 -2.2 H4.4 M-4.4 0 Q-4.4 -4.6 0 -4.6 H4.4 M-4.4 2.2 H4.4" fill="none" stroke="#E5674A" stroke-width="1.1" stroke-linecap="round"/><path d="M3.2 -5.8 L4.8 -4.6 L3.2 -3.4 M3.2 -3.4 L4.8 -2.2 L3.2 -1 M3.2 1 L4.8 2.2 L3.2 3.4" fill="none" stroke="#E5674A" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g id="i-bridge"><path d="M-5.4 3 V-.6 Q0 -5.6 5.4 -.6 V3" fill="none" stroke="#1F7563" stroke-width="1.1"/><path d="M-5.6 1 H5.6" stroke="#1C2433" stroke-width=".9"/><path d="M-2.6 1 V-2.4 M0 1 V-3.2 M2.6 1 V-2.4" stroke="#1F7563" stroke-width=".5"/></g>
+
+<g id="spark"><path d="M0 -3 Q.5 -.5 3 0 Q.5 .5 0 3 Q-.5 .5 -3 0 Q-.5 -.5 0 -3Z" fill="#FFF3C4"/></g>
+<g id="shadow"><ellipse cx="0" cy="0" rx="10" ry="1.4" fill="#000" opacity=".14"/></g>
+<g id="coin"><circle r="5" fill="url(#gCoin)"/><circle r="3.7" fill="none" stroke="#C98A16" stroke-width=".55"/>
+  <path d="M0 -2.2 L.6 -.7 L2.2 -.7 L.9 .3 L1.4 1.9 L0 .9 L-1.4 1.9 L-.9 .3 L-2.2 -.7 L-.6 -.7Z" fill="#D8941A"/>
+  <ellipse cx="-1.8" cy="-2.4" rx="1.6" ry=".9" fill="#fff" opacity=".65"/></g>
+<g id="cstack"><ellipse cx="0" cy="0.0" rx="5" ry="1.6" fill="#C9850F"/><ellipse cx="0" cy="-0.7" rx="5" ry="1.6" fill="url(#gGold)"/><ellipse cx="0" cy="-1.7" rx="5" ry="1.6" fill="#C9850F"/><ellipse cx="0" cy="-2.4" rx="5" ry="1.6" fill="url(#gGold)"/><ellipse cx="0" cy="-3.4" rx="5" ry="1.6" fill="#C9850F"/><ellipse cx="0" cy="-4.1" rx="5" ry="1.6" fill="url(#gGold)"/><ellipse cx="0" cy="-5.1" rx="5" ry="1.6" fill="#C9850F"/><ellipse cx="0" cy="-5.8" rx="5" ry="1.6" fill="url(#gGold)"/><ellipse cx="0" cy="-6.8" rx="5" ry="1.6" fill="#C9850F"/><ellipse cx="0" cy="-7.5" rx="5" ry="1.6" fill="url(#gGold)"/>
+  <ellipse cx="0" cy="-7.5" rx="3.4" ry=".9" fill="none" stroke="#C98A16" stroke-width=".4"/><ellipse cx="-1.8" cy="-7.9" rx="1.4" ry=".5" fill="#fff" opacity=".6"/></g>
+<g id="gshop">
+  <rect x="-9" y="-12" width="18" height="12" rx=".8" fill="url(#gCreamV)"/>
+  <rect x="-6.6" y="-8.6" width="6.2" height="5" rx=".5" fill="#BFE6F2"/><path d="M-6.6 -8.6 L-3 -8.6 L-6.6 -5.4Z" fill="#fff" opacity=".7"/>
+  <rect x="1.6" y="-7.6" width="4.6" height="7.6" rx=".5" style="fill:var(--c2,#B9412F)"/>
+  <rect x="-10.5" y="-16.6" width="21" height="4.6" rx="1" fill="#fff"/>
+  <rect x="-10.5" y="-16.6" width="2.1" height="4.6" style="fill:var(--c,#EE6A55)"/><rect x="-6.3" y="-16.6" width="2.1" height="4.6" style="fill:var(--c,#EE6A55)"/><rect x="-2.1" y="-16.6" width="2.1" height="4.6" style="fill:var(--c,#EE6A55)"/><rect x="2.1" y="-16.6" width="2.1" height="4.6" style="fill:var(--c,#EE6A55)"/><rect x="6.3" y="-16.6" width="2.1" height="4.6" style="fill:var(--c,#EE6A55)"/>
+  <path d="M-10.5 -12 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 a1.05 1.2 0 0 0 2.1 0 Z" style="fill:var(--c,#EE6A55)"/>
+  <rect x="-5" y="-20.6" width="10" height="3.4" rx="1" style="fill:var(--c2,#B9412F)"/>
+</g>
+<g id="ggov">
+  <rect x="-12.5" y="-2.2" width="25" height="2.2" rx=".6" fill="#E3D3B8"/>
+  <rect x="-11" y="-12" width="22" height="9.8" fill="url(#gCreamV)"/>
+  <rect x="-9.4" y="-11.4" width="2.4" height="9.2" fill="#fff"/><rect x="-7.800000000000001" y="-11.4" width=".8" height="9.2" fill="#E2D5C0"/><rect x="-4.4" y="-11.4" width="2.4" height="9.2" fill="#fff"/><rect x="-2.8000000000000003" y="-11.4" width=".8" height="9.2" fill="#E2D5C0"/><rect x="0.6" y="-11.4" width="2.4" height="9.2" fill="#fff"/><rect x="2.2" y="-11.4" width=".8" height="9.2" fill="#E2D5C0"/><rect x="5.6" y="-11.4" width="2.4" height="9.2" fill="#fff"/><rect x="7.199999999999999" y="-11.4" width=".8" height="9.2" fill="#E2D5C0"/>
+  <rect x="-12" y="-13.6" width="24" height="1.8" rx=".5" fill="#F1E5D1"/>
+  <path d="M-12.6 -13.6 L0 -20.4 L12.6 -13.6Z" style="fill:var(--roof,#EE6A55)"/>
+  <circle cx="0" cy="-16" r="1.5" fill="url(#gGold)"/>
+  <path d="M0 -20.4 V-25" stroke="#8C7A66" stroke-width=".5"/><path d="M0 -25 L3.6 -24 L0 -23Z" style="fill:var(--roof,#EE6A55)"/>
+</g>
+<g id="gfac">
+  <rect x="6.4" y="-17" width="3.4" height="17" fill="#7E74C8"/><rect x="6.4" y="-17" width="3.4" height="1.6" fill="#5C52A6"/>
+  <path d="M-11 0 V-8 L-5.5 -12 V-8 L0 -12 V-8 L5.5 -12 V0Z" fill="url(#gLav)"/>
+  <rect x="-8.6" y="-5.4" width="2.6" height="2.4" rx=".3" fill="#FFF1C9"/><rect x="-3.3" y="-5.4" width="2.6" height="2.4" rx=".3" fill="#FFF1C9"/><rect x="2" y="-5.4" width="2.6" height="2.4" rx=".3" fill="#FFF1C9"/>
+  <circle cx="8.6" cy="-20" r="1.8" fill="#fff" opacity=".85"/><circle cx="10.6" cy="-22.6" r="2.3" fill="#fff" opacity=".7"/>
+</g>
+<g id="gtag"><path d="M0 -3 H6 L8.6 0 L6 3 H0 Q-1 3 -1 2 V-2 Q-1 -3 0 -3Z" fill="url(#gGold)"/><circle cx="5.8" cy="0" r=".8" fill="#fff"/><path d="M.2 -2.2 H5" stroke="#fff" stroke-width=".5" opacity=".6"/></g>
+<g id="ggear"><path d="M5.20 0.00 L6.89 1.22 L6.58 2.39 L4.50 2.60 L3.98 3.34 L4.50 5.36 L3.50 6.06 L1.78 4.89 L0.90 5.12 L0.00 7.00 L-1.22 6.89 L-1.78 4.89 L-2.60 4.50 L-4.50 5.36 L-5.36 4.50 L-4.50 2.60 L-4.89 1.78 L-6.89 1.22 L-7.00 0.00 L-5.12 -0.90 L-4.89 -1.78 L-6.06 -3.50 L-5.36 -4.50 L-3.34 -3.98 L-2.60 -4.50 L-2.39 -6.58 L-1.22 -6.89 L-0.00 -5.20 L0.90 -5.12 L2.39 -6.58 L3.50 -6.06 L3.34 -3.98 L3.98 -3.34 L6.06 -3.50 L6.58 -2.39 L5.12 -0.90Z" style="fill:var(--g,url(#gCoral))"/><circle r="3.4" fill="#fff" opacity=".9"/><circle r="1.6" style="fill:var(--gc,#B9412F)"/>
+  <path d="M-4 -4.6 A6 6 0 0 1 2 -6" stroke="#fff" stroke-width=".8" fill="none" opacity=".55"/></g>
+<g id="gbag"><path d="M-5 -10 H5 L6 0 H-6Z" fill="url(#gCoral)"/><path d="M-2.4 -10 Q-2.4 -14 0 -14 Q2.4 -14 2.4 -10" fill="none" stroke="#B9412F" stroke-width=".8"/><rect x="-4.6" y="-9.4" width="1.4" height="8.4" fill="#fff" opacity=".35"/></g>
+<g id="gclip"><rect x="-6" y="-9" width="12" height="16" rx="1.4" fill="url(#gWood)"/><rect x="-4.8" y="-7" width="9.6" height="12.6" rx=".6" fill="#fff"/>
+  <rect x="-2.6" y="-10" width="5.2" height="2.6" rx=".8" fill="#9AA3B8"/><rect x="-3.4" y="-4.6" width="6.8" height=".8" rx=".4" fill="#C9CEDB"/><rect x="-3.4" y="-2.2" width="6.8" height=".8" rx=".4" fill="#C9CEDB"/><rect x="-3.4" y="0.2" width="5" height=".8" rx=".4" fill="#C9CEDB"/><rect x="-3.4" y="2.6" width="6" height=".8" rx=".4" fill="#C9CEDB"/></g>
+<g id="glock"><path d="M-2.6 -4 V-6 Q-2.6 -9 0 -9 Q2.6 -9 2.6 -6 V-4" fill="none" stroke="#A9B0C0" stroke-width="1.2"/><rect x="-4" y="-4.4" width="8" height="6.6" rx="1.2" fill="url(#gGold)"/><circle cx="0" cy="-1.6" r=".9" fill="#B7801A"/><rect x="-.35" y="-1.4" width=".7" height="2" fill="#B7801A"/></g>
+<g id="gfort">
+  <path d="M-11 0 V-20 H-12.4 V-23.4 H-10 V-21.8 H-7.6 V-23.4 H-5.2 V-21.8 H-2.8 V-23.4 H-.4 V-21.8 H2 V-23.4 H4.4 V-21.8 H6.8 V-23.4 H9.2 V-21.8 H11.6 V-23.4 H12.4 V-20 H11 V0Z" fill="url(#gSand)"/>
+  <path d="M-3 0 V-6 Q0 -9.4 3 -6 V0Z" fill="#8B5A30"/><path d="M-8 -16 V-18.6 Q-6.8 -20 -5.6 -18.6 V-16Z M5.6 -16 V-18.6 Q6.8 -20 8 -18.6 V-16Z" fill="#8B5A30"/>
+  <path d="M18 0 V-14 H16.6 V-16.6 H18.8 V-15.4 H21 V-16.6 H23.2 V-15.4 H25.4 V-16.6 H27.6 V-14 H26.2 V0Z" fill="url(#gSand)"/><path d="M11 -10 H18 V0 H11Z" fill="#F0D3A0"/>
+</g>
+<g id="gdhow"><path d="M-15 -4 Q-1 1 16 -6 L13 1.6 Q0 4.6 -11 1.6Z" fill="url(#gWood)"/><path d="M0 -2 V-24" stroke="#6B4528" stroke-width=".9"/>
+  <path d="M-12 -21 Q2 -30 13 -9 Q2 -9 -5 -5 Z" fill="#FFF8EC"/><path d="M-12 -21 Q2 -30 13 -9" fill="none" stroke="#E2D3B6" stroke-width=".5"/><path d="M0 -24 L5 -22.5 L0 -21Z" fill="#EE6A55"/></g>
+<g id="gpalm"><path d="M0 0 Q-.6 -8 1.4 -15" fill="none" stroke="#9C6B3F" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M1.4 -15 Q-4 -18 -8 -14 Q-3.6 -16 1.4 -15Z M1.4 -15 Q6.4 -18.6 10 -14 Q5.6 -16.4 1.4 -15Z M1.4 -15 Q-2 -21 -6 -21 Q-1 -19.4 1.4 -15Z M1.4 -15 Q4.4 -21.4 8.4 -20.4 Q3.6 -19.6 1.4 -15Z" fill="#22A98C"/></g>
+<g id="gperson"><path d="M-3.2 0 V-5.2 Q-3.2 -8.4 0 -8.4 Q3.2 -8.4 3.2 -5.2 V0Z" style="fill:var(--shirt,#22A98C)"/><circle cx="0" cy="-10.8" r="2.4" fill="#F0C29C"/><path d="M-2.4 -11.1 Q-2.5 -13.6 0 -13.55 Q2.6 -13.6 2.4 -10.9 Q.6 -12.3 -2.4 -11.1Z" fill="#3A2A3C"/></g>
+</defs></svg>
+<svg class="bg" viewBox="0 0 594 420" width="594mm" height="420mm">
+  <use href="#spark" transform="translate(5.00 40.00) scale(1.1)"/><use href="#spark" transform="translate(4.00 120.00) scale(0.8)"/><use href="#spark" transform="translate(6.00 300.00) scale(1)"/><use href="#spark" transform="translate(5.00 390.00) scale(0.7)"/><use href="#spark" transform="translate(589.00 60.00) scale(1)"/><use href="#spark" transform="translate(590.00 170.00) scale(0.8)"/><use href="#spark" transform="translate(588.00 300.00) scale(1.1)"/><use href="#spark" transform="translate(589.00 405.00) scale(0.7)"/><use href="#spark" transform="translate(300.00 99.50) scale(0.6)"/><use href="#spark" transform="translate(150.00 396.00) scale(0.6)"/><use href="#spark" transform="translate(450.00 396.00) scale(0.6)"/>
+  <circle cx="-6" cy="236" r="15" fill="url(#gOrbC)" opacity=".75"/><circle cx="600" cy="214" r="16" fill="url(#gOrbV)" opacity=".8"/>
+  <circle cx="590" cy="350" r="5" fill="url(#gOrbT)" opacity=".8"/>
+</svg>
+
+<div class="glass names">
+  <span class="who">Student Names</span>
+  <span class="m"><b>Mais altoubi</b><i>31j2573</i></span>
+  <span class="m"><b>Alshima Almahrooqi</b><i>21S252540139</i></span>
+  <span class="m"><b>Nardeen alfarsi</b><i>21J2583</i></span>
+  <span class="m"><b>shatha al_umeiri</b><i>21J25157</i></span>
+</div>
+
+<header>
+  <svg class="" viewBox="0 0 118 46" width="118mm" height="46mm" style="display:block;overflow:visible;width:106mm;height:41.4mm"><use href="#spark" transform="translate(17.32 37.59) scale(1.0346422332836298)"/><use href="#spark" transform="translate(31.08 22.81) scale(0.8146437453521167)"/><use href="#spark" transform="translate(76.28 35.13) scale(0.5657017107419644)"/><use href="#spark" transform="translate(5.23 37.10) scale(0.8029369475335373)"/><use href="#spark" transform="translate(88.90 2.09) scale(0.811771035838361)"/><use href="#spark" transform="translate(84.26 11.61) scale(1.1616894868877456)"/><use href="#spark" transform="translate(104.76 3.28) scale(0.5178121026954225)"/><use href="#spark" transform="translate(63.72 41.44) scale(0.7668429663817486)"/><use href="#spark" transform="translate(26.69 19.73) scale(0.5203285513024075)"/><circle cx="8" cy="9" r="4.2" fill="url(#gOrbT)"/><circle cx="111" cy="40" r="3" fill="url(#gOrbV)"/><ellipse cx="36" cy="22.5" rx="12.5" ry="1.2" fill="#000" opacity=".18"/><path d="M33 15.5 L31 20.9 L38 15.5Z" fill="url(#gGold)"/><rect x="13.0" y="7.5" width="30" height="9" rx="4.5" fill="url(#gGold)"/><rect x="16.0" y="8.6" width="24" height="1.6" rx=".8" fill="#fff" opacity=".45"/><text x="28" y="14.1" font-size="5.6" font-weight="800" text-anchor="middle" fill="#fff" font-family="Poppins">WHAT?</text><ellipse cx="68" cy="31.5" rx="10.833333333333334" ry="1.2" fill="#000" opacity=".18"/><path d="M65 24.5 L63 29.9 L70 24.5Z" fill="url(#gCoral)"/><rect x="57.0" y="16.5" width="26" height="9" rx="4.5" fill="url(#gCoral)"/><rect x="60.0" y="17.6" width="20" height="1.6" rx=".8" fill="#fff" opacity=".45"/><text x="70" y="23.1" font-size="5.6" font-weight="800" text-anchor="middle" fill="#fff" font-family="Poppins">HOW?</text><ellipse cx="56" cy="43.5" rx="17.5" ry="1.2" fill="#000" opacity=".18"/><path d="M53 36.5 L51 41.9 L58 36.5Z" fill="url(#gTeal)"/><rect x="23.0" y="28.5" width="42" height="9" rx="4.5" fill="url(#gTeal)"/><rect x="26.0" y="29.6" width="36" height="1.6" rx=".8" fill="#fff" opacity=".45"/><text x="44" y="35.1" font-size="5.6" font-weight="800" text-anchor="middle" fill="#fff" font-family="Poppins">FOR WHOM?</text><use href="#cstack" transform="translate(98.00 18.00) scale(1.1)"/><use href="#coin" transform="translate(107.00 10.00) scale(0.9)"/><use href="#coin" transform="translate(88.00 30.00) scale(0.7)"/></svg>
+  <div class="hc">
+    <div class="script">Chapter 2: Economic Systems &middot; BSEC1103 Principles of Economics</div>
+    <svg class="" viewBox="0 0 238 36" width="238mm" height="36mm" style="display:block;overflow:visible;width:190mm;height:28.7mm"><text x="1.5" y="32.7" font-size="31" font-weight="800" text-anchor="start" fill="#4B3A9E" font-family="Poppins" letter-spacing="-.6">Who Decides?</text><text x="1.25" y="32.25" font-size="31" font-weight="800" text-anchor="start" fill="#4B3A9E" font-family="Poppins" letter-spacing="-.6">Who Decides?</text><text x="1.0" y="31.8" font-size="31" font-weight="800" text-anchor="start" fill="#4B3A9E" font-family="Poppins" letter-spacing="-.6">Who Decides?</text><text x="0.75" y="31.35" font-size="31" font-weight="800" text-anchor="start" fill="#4B3A9E" font-family="Poppins" letter-spacing="-.6">Who Decides?</text><text x="0.5" y="30.9" font-size="31" font-weight="800" text-anchor="start" fill="#4B3A9E" font-family="Poppins" letter-spacing="-.6">Who Decides?</text><text x="0" y="30" font-size="31" font-weight="800" font-family="Poppins" letter-spacing="-.6"><tspan fill="url(#gTitleCream)">Who </tspan><tspan fill="url(#gTitleGold)">Decides?</tspan></text></svg>
+    <div class="hook">Scarce resources force every society to choose: who decides <b>what, how &amp; for whom</b>?</div>
+  </div>
+  <svg class="" viewBox="0 0 118 46" width="118mm" height="46mm" style="display:block;overflow:visible;width:106mm;height:41.4mm;justify-self:end"><use href="#spark" transform="translate(110.99 41.81) scale(0.539585957408766)"/><use href="#spark" transform="translate(11.68 37.09) scale(1.0151789923479662)"/><use href="#spark" transform="translate(78.35 14.94) scale(0.9241609159749237)"/><use href="#spark" transform="translate(71.18 26.41) scale(0.6108680091783639)"/><use href="#spark" transform="translate(51.10 18.53) scale(1.006108456866226)"/><use href="#spark" transform="translate(115.41 41.87) scale(0.8809239332005245)"/><use href="#spark" transform="translate(52.71 13.27) scale(0.5251470305750003)"/><use href="#spark" transform="translate(5.13 21.53) scale(0.7229255894975741)"/><use href="#spark" transform="translate(45.32 39.46) scale(0.8680269384022198)"/><circle cx="110" cy="8" r="4" fill="url(#gOrbV)"/><circle cx="8" cy="38" r="2.6" fill="url(#gOrbG)"/><ellipse cx="60" cy="43" rx="22" ry="2" fill="#000" opacity=".2"/><path d="M54 43 H66 L63 39 H57Z" fill="url(#gGold)"/><rect x="58.8" y="9" width="2.4" height="30" rx="1" fill="url(#gGold)"/><circle cx="60" cy="8" r="2.6" fill="url(#gCoin)"/><rect x="26" y="10" width="68" height="2.2" rx="1.1" fill="url(#gGold)"/><path d="M29 11.2 L20 27 M29 11.2 L38 27" stroke="#E9C26A" stroke-width=".4"/><path d="M91 11.2 L82 27 M91 11.2 L100 27" stroke="#E9C26A" stroke-width=".4"/><path d="M17 27 H41 Q41 33 29 33 Q17 33 17 27Z" fill="url(#gGold)"/><path d="M79 27 H103 Q103 33 91 33 Q79 33 79 27Z" fill="url(#gGold)"/><use href="#cstack" transform="translate(29.00 26.40) scale(0.9)"/><use href="#coin" transform="translate(35.00 21.60) scale(0.6)"/><use href="#ggov" transform="translate(91.00 27.00) scale(0.62)" style="--roof:#EE6A55"/><text x="29" y="39" font-size="3.6" font-weight="800" text-anchor="middle" fill="#FFE6A6" font-family="Poppins">MARKET</text><text x="91" y="39" font-size="3.6" font-weight="800" text-anchor="middle" fill="#FFE6A6" font-family="Poppins">STATE</text></svg>
+</header>
+
+<section class="intro">
+  <div class="glass pill"><h2>What is an economic system?</h2><p>The <b>means by which a society or government organises and distributes</b> its resources, goods and services: its <b>mode of production and distribution</b>. <span class="src">(Fernando, 2026)</span></p></div>
+  <div class="glass pill"><h2>Why does every society need one?</h2><p>Resources are <b>scarce</b> but wants are <b>unlimited</b>, so a society needs a system to answer the <b>three central questions</b>: what, how and for whom to produce. <span class="src">(Mankiw, 2021)</span></p></div>
+</section>
+
+<section class="cards">
+  <div class="badge">THREE ECONOMIC SYSTEMS</div>
+  <div class="card" style="--c:#F2B53A;--cd:#B7801A;--cs:#FFF1D2">
+    <svg viewBox="0 3 176 31" style="display:block;width:100%;height:auto;border-radius:3.6mm;overflow:hidden"><rect x="0" y="0" width="176" height="34" rx="3.6" fill="url(#gPanelGold)"/><circle cx="150" cy="9" r="9" fill="#fff" opacity=".28"/><circle cx="150" cy="9" r="5.6" fill="#fff" opacity=".35"/><path d="M0 27 Q44 23 88 26 T176 25 V30.4 Q176 34 172.4 34 H3.6 Q0 34 0 30.4Z" fill="#fff" opacity=".22"/><g transform="translate(20 9) scale(0.9)"><ellipse cx="0" cy="0" rx="6" ry="2.6" fill="#fff" opacity=".9"/><circle cx="-2" cy="-1.6" r="2.6" fill="#fff" opacity=".9"/><circle cx="1.8" cy="-2.2" r="3" fill="#fff" opacity=".9"/></g><g transform="translate(118 7) scale(0.8)"><ellipse cx="0" cy="0" rx="6" ry="2.6" fill="#fff" opacity=".9"/><circle cx="-2" cy="-1.6" r="2.6" fill="#fff" opacity=".9"/><circle cx="1.8" cy="-2.2" r="3" fill="#fff" opacity=".9"/></g><use href="#spark" transform="translate(42.93 10.71) scale(0.5109865499644237)"/><use href="#spark" transform="translate(105.87 12.01) scale(0.41965865777194394)"/><use href="#spark" transform="translate(4.26 15.40) scale(0.4778062042984023)"/><use href="#spark" transform="translate(42.30 17.93) scale(0.5410790522567344)"/><use href="#spark" transform="translate(145.87 9.62) scale(0.5917204421632486)"/><use href="#shadow" transform="translate(44.00 30.00) scale(1.6)"/><use href="#gshop" transform="translate(30.00 30.00) scale(1.0)" style="--c:#EE6A55;--c2:#B9412F"/><use href="#gshop" transform="translate(54.00 30.00) scale(1.0)" style="--c:#22A98C;--c2:#147560"/><use href="#gshop" transform="translate(78.00 30.00) scale(1.0)" style="--c:#4B3A9E;--c2:#33286F"/><use href="#gtag" transform="translate(19.00 16.00) scale(0.8)"/><use href="#gtag" transform="translate(66.00 14.00) scale(0.8)"/><use href="#gbag" transform="translate(101.00 30.00) scale(1.0)"/><use href="#gperson" transform="translate(112.00 30.00) scale(1.0)" style="--shirt:#4B3A9E"/><use href="#cstack" transform="translate(140.00 30.00) scale(1.1)"/><use href="#coin" transform="translate(151.00 22.00) scale(0.8)"/><use href="#coin" transform="translate(160.00 29.00) scale(0.6)"/><text x="30" y="12.099999999999998" font-size="2.4" font-weight="800" text-anchor="middle" fill="#fff" font-family="Poppins">SHOP</text><text x="54" y="12.099999999999998" font-size="2.4" font-weight="800" text-anchor="middle" fill="#fff" font-family="Poppins">SHOP</text><text x="78" y="12.099999999999998" font-size="2.4" font-weight="800" text-anchor="middle" fill="#fff" font-family="Poppins">SHOP</text></svg>
+    <div class="ttl"><i></i><b>Capitalist Economy</b><span>market &middot; free</span></div>
+    <div class="lbl">Core functioning</div>
+    <p>Resources <b>privately owned</b> by citizens &amp; institutions; <b>no government interference</b>.</p>
+    <ul style="margin-top:.6mm"><li>Freedom to start any business</li><li>Consumers buy by income; firms offer variety</li><li>Guided by <b>profit</b> and <b>competition</b></li></ul>
+    <div class="lbl">Flowchart</div>
+    <svg class="flow" viewBox="0 0 170 30" width="170mm" height="30mm" style="display:block;overflow:visible;"><circle cx="18" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="18" cy="8" r="6.6" fill="#fff" stroke="#F2B53A" stroke-width="1"/><use href="#i-whom" transform="translate(18.00 8.00) scale(0.9)"/><text x="18" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Consumers</text><path d="M27 8 H73" stroke="#B7801A" stroke-width="1" stroke-linecap="round"/><path d="M72 6.1 L75 8 L72 9.9Z" fill="#B7801A"/><text x="51.0" y="5.8" font-size="3.8" font-weight="700" text-anchor="middle" fill="#B7801A" font-family="Poppins">demand (by income)</text><circle cx="85" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="85" cy="8" r="6.6" fill="#fff" stroke="#F2B53A" stroke-width="1"/><use href="#i-tag" transform="translate(85.00 8.00) scale(0.9)"/><text x="85" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Market price</text><path d="M94 8 H140" stroke="#B7801A" stroke-width="1" stroke-linecap="round"/><path d="M139 6.1 L142 8 L139 9.9Z" fill="#B7801A"/><text x="118.0" y="5.8" font-size="3.8" font-weight="700" text-anchor="middle" fill="#B7801A" font-family="Poppins">profit signal</text><circle cx="152" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="152" cy="8" r="6.6" fill="#fff" stroke="#F2B53A" stroke-width="1"/><use href="#i-how" transform="translate(152.00 8.00) scale(0.9)"/><text x="152" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Producers</text><path d="M152 24.6 V27.4 H18 V24.6" fill="none" stroke="#B7801A" stroke-width=".7" stroke-dasharray="1.4 .9"/><path d="M16.4 25.6 L18 23.4 L19.6 25.6Z" fill="#B7801A"/><rect x="57" y="25" width="56" height="4.6" fill="#FFF8EE"/><text x="85" y="28.4" font-size="3.6" font-weight="700" text-anchor="middle" fill="#B7801A" font-family="Poppins">variety of goods to buyers</text></svg>
+  </div>
+  <div class="card" style="--c:#EE6A55;--cd:#B9412F;--cs:#FFE3DC">
+    <svg viewBox="0 3 176 31" style="display:block;width:100%;height:auto;border-radius:3.6mm;overflow:hidden"><rect x="0" y="0" width="176" height="34" rx="3.6" fill="url(#gPanelCoral)"/><circle cx="150" cy="9" r="9" fill="#fff" opacity=".28"/><circle cx="150" cy="9" r="5.6" fill="#fff" opacity=".35"/><path d="M0 27 Q44 23 88 26 T176 25 V30.4 Q176 34 172.4 34 H3.6 Q0 34 0 30.4Z" fill="#fff" opacity=".22"/><g transform="translate(16 8) scale(0.8)"><ellipse cx="0" cy="0" rx="6" ry="2.6" fill="#fff" opacity=".9"/><circle cx="-2" cy="-1.6" r="2.6" fill="#fff" opacity=".9"/><circle cx="1.8" cy="-2.2" r="3" fill="#fff" opacity=".9"/></g><g transform="translate(160 20) scale(0.7)"><ellipse cx="0" cy="0" rx="6" ry="2.6" fill="#fff" opacity=".9"/><circle cx="-2" cy="-1.6" r="2.6" fill="#fff" opacity=".9"/><circle cx="1.8" cy="-2.2" r="3" fill="#fff" opacity=".9"/></g><use href="#spark" transform="translate(42.60 3.65) scale(0.5188174727832043)"/><use href="#spark" transform="translate(28.66 3.06) scale(0.5204773043455224)"/><use href="#spark" transform="translate(159.89 14.81) scale(0.6295487807516316)"/><use href="#spark" transform="translate(40.17 10.59) scale(0.48300479303243504)"/><use href="#spark" transform="translate(31.70 3.70) scale(0.464320129773675)"/><use href="#shadow" transform="translate(88.00 30.00) scale(1.8)"/><use href="#ggov" transform="translate(88.00 30.00) scale(1.25)" style="--roof:#B9412F"/><use href="#gfac" transform="translate(34.00 30.00) scale(0.9)"/><use href="#gfac" transform="translate(56.00 30.00) scale(0.9)"/><use href="#gfac" transform="translate(120.00 30.00) scale(0.9)"/><use href="#gfac" transform="translate(142.00 30.00) scale(0.9)"/><use href="#gclip" transform="translate(160.00 18.00) scale(0.95)"/><use href="#glock" transform="translate(16.00 22.00) scale(1.0)"/><use href="#gtag" transform="translate(6.00 26.00) scale(0.8)"/><path d="M88 4 V-2" stroke="none"/></svg>
+    <div class="ttl"><i></i><b>Socialist Economy</b><span>command</span></div>
+    <div class="lbl">Core functioning</div>
+    <p><b>Government owns &amp; controls</b> production; a <b>central authority</b> decides all.</p>
+    <ul style="margin-top:.6mm"><li>State owns banks, industry, transport</li><li>Prices <b>fixed</b>; quality goods, reasonable prices</li><li>Aim: <b>social welfare</b> &amp; equal jobs for all</li></ul>
+    <div class="lbl">Flowchart</div>
+    <svg class="flow" viewBox="0 0 170 30" width="170mm" height="30mm" style="display:block;overflow:visible;"><circle cx="18" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="18" cy="8" r="6.6" fill="#fff" stroke="#EE6A55" stroke-width="1"/><use href="#i-plan" transform="translate(18.00 8.00) scale(0.9)"/><text x="18" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Central</text><text x="18" y="24.200000000000003" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">authority</text><path d="M27 8 H73" stroke="#B9412F" stroke-width="1" stroke-linecap="round"/><path d="M72 6.1 L75 8 L72 9.9Z" fill="#B9412F"/><text x="51.0" y="5.8" font-size="3.8" font-weight="700" text-anchor="middle" fill="#B9412F" font-family="Poppins">plans &amp; fixes prices</text><circle cx="85" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="85" cy="8" r="6.6" fill="#fff" stroke="#EE6A55" stroke-width="1"/><use href="#i-how" transform="translate(85.00 8.00) scale(0.9)"/><text x="85" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">State-owned</text><text x="85" y="24.200000000000003" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">firms</text><path d="M94 8 H140" stroke="#B9412F" stroke-width="1" stroke-linecap="round"/><path d="M139 6.1 L142 8 L139 9.9Z" fill="#B9412F"/><text x="118.0" y="5.8" font-size="3.8" font-weight="700" text-anchor="middle" fill="#B9412F" font-family="Poppins">allocates goods</text><circle cx="152" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="152" cy="8" r="6.6" fill="#fff" stroke="#EE6A55" stroke-width="1"/><use href="#i-whom" transform="translate(152.00 8.00) scale(0.9)"/><text x="152" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Citizens</text></svg>
+  </div>
+  <div class="card" style="--c:#22A98C;--cd:#147560;--cs:#DCF4EC">
+    <svg viewBox="0 3 176 31" style="display:block;width:100%;height:auto;border-radius:3.6mm;overflow:hidden"><rect x="0" y="0" width="176" height="34" rx="3.6" fill="url(#gPanelTeal)"/><circle cx="150" cy="9" r="9" fill="#fff" opacity=".28"/><circle cx="150" cy="9" r="5.6" fill="#fff" opacity=".35"/><path d="M0 27 Q44 23 88 26 T176 25 V30.4 Q176 34 172.4 34 H3.6 Q0 34 0 30.4Z" fill="#fff" opacity=".22"/><g transform="translate(150 8) scale(0.8)"><ellipse cx="0" cy="0" rx="6" ry="2.6" fill="#fff" opacity=".9"/><circle cx="-2" cy="-1.6" r="2.6" fill="#fff" opacity=".9"/><circle cx="1.8" cy="-2.2" r="3" fill="#fff" opacity=".9"/></g><use href="#spark" transform="translate(109.14 13.87) scale(0.638558069669709)"/><use href="#spark" transform="translate(164.10 13.84) scale(0.6766974989996251)"/><use href="#spark" transform="translate(6.99 9.45) scale(0.683007015099494)"/><use href="#spark" transform="translate(113.62 16.41) scale(0.4339617893959433)"/><use href="#spark" transform="translate(82.68 5.95) scale(0.5631282577707791)"/><use href="#shadow" transform="translate(40.00 30.00) scale(1.4)"/><use href="#ggov" transform="translate(34.00 30.00) scale(0.95)" style="--roof:#EE6A55"/><use href="#ggear" transform="translate(78.00 16.00) scale(1.25)" style="--g:url(#gCoral);--gc:#B9412F"/><use href="#ggear" transform="translate(94.00 21.60) scale(1.05)" style="--g:url(#gGold);--gc:#B7801A"/><use href="#shadow" transform="translate(136.00 30.00) scale(1.4)"/><use href="#gshop" transform="translate(132.00 30.00) scale(1.0)" style="--c:#F2B53A;--c2:#B7801A"/><use href="#gperson" transform="translate(152.00 30.00) scale(1.0)" style="--shirt:#EE6A55"/><text x="34" y="33" font-size="2.8" font-weight="800" text-anchor="middle" fill="#0F5A49" font-family="Poppins">PUBLIC</text><text x="132" y="33" font-size="2.8" font-weight="800" text-anchor="middle" fill="#0F5A49" font-family="Poppins">PRIVATE</text><text x="86" y="33" font-size="3.0" font-weight="700" text-anchor="middle" fill="#0F5A49" font-family="Poppins">working together</text></svg>
+    <div class="ttl"><i></i><b>Mixed Economy</b><span>public + private</span></div>
+    <div class="lbl">Core functioning</div>
+    <p><b>Private + government control</b>: both decide what is made &amp; how it is shared.</p>
+    <ul style="margin-top:.6mm"><li><b>Public &amp; private</b> sectors co-exist</li><li><b>Planning</b> controls the economy</li><li>Profit + social interest; consumer &amp; labour rights</li></ul>
+    <div class="lbl">Flowchart</div>
+    <svg class="flow" viewBox="0 0 170 30" width="170mm" height="30mm" style="display:block;overflow:visible;"><circle cx="18" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="18" cy="8" r="6.6" fill="#fff" stroke="#22A98C" stroke-width="1"/><use href="#i-gov" transform="translate(18.00 8.00) scale(0.9)"/><text x="18" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Public</text><text x="18" y="24.200000000000003" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">sector</text><text x="51.5" y="11.2" font-size="9" font-weight="800" text-anchor="middle" fill="#147560" font-family="Poppins">+</text><circle cx="85" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="85" cy="8" r="6.6" fill="#fff" stroke="#22A98C" stroke-width="1"/><use href="#i-tag" transform="translate(85.00 8.00) scale(0.9)"/><text x="85" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Private</text><text x="85" y="24.200000000000003" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">sector</text><path d="M94 8 H140" stroke="#147560" stroke-width="1" stroke-linecap="round"/><path d="M139 6.1 L142 8 L139 9.9Z" fill="#147560"/><text x="118.0" y="5.8" font-size="3.8" font-weight="700" text-anchor="middle" fill="#147560" font-family="Poppins">planning + prices</text><circle cx="152" cy="8.6" r="6.6" fill="#000" opacity=".1"/><circle cx="152" cy="8" r="6.6" fill="#fff" stroke="#22A98C" stroke-width="1"/><use href="#i-what" transform="translate(152.00 8.00) scale(0.9)"/><text x="152" y="19.6" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">Goods &amp;</text><text x="152" y="24.200000000000003" font-size="4.4" font-weight="700" text-anchor="middle" fill="#1C2433" font-family="Poppins">services</text></svg>
+  </div>
+</section>
+
+<section class="bottom">
+  <div class="glass cmp">
+    <div class="tg">
+      <div class="h"><span class="cap">Comparison</span></div>
+      <div class="h"><i style="background:#F2B53A"></i>Capitalist</div><div class="h"><i style="background:#22A98C"></i>Mixed</div><div class="h"><i style="background:#EE6A55"></i>Socialist (command)</div>
+      <div class="sec"><span>THE 3 CENTRAL QUESTIONS</span><span class="src" style="margin-left:auto;color:#B8B0D0;letter-spacing:0;font-family:Bricolage Grotesque;font-weight:500">(Fernando, 2026)</span></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-what" transform="scale(1.0)"/></svg>What to produce?</div><div class="k1">Whatever consumers demand</div><div class="k2">Demand + national plans</div><div class="k3">Central authority&rsquo;s plan</div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg>How to produce?</div><div class="k1">Producers choose, for profit</div><div class="k2">Private firms + public sector</div><div class="k3">State organises production</div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-whom" transform="scale(1.0)"/></svg>For whom?</div><div class="k1">Buyers, by their income</div><div class="k2">Market + social welfare</div><div class="k3">State allocates to citizens</div>
+      <div class="sec"><span>COMPARISON TABLE</span></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-key" transform="scale(1.0)"/></svg>Ownership of resources</div><div class="k1"><span><b>Private</b> individuals</span></div><div class="k2"><span><b>Public + private</b></span></div><div class="k3"><span><b>Government</b></span></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-gov" transform="scale(1.0)"/></svg>Role of government</div><div class="k1"><span><b>Little</b>: no interference</span></div><div class="k2"><span><b>Plans</b> &amp; controls</span></div><div class="k3"><span><b>Total</b>: decides all</span></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-tag" transform="scale(1.0)"/></svg>Price mechanism</div><div class="k1"><span><b>Free</b> market prices</span></div><div class="k2"><span><b>Prices</b> + planning</span></div><div class="k3"><span><b>Fixed</b> by the authority</span></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-motive" transform="scale(1.0)"/></svg>Motive</div><div class="k1"><span><b>Profit</b></span></div><div class="k2"><span><b>Profit + social interest</b></span></div><div class="k3"><span><b>Social welfare</b></span></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-up" transform="scale(1.0)"/></svg>Advantages</div>
+      <div class="k1"><ul class="adv"><li>Equal opportunities</li><li>Innovation &amp; fast growth</li></ul></div>
+      <div class="k2"><ul class="adv"><li>Best allocation of resources</li><li>Via prices, profit &amp; liberty</li></ul></div>
+      <div class="k3"><ul class="adv"><li>Efficient use; stability</li><li>Max welfare; no monopoly</li></ul></div>
+      <div class="lab"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-down" transform="scale(1.0)"/></svg>Disadvantages</div>
+      <div class="k1"><ul class="dis"><li>Rich richer, poor poorer</li><li>No welfare &rarr; poverty</li></ul></div>
+      <div class="k2"><ul class="dis"><li>Sectors may not cooperate</li><li>Inefficient public sector</li></ul></div>
+      <div class="k3"><ul class="dis"><li>Bureaucracy; no freedom</li><li>No tech or competition</li></ul></div>
+    </div>
+  </div>
+
+  <div class="oman">
+    <div class="top"><svg class="" viewBox="0 0 64 30" width="64mm" height="30mm" style="display:block;overflow:visible;"><rect x="0" y="0" width="64" height="30" rx="3" fill="url(#gPanelTeal)"/><circle cx="52" cy="8" r="4.4" fill="url(#gOrbG)"/><path d="M0 22 H64 V27 Q64 30 61 30 H3 Q0 30 0 27Z" fill="url(#gSea)"/><path d="M2 22 Q14 16 30 17 Q40 18 46 22Z" fill="url(#gSand)"/><use href="#gfort" transform="translate(20.00 21.00) scale(0.62)"/><use href="#gpalm" transform="translate(6.00 22.00) scale(0.55)"/><use href="#gdhow" transform="translate(52.00 28.00) scale(0.55)"/></svg><h2>Oman: a <em>mixed economy</em></h2></div>
+    <div class="lbl" style="color:#B9412F">Government sector</div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-compass" transform="scale(1.0)"/></svg><span>Plans the economy: <b>Oman Vision 2040</b></span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-key" transform="scale(1.0)"/></svg><span>Owns state firms: <b>Oman Investment Authority</b></span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-shield" transform="scale(1.0)"/></svg><span>Protects consumers &amp; workers by law</span></div>
+    <div class="lbl" style="color:#B7801A">Private sector</div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-branch" transform="scale(1.0)"/></svg><span>Leads diversification beyond oil</span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-bridge" transform="scale(1.0)"/></svg><span>Partners the state in <b>PPP</b> projects</span></div>
+    <div class="it"><svg class="ic" viewBox="-6 -6 12 12"><use href="#i-how" transform="scale(1.0)"/></svg><span>Takes over state firms via <b>privatisation</b></span></div>
+    <span class="src" style="font-size:12pt;white-space:normal;margin-top:.2mm">(Oman Vision 2040 Main Committee, 2019; Royal Decrees 66/2014, 51/2019, 52/2019, 61/2020, 53/2023)</span>
+    <div class="concl"><b>Conclusion</b>The mixed economy blends market freedom with social welfare: the model Oman follows.</div>
+  </div>
+</section>
+
+<section class="foot">
+  <div class="glass refs">
+    <h3>References<small>APA 7th ed.</small></h3>
+    <ul>
+      <li>Fernando, G. A. (2026). <i>Chapter 2: Economic systems</i> [PowerPoint slides]. BSEC1103 Principles of Economics, University of Technology and Applied Sciences.</li>
+      <li>Mankiw, N. G. (2021). <i>Principles of economics</i> (9th ed.). Cengage Learning.</li>
+      <li>Oman Vision 2040 Main Committee. (2019). <i>Oman Vision 2040: Vision document</i>. Sultanate of Oman. https://www.oman2040.om</li>
+      <li>Royal Decree No. 51/2019 issuing the Privatization Law. (2019). <i>Official Gazette of the Sultanate of Oman</i>.</li>
+      <li>Royal Decree No. 52/2019 promulgating the Public-Private Partnership Law. (2019). <i>Official Gazette of the Sultanate of Oman</i>. https://decree.om/2019/rd20190052/</li>
+      <li>Royal Decree No. 53/2023 promulgating the Labour Law. (2023). <i>Official Gazette of the Sultanate of Oman</i>.</li>
+      <li>Royal Decree No. 61/2020 establishing the Oman Investment Authority. (2020). <i>Official Gazette of the Sultanate of Oman</i>. https://decree.om/2020/rd20200061/</li>
+      <li>Royal Decree No. 66/2014 promulgating the Consumer Protection Law. (2014). <i>Official Gazette of the Sultanate of Oman</i>.</li>
+    </ul>
+  </div>
+</section>
+</div>
+<script>document.fonts.ready.then(()=>{document.body.dataset.ready='1'});</script>
+</body></html>
