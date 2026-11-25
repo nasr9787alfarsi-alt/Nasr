@@ -1,6 +1,6 @@
 # YA DONYA: Cairo Reel (v4, transitions and typography rebuilt)
 
-**Deliverable:** `Cairo_Ya_Donya_v2.mp4`: MP4 (mp42/isom, moov first), H.264 High@4.0 (avc1.640028), yuv420p, 1080×1920, 30 fps CFR, AAC-LC 48 kHz stereo (mp4a.40.2), 50.0 s, −14 LUFS / −1 dBTP.
+**Deliverable:** `Cairo_Ya_Donya_v3.mp4`: MP4 (mp42/isom, moov first), H.264 High@4.0 (avc1.640028), yuv420p, 1080×1920, 30 fps CFR, AAC-LC 48 kHz stereo (mp4a.40.2), 50.0 s, −14 LUFS / −1 dBTP.
 
 ## Lyrics (verified three ways: the soundtrack video's own captions, Whisper large-v3, and CTC forced alignment)
 وميل وحدف منديله، كاتب على طرفه أجيله (×2)
@@ -30,3 +30,9 @@ Verification note: in chorus 1 the singer repeats «أمانة» (heard as «و�
 - **Handoff:** the burst's last flash is the balcony itself, so the film continues inside the same shot. The push-in never reverses, the street sound never drops out, and the first syllable swells out of the ambience.
 - **Transitions:** synthetic whips, zoom pulses, frame roll and stutter are removed. Every cut is motivated (see `why` in `tools/v4/edl4.py`): direction-matched pans (a leftward current in verse 2, a rightward run in the joy montage), real vehicles carrying cuts (riders, car, motorbike, red SUV), and dissolves at three emotional turns.
 - **Typography:** Amiri (a revival of the Bulaq Press type of 19th-century Cairo). Words are inked right-to-left on their vocal onsets. Kashida on the held notes is drawn for exactly as long as the singer holds them, in gold. A hairline breath-rule grows under each line. Each line clears before the next arrives, and lines are placed per shot away from faces.
+
+## v5 revision: one rhythm for words, shots and music
+- **Timing evidence:** the sung phrases from a pitch tracker (breath to breath) and the forced-alignment word onsets agree within 0.1 s at all nine phrase starts. The burned-in captions in the soundtrack video run 0.25–0.4 s late, so they were not used for timing.
+- **Lyrics as stanzas:** each word fades in softly as it is sung (half-visible on the syllable), stays in place, and lines accumulate into the stanza. The stanza holds one composed position and dissolves in the singer's breath; the next stanza starts only after it has cleared. There is no per-word motion, no drawn strokes and no rule. Kashida forms appear only on دنيا / للفرحة / استنّا, which warm to gold as they are sung.
+- **Cuts serve phrases:** every cut lands either in a breath or on the word its shot is about, two frames ahead of the voice, or is carried by a real moving object. One dissolve (into golden hour) deliberately spans «الحزن». Some phrases breathe on a single shot (the ornate street holds the whole second line of verse 2).
+- **Unverified:** after «استنّا» the singer appears to repeat the word; the captions read «استنّانا», recognition hears «استنّى». It is not shown.
